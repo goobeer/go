@@ -1,0 +1,57 @@
+// Implements BasePage methods.
+
+{% import (
+	"github.com/valyala/fasthttp"
+	"fasthttpweb/area"
+) %}
+
+{% code
+type VerfyPage struct {
+	CTX *fasthttp.RequestCtx
+	BPD *area.BasePageData
+	Titles string
+	ErrorMsg string
+}
+%}
+
+{% func (p *VerfyPage) Title() %}{% if p.BPD.Data!=nil && p.BPD.Data["Title"]!=nil %}{%s p.BPD.Data["Title"].(string) %}{% endif %}{% endfunc %}
+
+{% func (p *VerfyPage) RenderCss() %}
+	<style type="text/css">
+		#vcode{
+			cursor:pointer;
+		}
+	</style>
+{% endfunc %}
+
+{% func (p *VerfyPage) RenderScript() %}
+<script type="text/javascript">
+	$(function(){
+		$('#vcode').click(function(){
+			$(this).prop('src','/api/verifyimg?r='+Math.random());
+		});
+		$(':submit').click(function(){
+			var phone=$('#phone').val(),vcode=$('#vc').val();
+			if(!(phone.length>0 && vcode.length>0)){
+				$('.text-danger').text('手机号或验证码不能为空!');
+				return false;
+			}
+		});
+	})
+</script>
+{% endfunc %}
+
+{% func (p *VerfyPage) Kwd() %}
+	kwds,kwds1,kwds2,kwds3
+{%endfunc%}
+
+{% func (p *VerfyPage) RenderBody() %}
+<div class="text-danger">{%s p.ErrorMsg %}</div>
+	<div class="text-center">
+		<form action="/home/index/verify" method="POST">
+			手机号:<input type="phone" id="phone" name="phone" /><br />
+			验证码:<input type="text" id="vc" name="vcode" /><img id="vcode" src="/api/verifyimg" title="点击切换验证码" />
+			<button type="submit" class="btn btn-default">去逛逛</button>
+		</form>
+	</div>
+{% endfunc %}

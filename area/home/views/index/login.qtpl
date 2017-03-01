@@ -1,0 +1,40 @@
+// Main page template. Implements BasePage methods.
+
+{% import "github.com/valyala/fasthttp" %}
+
+{% code
+type LoginPage struct {
+	CTX *fasthttp.RequestCtx
+	Titles string
+	ErrorMsg string
+	AreaName string
+	CtrName string
+}
+%}
+
+
+{% func (p *LoginPage) Title() %}
+	{%s p.Titles %}
+{% endfunc %}
+
+{% func (p *LoginPage) RenderCss() %}
+{% endfunc %}
+
+{% func (p *LoginPage) RenderScript() %}
+{% endfunc %}
+
+{% func (p *LoginPage) Kwd() %}
+	kwds,kwds1,kwds2,kwds3
+{%endfunc%}
+
+{% func (p *LoginPage) RenderBody() %}
+	<div class="text-danger">{%s p.ErrorMsg %}</div>
+	<div class="text-center">
+		<form action="/home/index/login" method="POST">
+			用户名:<input type="phone" id="uname" name="uname" /><br />
+			密码:<input type="password" id="pwd" name="pwd" /><br />
+			验证码:<input type="text" id="vc" name="vcode" /><img id="vcode" src="/api/verifyimg" title="点击切换验证码" />
+			<button type="submit" class="btn btn-default">登录</button>
+		</form>
+	</div>
+{% endfunc %}

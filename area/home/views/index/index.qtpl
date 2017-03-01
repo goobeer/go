@@ -1,0 +1,31 @@
+// Main page template. Implements BasePage methods.
+
+{% import "github.com/valyala/fasthttp" %}
+
+{% code
+type IndexPage struct {
+	CTX *fasthttp.RequestCtx
+	Titles string
+}
+%}
+
+
+{% func (p *IndexPage) Title() %}
+	{%s p.Titles %}
+{% endfunc %}
+
+{% func (p *IndexPage) RenderCss() %}
+{% endfunc %}
+
+{% func (p *IndexPage) RenderScript() %}
+{% endfunc %}
+
+{% func (p *IndexPage) Kwd() %}
+	kwds,kwds1,kwds2,kwds3
+{%endfunc%}
+
+{% func (p *IndexPage) RenderBody() %}
+	<div class="text-center">
+		success
+	</div>
+{% endfunc %}
