@@ -10,6 +10,7 @@ import (
 	"reflect"
 	"runtime"
 
+	_ "fasthttpweb/area/admin/controllers"
 	_ "fasthttpweb/area/home/controllers"
 
 	"github.com/valyala/fasthttp"

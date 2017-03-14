@@ -6,8 +6,6 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/valyala/fasthttp"
-
 	"fasthttpweb/common"
 	"fasthttpweb/model"
 
@@ -17,29 +15,8 @@ import (
 	"github.com/go-xorm/xorm"
 )
 
-type RequestHandlerPipleLine struct {
-	BeforeRequestHandlers []fasthttp.RequestHandler
-	RequestHandler        fasthttp.RequestHandler
-	AfterRequestHandlers  []fasthttp.RequestHandler
-}
-
-//请求管道
-func (rhp *RequestHandlerPipleLine) RequestPipleLine(ctx *fasthttp.RequestCtx) {
-	var requestPipleLine []fasthttp.RequestHandler
-	requestPipleLine = append(requestPipleLine, rhp.BeforeRequestHandlers...)
-
-	requestPipleLine = append(requestPipleLine, rhp.RequestHandler)
-
-	requestPipleLine = append(requestPipleLine, rhp.AfterRequestHandlers...)
-
-	for _, item := range requestPipleLine {
-		item(ctx)
-	}
-}
-
 var (
-	R   *fasthttprouter.Router   = fasthttprouter.New()
-	RHB *RequestHandlerPipleLine = &RequestHandlerPipleLine{}
+	R *fasthttprouter.Router = fasthttprouter.New()
 )
 
 func test() {
