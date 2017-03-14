@@ -15,7 +15,7 @@ import (
 //
 
 //line home\views\index\index.qtpl:3
-import "github.com/valyala/fasthttp"
+import "fasthttpweb/area"
 
 //line home\views\index\index.qtpl:5
 var (
@@ -25,40 +25,129 @@ var (
 
 //line home\views\index\index.qtpl:6
 type IndexPage struct {
-	CTX    *fasthttp.RequestCtx
-	Titles string
+	BP *area.BasePage
 }
 
-//line home\views\index\index.qtpl:13
-func (p *IndexPage) StreamTitle(qw422016 *qt422016.Writer) {
-	//line home\views\index\index.qtpl:13
-	qw422016.N().S(`
-	`)
+//line home\views\index\index.qtpl:11
+func (p *IndexPage) StreamRenderTitle(qw422016 *qt422016.Writer) {
+//line home\views\index\index.qtpl:11
+p.BP.StreamRender_Title(qw422016) }
+
+//line home\views\index\index.qtpl:11
+//line home\views\index\index.qtpl:11
+func (p *IndexPage) WriteRenderTitle(qq422016 qtio422016.Writer) {
+	//line home\views\index\index.qtpl:11
+	qw422016 := qt422016.AcquireWriter(qq422016)
+	//line home\views\index\index.qtpl:11
+	p.StreamRenderTitle(qw422016)
+	//line home\views\index\index.qtpl:11
+	qt422016.ReleaseWriter(qw422016)
+//line home\views\index\index.qtpl:11
+}
+
+//line home\views\index\index.qtpl:11
+func (p *IndexPage) RenderTitle() string {
+	//line home\views\index\index.qtpl:11
+	qb422016 := qt422016.AcquireByteBuffer()
+	//line home\views\index\index.qtpl:11
+	p.WriteRenderTitle(qb422016)
+	//line home\views\index\index.qtpl:11
+	qs422016 := string(qb422016.B)
+	//line home\views\index\index.qtpl:11
+	qt422016.ReleaseByteBuffer(qb422016)
+	//line home\views\index\index.qtpl:11
+	return qs422016
+//line home\views\index\index.qtpl:11
+}
+
+//line home\views\index\index.qtpl:12
+func (p *IndexPage) StreamRenderKwd(qw422016 *qt422016.Writer) {
+	//line home\views\index\index.qtpl:12
+	qw422016.N().S(` `)
+	//line home\views\index\index.qtpl:12
+	p.BP.StreamRender_Kwd(qw422016)
+//line home\views\index\index.qtpl:12
+}
+
+//line home\views\index\index.qtpl:12
+func (p *IndexPage) WriteRenderKwd(qq422016 qtio422016.Writer) {
+	//line home\views\index\index.qtpl:12
+	qw422016 := qt422016.AcquireWriter(qq422016)
+	//line home\views\index\index.qtpl:12
+	p.StreamRenderKwd(qw422016)
+	//line home\views\index\index.qtpl:12
+	qt422016.ReleaseWriter(qw422016)
+//line home\views\index\index.qtpl:12
+}
+
+//line home\views\index\index.qtpl:12
+func (p *IndexPage) RenderKwd() string {
+	//line home\views\index\index.qtpl:12
+	qb422016 := qt422016.AcquireByteBuffer()
+	//line home\views\index\index.qtpl:12
+	p.WriteRenderKwd(qb422016)
+	//line home\views\index\index.qtpl:12
+	qs422016 := string(qb422016.B)
+	//line home\views\index\index.qtpl:12
+	qt422016.ReleaseByteBuffer(qb422016)
+	//line home\views\index\index.qtpl:12
+	return qs422016
+//line home\views\index\index.qtpl:12
+}
+
+//line home\views\index\index.qtpl:14
+func (p *IndexPage) StreamRenderCss(qw422016 *qt422016.Writer) {
+//line home\views\index\index.qtpl:14
+}
+
+//line home\views\index\index.qtpl:14
+func (p *IndexPage) WriteRenderCss(qq422016 qtio422016.Writer) {
 	//line home\views\index\index.qtpl:14
-	qw422016.E().S(p.Titles)
+	qw422016 := qt422016.AcquireWriter(qq422016)
 	//line home\views\index\index.qtpl:14
-	qw422016.N().S(`
-`)
+	p.StreamRenderCss(qw422016)
+	//line home\views\index\index.qtpl:14
+	qt422016.ReleaseWriter(qw422016)
+//line home\views\index\index.qtpl:14
+}
+
+//line home\views\index\index.qtpl:14
+func (p *IndexPage) RenderCss() string {
+	//line home\views\index\index.qtpl:14
+	qb422016 := qt422016.AcquireByteBuffer()
+	//line home\views\index\index.qtpl:14
+	p.WriteRenderCss(qb422016)
+	//line home\views\index\index.qtpl:14
+	qs422016 := string(qb422016.B)
+	//line home\views\index\index.qtpl:14
+	qt422016.ReleaseByteBuffer(qb422016)
+	//line home\views\index\index.qtpl:14
+	return qs422016
+//line home\views\index\index.qtpl:14
+}
+
+//line home\views\index\index.qtpl:15
+func (p *IndexPage) StreamRenderScript(qw422016 *qt422016.Writer) {
 //line home\views\index\index.qtpl:15
 }
 
 //line home\views\index\index.qtpl:15
-func (p *IndexPage) WriteTitle(qq422016 qtio422016.Writer) {
+func (p *IndexPage) WriteRenderScript(qq422016 qtio422016.Writer) {
 	//line home\views\index\index.qtpl:15
 	qw422016 := qt422016.AcquireWriter(qq422016)
 	//line home\views\index\index.qtpl:15
-	p.StreamTitle(qw422016)
+	p.StreamRenderScript(qw422016)
 	//line home\views\index\index.qtpl:15
 	qt422016.ReleaseWriter(qw422016)
 //line home\views\index\index.qtpl:15
 }
 
 //line home\views\index\index.qtpl:15
-func (p *IndexPage) Title() string {
+func (p *IndexPage) RenderScript() string {
 	//line home\views\index\index.qtpl:15
 	qb422016 := qt422016.AcquireByteBuffer()
 	//line home\views\index\index.qtpl:15
-	p.WriteTitle(qb422016)
+	p.WriteRenderScript(qb422016)
 	//line home\views\index\index.qtpl:15
 	qs422016 := string(qb422016.B)
 	//line home\views\index\index.qtpl:15
@@ -69,141 +158,38 @@ func (p *IndexPage) Title() string {
 }
 
 //line home\views\index\index.qtpl:17
-func (p *IndexPage) StreamRenderCss(qw422016 *qt422016.Writer) {
-	//line home\views\index\index.qtpl:17
-	qw422016.N().S(`
-`)
-//line home\views\index\index.qtpl:18
-}
-
-//line home\views\index\index.qtpl:18
-func (p *IndexPage) WriteRenderCss(qq422016 qtio422016.Writer) {
-	//line home\views\index\index.qtpl:18
-	qw422016 := qt422016.AcquireWriter(qq422016)
-	//line home\views\index\index.qtpl:18
-	p.StreamRenderCss(qw422016)
-	//line home\views\index\index.qtpl:18
-	qt422016.ReleaseWriter(qw422016)
-//line home\views\index\index.qtpl:18
-}
-
-//line home\views\index\index.qtpl:18
-func (p *IndexPage) RenderCss() string {
-	//line home\views\index\index.qtpl:18
-	qb422016 := qt422016.AcquireByteBuffer()
-	//line home\views\index\index.qtpl:18
-	p.WriteRenderCss(qb422016)
-	//line home\views\index\index.qtpl:18
-	qs422016 := string(qb422016.B)
-	//line home\views\index\index.qtpl:18
-	qt422016.ReleaseByteBuffer(qb422016)
-	//line home\views\index\index.qtpl:18
-	return qs422016
-//line home\views\index\index.qtpl:18
-}
-
-//line home\views\index\index.qtpl:20
-func (p *IndexPage) StreamRenderScript(qw422016 *qt422016.Writer) {
-	//line home\views\index\index.qtpl:20
-	qw422016.N().S(`
-`)
-//line home\views\index\index.qtpl:21
-}
-
-//line home\views\index\index.qtpl:21
-func (p *IndexPage) WriteRenderScript(qq422016 qtio422016.Writer) {
-	//line home\views\index\index.qtpl:21
-	qw422016 := qt422016.AcquireWriter(qq422016)
-	//line home\views\index\index.qtpl:21
-	p.StreamRenderScript(qw422016)
-	//line home\views\index\index.qtpl:21
-	qt422016.ReleaseWriter(qw422016)
-//line home\views\index\index.qtpl:21
-}
-
-//line home\views\index\index.qtpl:21
-func (p *IndexPage) RenderScript() string {
-	//line home\views\index\index.qtpl:21
-	qb422016 := qt422016.AcquireByteBuffer()
-	//line home\views\index\index.qtpl:21
-	p.WriteRenderScript(qb422016)
-	//line home\views\index\index.qtpl:21
-	qs422016 := string(qb422016.B)
-	//line home\views\index\index.qtpl:21
-	qt422016.ReleaseByteBuffer(qb422016)
-	//line home\views\index\index.qtpl:21
-	return qs422016
-//line home\views\index\index.qtpl:21
-}
-
-//line home\views\index\index.qtpl:23
-func (p *IndexPage) StreamKwd(qw422016 *qt422016.Writer) {
-	//line home\views\index\index.qtpl:23
-	qw422016.N().S(`
-	kwds,kwds1,kwds2,kwds3
-`)
-//line home\views\index\index.qtpl:25
-}
-
-//line home\views\index\index.qtpl:25
-func (p *IndexPage) WriteKwd(qq422016 qtio422016.Writer) {
-	//line home\views\index\index.qtpl:25
-	qw422016 := qt422016.AcquireWriter(qq422016)
-	//line home\views\index\index.qtpl:25
-	p.StreamKwd(qw422016)
-	//line home\views\index\index.qtpl:25
-	qt422016.ReleaseWriter(qw422016)
-//line home\views\index\index.qtpl:25
-}
-
-//line home\views\index\index.qtpl:25
-func (p *IndexPage) Kwd() string {
-	//line home\views\index\index.qtpl:25
-	qb422016 := qt422016.AcquireByteBuffer()
-	//line home\views\index\index.qtpl:25
-	p.WriteKwd(qb422016)
-	//line home\views\index\index.qtpl:25
-	qs422016 := string(qb422016.B)
-	//line home\views\index\index.qtpl:25
-	qt422016.ReleaseByteBuffer(qb422016)
-	//line home\views\index\index.qtpl:25
-	return qs422016
-//line home\views\index\index.qtpl:25
-}
-
-//line home\views\index\index.qtpl:27
 func (p *IndexPage) StreamRenderBody(qw422016 *qt422016.Writer) {
-	//line home\views\index\index.qtpl:27
+	//line home\views\index\index.qtpl:17
 	qw422016.N().S(`
 	<div class="text-center">
 		success
 	</div>
 `)
-//line home\views\index\index.qtpl:31
+//line home\views\index\index.qtpl:21
 }
 
-//line home\views\index\index.qtpl:31
+//line home\views\index\index.qtpl:21
 func (p *IndexPage) WriteRenderBody(qq422016 qtio422016.Writer) {
-	//line home\views\index\index.qtpl:31
+	//line home\views\index\index.qtpl:21
 	qw422016 := qt422016.AcquireWriter(qq422016)
-	//line home\views\index\index.qtpl:31
+	//line home\views\index\index.qtpl:21
 	p.StreamRenderBody(qw422016)
-	//line home\views\index\index.qtpl:31
+	//line home\views\index\index.qtpl:21
 	qt422016.ReleaseWriter(qw422016)
-//line home\views\index\index.qtpl:31
+//line home\views\index\index.qtpl:21
 }
 
-//line home\views\index\index.qtpl:31
+//line home\views\index\index.qtpl:21
 func (p *IndexPage) RenderBody() string {
-	//line home\views\index\index.qtpl:31
+	//line home\views\index\index.qtpl:21
 	qb422016 := qt422016.AcquireByteBuffer()
-	//line home\views\index\index.qtpl:31
+	//line home\views\index\index.qtpl:21
 	p.WriteRenderBody(qb422016)
-	//line home\views\index\index.qtpl:31
+	//line home\views\index\index.qtpl:21
 	qs422016 := string(qb422016.B)
-	//line home\views\index\index.qtpl:31
+	//line home\views\index\index.qtpl:21
 	qt422016.ReleaseByteBuffer(qb422016)
-	//line home\views\index\index.qtpl:31
+	//line home\views\index\index.qtpl:21
 	return qs422016
-//line home\views\index\index.qtpl:31
+//line home\views\index\index.qtpl:21
 }

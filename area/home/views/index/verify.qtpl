@@ -1,20 +1,15 @@
 // Implements BasePage methods.
 
-{% import (
-	"github.com/valyala/fasthttp"
-	"fasthttpweb/area"
-) %}
+{% import "fasthttpweb/area" %}
 
 {% code
 type VerfyPage struct {
-	CTX *fasthttp.RequestCtx
-	BPD *area.BasePageData
-	Titles string
-	ErrorMsg string
+	*area.BasePage
 }
 %}
 
-{% func (p *VerfyPage) Title() %}{% if p.BPD.Data!=nil && p.BPD.Data["Title"]!=nil %}{%s p.BPD.Data["Title"].(string) %}{% endif %}{% endfunc %}
+{% func (p *VerfyPage) RenderTitle() %}{%= p.Render_Title() %}{% endfunc %}
+{% func (p *VerfyPage) RenderKwd() %} {%= p.Render_Kwd() %} {% endfunc %}
 
 {% func (p *VerfyPage) RenderCss() %}
 	<style type="text/css">
@@ -41,12 +36,12 @@ type VerfyPage struct {
 </script>
 {% endfunc %}
 
-{% func (p *VerfyPage) Kwd() %}
-	kwds,kwds1,kwds2,kwds3
-{%endfunc%}
-
 {% func (p *VerfyPage) RenderBody() %}
-<div class="text-danger">{%s p.ErrorMsg %}</div>
+<div class="text-danger">
+{% if p.BPD.Data["ErrMsg"]!=nil %}
+{%s (p.BPD.Data["ErrMsg"]).(string) %}
+{% endif %}
+</div>
 	<div class="text-center">
 		<form action="/home/index/verify" method="POST">
 			手机号:<input type="phone" id="phone" name="phone" /><br />

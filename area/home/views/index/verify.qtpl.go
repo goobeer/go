@@ -15,65 +15,91 @@ import (
 //
 
 //line home\views\index\verify.qtpl:3
-import (
-	"fasthttpweb/area"
-	"github.com/valyala/fasthttp"
-)
+import "fasthttpweb/area"
 
-//line home\views\index\verify.qtpl:8
+//line home\views\index\verify.qtpl:5
 var (
 	_ = qtio422016.Copy
 	_ = qt422016.AcquireByteBuffer
 )
 
-//line home\views\index\verify.qtpl:9
+//line home\views\index\verify.qtpl:6
 type VerfyPage struct {
-	CTX      *fasthttp.RequestCtx
-	BPD      *area.BasePageData
-	Titles   string
-	ErrorMsg string
+	*area.BasePage
 }
 
-//line home\views\index\verify.qtpl:17
-func (p *VerfyPage) StreamTitle(qw422016 *qt422016.Writer) {
-	//line home\views\index\verify.qtpl:17
-	if p.BPD.Data != nil && p.BPD.Data["Title"] != nil {
-		//line home\views\index\verify.qtpl:17
-		qw422016.E().S(p.BPD.Data["Title"].(string))
-		//line home\views\index\verify.qtpl:17
-	}
-//line home\views\index\verify.qtpl:17
-}
+//line home\views\index\verify.qtpl:11
+func (p *VerfyPage) StreamRenderTitle(qw422016 *qt422016.Writer) {
+//line home\views\index\verify.qtpl:11
+p.StreamRender_Title(qw422016) }
 
-//line home\views\index\verify.qtpl:17
-func (p *VerfyPage) WriteTitle(qq422016 qtio422016.Writer) {
-	//line home\views\index\verify.qtpl:17
+//line home\views\index\verify.qtpl:11
+//line home\views\index\verify.qtpl:11
+func (p *VerfyPage) WriteRenderTitle(qq422016 qtio422016.Writer) {
+	//line home\views\index\verify.qtpl:11
 	qw422016 := qt422016.AcquireWriter(qq422016)
-	//line home\views\index\verify.qtpl:17
-	p.StreamTitle(qw422016)
-	//line home\views\index\verify.qtpl:17
+	//line home\views\index\verify.qtpl:11
+	p.StreamRenderTitle(qw422016)
+	//line home\views\index\verify.qtpl:11
 	qt422016.ReleaseWriter(qw422016)
-//line home\views\index\verify.qtpl:17
+//line home\views\index\verify.qtpl:11
 }
 
-//line home\views\index\verify.qtpl:17
-func (p *VerfyPage) Title() string {
-	//line home\views\index\verify.qtpl:17
+//line home\views\index\verify.qtpl:11
+func (p *VerfyPage) RenderTitle() string {
+	//line home\views\index\verify.qtpl:11
 	qb422016 := qt422016.AcquireByteBuffer()
-	//line home\views\index\verify.qtpl:17
-	p.WriteTitle(qb422016)
-	//line home\views\index\verify.qtpl:17
+	//line home\views\index\verify.qtpl:11
+	p.WriteRenderTitle(qb422016)
+	//line home\views\index\verify.qtpl:11
 	qs422016 := string(qb422016.B)
-	//line home\views\index\verify.qtpl:17
+	//line home\views\index\verify.qtpl:11
 	qt422016.ReleaseByteBuffer(qb422016)
-	//line home\views\index\verify.qtpl:17
+	//line home\views\index\verify.qtpl:11
 	return qs422016
-//line home\views\index\verify.qtpl:17
+//line home\views\index\verify.qtpl:11
 }
 
-//line home\views\index\verify.qtpl:19
+//line home\views\index\verify.qtpl:12
+func (p *VerfyPage) StreamRenderKwd(qw422016 *qt422016.Writer) {
+	//line home\views\index\verify.qtpl:12
+	qw422016.N().S(` `)
+	//line home\views\index\verify.qtpl:12
+	p.StreamRender_Kwd(qw422016)
+	//line home\views\index\verify.qtpl:12
+	qw422016.N().S(` `)
+//line home\views\index\verify.qtpl:12
+}
+
+//line home\views\index\verify.qtpl:12
+func (p *VerfyPage) WriteRenderKwd(qq422016 qtio422016.Writer) {
+	//line home\views\index\verify.qtpl:12
+	qw422016 := qt422016.AcquireWriter(qq422016)
+	//line home\views\index\verify.qtpl:12
+	p.StreamRenderKwd(qw422016)
+	//line home\views\index\verify.qtpl:12
+	qt422016.ReleaseWriter(qw422016)
+//line home\views\index\verify.qtpl:12
+}
+
+//line home\views\index\verify.qtpl:12
+func (p *VerfyPage) RenderKwd() string {
+	//line home\views\index\verify.qtpl:12
+	qb422016 := qt422016.AcquireByteBuffer()
+	//line home\views\index\verify.qtpl:12
+	p.WriteRenderKwd(qb422016)
+	//line home\views\index\verify.qtpl:12
+	qs422016 := string(qb422016.B)
+	//line home\views\index\verify.qtpl:12
+	qt422016.ReleaseByteBuffer(qb422016)
+	//line home\views\index\verify.qtpl:12
+	return qs422016
+//line home\views\index\verify.qtpl:12
+}
+
+//line home\views\index\verify.qtpl:14
 func (p *VerfyPage) StreamRenderCss(qw422016 *qt422016.Writer) {
-	//line home\views\index\verify.qtpl:19
+	//line home\views\index\verify.qtpl:14
 	qw422016.N().S(`
 	<style type="text/css">
 		#vcode{
@@ -81,38 +107,38 @@ func (p *VerfyPage) StreamRenderCss(qw422016 *qt422016.Writer) {
 		}
 	</style>
 `)
-//line home\views\index\verify.qtpl:25
+//line home\views\index\verify.qtpl:20
 }
 
-//line home\views\index\verify.qtpl:25
+//line home\views\index\verify.qtpl:20
 func (p *VerfyPage) WriteRenderCss(qq422016 qtio422016.Writer) {
-	//line home\views\index\verify.qtpl:25
+	//line home\views\index\verify.qtpl:20
 	qw422016 := qt422016.AcquireWriter(qq422016)
-	//line home\views\index\verify.qtpl:25
+	//line home\views\index\verify.qtpl:20
 	p.StreamRenderCss(qw422016)
-	//line home\views\index\verify.qtpl:25
+	//line home\views\index\verify.qtpl:20
 	qt422016.ReleaseWriter(qw422016)
-//line home\views\index\verify.qtpl:25
+//line home\views\index\verify.qtpl:20
 }
 
-//line home\views\index\verify.qtpl:25
+//line home\views\index\verify.qtpl:20
 func (p *VerfyPage) RenderCss() string {
-	//line home\views\index\verify.qtpl:25
+	//line home\views\index\verify.qtpl:20
 	qb422016 := qt422016.AcquireByteBuffer()
-	//line home\views\index\verify.qtpl:25
+	//line home\views\index\verify.qtpl:20
 	p.WriteRenderCss(qb422016)
-	//line home\views\index\verify.qtpl:25
+	//line home\views\index\verify.qtpl:20
 	qs422016 := string(qb422016.B)
-	//line home\views\index\verify.qtpl:25
+	//line home\views\index\verify.qtpl:20
 	qt422016.ReleaseByteBuffer(qb422016)
-	//line home\views\index\verify.qtpl:25
+	//line home\views\index\verify.qtpl:20
 	return qs422016
-//line home\views\index\verify.qtpl:25
+//line home\views\index\verify.qtpl:20
 }
 
-//line home\views\index\verify.qtpl:27
+//line home\views\index\verify.qtpl:22
 func (p *VerfyPage) StreamRenderScript(qw422016 *qt422016.Writer) {
-	//line home\views\index\verify.qtpl:27
+	//line home\views\index\verify.qtpl:22
 	qw422016.N().S(`
 <script type="text/javascript">
 	$(function(){
@@ -129,79 +155,56 @@ func (p *VerfyPage) StreamRenderScript(qw422016 *qt422016.Writer) {
 	})
 </script>
 `)
-//line home\views\index\verify.qtpl:42
+//line home\views\index\verify.qtpl:37
 }
 
-//line home\views\index\verify.qtpl:42
+//line home\views\index\verify.qtpl:37
 func (p *VerfyPage) WriteRenderScript(qq422016 qtio422016.Writer) {
-	//line home\views\index\verify.qtpl:42
+	//line home\views\index\verify.qtpl:37
 	qw422016 := qt422016.AcquireWriter(qq422016)
-	//line home\views\index\verify.qtpl:42
+	//line home\views\index\verify.qtpl:37
 	p.StreamRenderScript(qw422016)
-	//line home\views\index\verify.qtpl:42
+	//line home\views\index\verify.qtpl:37
 	qt422016.ReleaseWriter(qw422016)
-//line home\views\index\verify.qtpl:42
+//line home\views\index\verify.qtpl:37
 }
 
-//line home\views\index\verify.qtpl:42
+//line home\views\index\verify.qtpl:37
 func (p *VerfyPage) RenderScript() string {
-	//line home\views\index\verify.qtpl:42
+	//line home\views\index\verify.qtpl:37
 	qb422016 := qt422016.AcquireByteBuffer()
-	//line home\views\index\verify.qtpl:42
+	//line home\views\index\verify.qtpl:37
 	p.WriteRenderScript(qb422016)
-	//line home\views\index\verify.qtpl:42
+	//line home\views\index\verify.qtpl:37
 	qs422016 := string(qb422016.B)
-	//line home\views\index\verify.qtpl:42
+	//line home\views\index\verify.qtpl:37
 	qt422016.ReleaseByteBuffer(qb422016)
-	//line home\views\index\verify.qtpl:42
+	//line home\views\index\verify.qtpl:37
 	return qs422016
-//line home\views\index\verify.qtpl:42
+//line home\views\index\verify.qtpl:37
 }
 
-//line home\views\index\verify.qtpl:44
-func (p *VerfyPage) StreamKwd(qw422016 *qt422016.Writer) {
-	//line home\views\index\verify.qtpl:44
-	qw422016.N().S(`
-	kwds,kwds1,kwds2,kwds3
-`)
-//line home\views\index\verify.qtpl:46
-}
-
-//line home\views\index\verify.qtpl:46
-func (p *VerfyPage) WriteKwd(qq422016 qtio422016.Writer) {
-	//line home\views\index\verify.qtpl:46
-	qw422016 := qt422016.AcquireWriter(qq422016)
-	//line home\views\index\verify.qtpl:46
-	p.StreamKwd(qw422016)
-	//line home\views\index\verify.qtpl:46
-	qt422016.ReleaseWriter(qw422016)
-//line home\views\index\verify.qtpl:46
-}
-
-//line home\views\index\verify.qtpl:46
-func (p *VerfyPage) Kwd() string {
-	//line home\views\index\verify.qtpl:46
-	qb422016 := qt422016.AcquireByteBuffer()
-	//line home\views\index\verify.qtpl:46
-	p.WriteKwd(qb422016)
-	//line home\views\index\verify.qtpl:46
-	qs422016 := string(qb422016.B)
-	//line home\views\index\verify.qtpl:46
-	qt422016.ReleaseByteBuffer(qb422016)
-	//line home\views\index\verify.qtpl:46
-	return qs422016
-//line home\views\index\verify.qtpl:46
-}
-
-//line home\views\index\verify.qtpl:48
+//line home\views\index\verify.qtpl:39
 func (p *VerfyPage) StreamRenderBody(qw422016 *qt422016.Writer) {
-	//line home\views\index\verify.qtpl:48
+	//line home\views\index\verify.qtpl:39
 	qw422016.N().S(`
-<div class="text-danger">`)
-	//line home\views\index\verify.qtpl:49
-	qw422016.E().S(p.ErrorMsg)
-	//line home\views\index\verify.qtpl:49
-	qw422016.N().S(`</div>
+<div class="text-danger">
+`)
+	//line home\views\index\verify.qtpl:41
+	if p.BPD.Data["ErrMsg"] != nil {
+		//line home\views\index\verify.qtpl:41
+		qw422016.N().S(`
+`)
+		//line home\views\index\verify.qtpl:42
+		qw422016.E().S((p.BPD.Data["ErrMsg"]).(string))
+		//line home\views\index\verify.qtpl:42
+		qw422016.N().S(`
+`)
+		//line home\views\index\verify.qtpl:43
+	}
+	//line home\views\index\verify.qtpl:43
+	qw422016.N().S(`
+</div>
 	<div class="text-center">
 		<form action="/home/index/verify" method="POST">
 			手机号:<input type="phone" id="phone" name="phone" /><br />
@@ -210,31 +213,31 @@ func (p *VerfyPage) StreamRenderBody(qw422016 *qt422016.Writer) {
 		</form>
 	</div>
 `)
-//line home\views\index\verify.qtpl:57
+//line home\views\index\verify.qtpl:52
 }
 
-//line home\views\index\verify.qtpl:57
+//line home\views\index\verify.qtpl:52
 func (p *VerfyPage) WriteRenderBody(qq422016 qtio422016.Writer) {
-	//line home\views\index\verify.qtpl:57
+	//line home\views\index\verify.qtpl:52
 	qw422016 := qt422016.AcquireWriter(qq422016)
-	//line home\views\index\verify.qtpl:57
+	//line home\views\index\verify.qtpl:52
 	p.StreamRenderBody(qw422016)
-	//line home\views\index\verify.qtpl:57
+	//line home\views\index\verify.qtpl:52
 	qt422016.ReleaseWriter(qw422016)
-//line home\views\index\verify.qtpl:57
+//line home\views\index\verify.qtpl:52
 }
 
-//line home\views\index\verify.qtpl:57
+//line home\views\index\verify.qtpl:52
 func (p *VerfyPage) RenderBody() string {
-	//line home\views\index\verify.qtpl:57
+	//line home\views\index\verify.qtpl:52
 	qb422016 := qt422016.AcquireByteBuffer()
-	//line home\views\index\verify.qtpl:57
+	//line home\views\index\verify.qtpl:52
 	p.WriteRenderBody(qb422016)
-	//line home\views\index\verify.qtpl:57
+	//line home\views\index\verify.qtpl:52
 	qs422016 := string(qb422016.B)
-	//line home\views\index\verify.qtpl:57
+	//line home\views\index\verify.qtpl:52
 	qt422016.ReleaseByteBuffer(qb422016)
-	//line home\views\index\verify.qtpl:57
+	//line home\views\index\verify.qtpl:52
 	return qs422016
-//line home\views\index\verify.qtpl:57
+//line home\views\index\verify.qtpl:52
 }

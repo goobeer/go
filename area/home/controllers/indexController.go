@@ -28,7 +28,9 @@ type IndexController struct {
 func init() {
 	ic := &IndexController{BaseController: &area.BaseController{}}
 	ic.RegistRoutes(areaName, ic)
-
+	ic.RegistRoute("/", "get", "/home/index/index")
+	ic.RegistRoute("/home", "get", "/home/index/index")
+	ic.RegistRoute("/home/index", "get", "/home/index/index")
 	//auto regist route
 
 	//func intercept
@@ -48,13 +50,18 @@ func (c *IndexController) Index() {
 		return
 	}
 
-	ip := &hv.IndexPage{CTX: ctx, Titles: "homeIndex"}
+	bpd := c.InitBasePageData(areaName, "Index", "", "")
+	bp := &area.BasePage{CTX: ctx, BPD: bpd}
+	ip := &hv.IndexPage{BP: bp}
+
 	c.View(ip, "text/html")
 }
 
 func (c *IndexController) Verify() {
-	bpd := &area.BasePageData{AreaName: areaName, CtrlName: "index", Data: make(map[string]interface{})}
-	ip := &hv.VerfyPage{CTX: c.Ctx, BPD: bpd}
+
+	bpd := c.InitBasePageData(areaName, "Index", "", "")
+	bp := &area.BasePage{CTX: c.Ctx, BPD: bpd}
+	ip := &hv.VerfyPage{BasePage: bp}
 
 	c.View(ip, "text/html")
 }
@@ -89,8 +96,11 @@ func (c *IndexController) Login() {
 		ctx.Redirect("/home/index", fasthttp.StatusFound)
 		return
 	}
+	bpd := c.InitBasePageData(areaName, "Index", "", "")
+	bp := &area.BasePage{CTX: ctx, BPD: bpd}
 
-	page := &hv.LoginPage{CTX: ctx, Titles: "login"}
+	page := &hv.LoginPage{bp}
+
 	c.View(page, "text/html")
 }
 
@@ -115,7 +125,7 @@ func (c *IndexController) PostLogin() {
 			}
 
 			sess.Set("verfy", LoginVerfied)
-			ctx.Redirect("/home/index", fasthttp.StatusContinue)
+			ctx.Redirect("/home/index/index", fasthttp.StatusContinue)
 			return
 		}
 	}
@@ -127,11 +137,21 @@ func (c *IndexController) Logout() {
 }
 
 func (c *IndexController) getErrorHomeVerfyPage(errMsg string) {
-	ip := &hv.VerfyPage{CTX: c.Ctx, Titles: "homeVerfyError", ErrorMsg: errMsg}
+
+	bpd := c.InitBasePageData(areaName, "Index", "", "")
+	bpd.Data["ErrMsg"] = errMsg
+	bp := &area.BasePage{CTX: c.Ctx, BPD: bpd}
+	ip := &hv.VerfyPage{bp}
+
 	c.View(ip, "text/html")
 }
 
 func (c *IndexController) getErrorHomeLoginPage(errMsg string) {
-	page := &hv.LoginPage{CTX: c.Ctx, Titles: "loginError", ErrorMsg: errMsg}
+
+	bpd := c.InitBasePageData(areaName, "Index", "", "")
+	bpd.Data["ErrMsg"] = errMsg
+	bp := &area.BasePage{CTX: c.Ctx, BPD: bpd}
+	page := &hv.LoginPage{bp}
+
 	c.View(page, "text/html")
 }

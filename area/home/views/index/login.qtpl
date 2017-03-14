@@ -1,21 +1,16 @@
 // Main page template. Implements BasePage methods.
 
-{% import "github.com/valyala/fasthttp" %}
+{% import "fasthttpweb/area" %}
 
 {% code
 type LoginPage struct {
-	CTX *fasthttp.RequestCtx
-	Titles string
-	ErrorMsg string
-	AreaName string
-	CtrName string
+	*area.BasePage
 }
 %}
 
+{% func (p *LoginPage) RenderTitle() %}{%= p.Render_Title() %}{% endfunc %}
 
-{% func (p *LoginPage) Title() %}
-	{%s p.Titles %}
-{% endfunc %}
+{% func (p *LoginPage) RenderKwd() %}{%= p.Render_Kwd() %}{% endfunc %}
 
 {% func (p *LoginPage) RenderCss() %}
 {% endfunc %}
@@ -23,12 +18,12 @@ type LoginPage struct {
 {% func (p *LoginPage) RenderScript() %}
 {% endfunc %}
 
-{% func (p *LoginPage) Kwd() %}
-	kwds,kwds1,kwds2,kwds3
-{%endfunc%}
-
 {% func (p *LoginPage) RenderBody() %}
-	<div class="text-danger">{%s p.ErrorMsg %}</div>
+	<div class="text-danger">
+	{% if p.BPD.Data["ErrMsg"]!=nil %}
+		{%s (p.BPD.Data["ErrMsg"]).(string) %}
+	{% endif %}
+	</div>
 	<div class="text-center">
 		<form action="/home/index/login" method="POST">
 			用户名:<input type="phone" id="uname" name="uname" /><br />

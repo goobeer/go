@@ -5,15 +5,27 @@ import (
 	av "fasthttpweb/area/admin/views/index"
 
 	//	"github.com/kataras/go-sessions"
-	"github.com/valyala/fasthttp"
+)
+
+const (
+	areaName = "Admin"
 )
 
 type IndexController struct {
+	*area.BaseController
 }
 
-func getIndex(ctx *fasthttp.RequestCtx) {
-	ip := &av.IndexPage{CTX: ctx}
-	area.WritePageTemplate(ctx, ip)
+func init() {
+	c := &IndexController{BaseController: &area.BaseController{}}
+	c.RegistRoutes(areaName, c)
+	c.RegistRoute("/admin", "get", "/admin/index/index")
+	c.RegistRoute("/admin/index", "get", "/admin/index/index")
 
-	ctx.SetContentType("text/html")
+}
+
+func (c *IndexController) Index() {
+	bpd := c.InitBasePageData(areaName, "Index", "admin-title", "admin-kwd")
+	bp := &area.BasePage{CTX: c.Ctx, BPD: bpd}
+	ip := &av.IndexPage{bp}
+	c.View(ip, "text/html")
 }

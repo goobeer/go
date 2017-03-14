@@ -1,21 +1,25 @@
 // Main page template. Implements BasePage methods.
 
-{% import "fasthttpweb/area" %}
+{% 
+	import "fasthttpweb/area"
+%}
 
 {% code
 type IndexPage struct {
-	BP * area.BasePage
+	* area.BasePage
 }
 %}
 
-{% func (p *IndexPage) RenderTitle() %}{%= p.BP.Render_Title() %}{% endfunc %}
-{% func (p *IndexPage) RenderKwd() %} {%= p.BP.Render_Kwd() %}{% endfunc %}
+{% func (p *IndexPage) RenderTitle() %}{%= p.Render_Title() %} {% endfunc %}
+{% func (p *IndexPage) RenderKwd() %}{%= p.Render_Kwd() %} {% endfunc %}
 
 {% func (p *IndexPage) RenderCss() %}{% endfunc %}
+
 {% func (p *IndexPage) RenderScript() %}{% endfunc %}
+
 
 {% func (p *IndexPage) RenderBody() %}
 	<div class="text-center">
-		success
+		admin- success
 	</div>
 {% endfunc %}
