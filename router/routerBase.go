@@ -23,7 +23,7 @@ func test() {
 
 	var err error
 	//	var engine *xorm.Engine
-	engine, err := xorm.NewEngine("mysql", "root:watersa@tcp(127.0.0.1:3306)/tdb?charset=utf8")
+	engine, err := xorm.NewEngine("mysql", "dbUname:dbupwd@tcp(127.0.0.1:3306)/tdb?charset=utf8")
 	engine.SetMapper(core.SameMapper{})
 
 	common.PanicError(err)
