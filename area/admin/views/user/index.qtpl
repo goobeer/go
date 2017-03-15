@@ -1,0 +1,25 @@
+// Main page template. Implements BasePage methods.
+
+{% 
+	import "fasthttpweb/area"
+%}
+
+{% code
+type IndexPage struct {
+	* area.BasePage
+}
+%}
+
+{% func (p *IndexPage) RenderTitle() %}{%= p.Render_Title() %} {% endfunc %}
+{% func (p *IndexPage) RenderKwd() %}{%= p.Render_Kwd() %} {% endfunc %}
+
+{% func (p *IndexPage) RenderCss() %}{% endfunc %}
+
+{% func (p *IndexPage) RenderScript() %}{% endfunc %}
+
+
+{% func (p *IndexPage) RenderBody() %}
+	<div class="text-center">
+		admin-user-body
+	</div>
+{% endfunc %}

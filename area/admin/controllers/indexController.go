@@ -20,7 +20,6 @@ func init() {
 	c.RegistRoutes(areaName, c)
 	c.RegistRoute("/admin", "get", "/admin/index/index")
 	c.RegistRoute("/admin/index", "get", "/admin/index/index")
-
 }
 
 func (c *IndexController) Index() {

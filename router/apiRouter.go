@@ -17,7 +17,7 @@ func init() {
 func getVerifyImg(ctx *fasthttp.RequestCtx) {
 	verifyCode, err := common.CreateRandomFromSeed(5, common.RandSeed)
 	if err != nil {
-		common.PanicError(err)
+		panic(err.Error())
 	}
 	sess := sessions.StartFasthttp(ctx)
 	sess.Set("vcode", verifyCode)
@@ -26,12 +26,12 @@ func getVerifyImg(ctx *fasthttp.RequestCtx) {
 	conf.Bg = &image.Uniform{color.White}
 	rgba, err := common.NewVerifyImg(conf, verifyCode)
 	if err != nil {
-		common.PanicError(err)
+		panic(err.Error())
 	}
 
 	err = png.Encode(ctx.Response.BodyWriter(), rgba)
 	if err != nil {
-		common.PanicError(err)
+		panic(err.Error())
 	}
 
 	ctx.SetContentType("image/png")

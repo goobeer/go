@@ -8,6 +8,7 @@ import (
 	"image/png"
 	"os"
 	"reflect"
+	"regexp"
 	"runtime"
 
 	_ "fasthttpweb/area/admin/controllers"
@@ -21,6 +22,24 @@ import (
 
 func main() {
 	test()
+}
+
+func t1() {
+	func() {
+		defer func() {
+			if err := recover(); err != nil {
+				fmt.Println(err)
+			}
+		}()
+	}()
+
+	func() {
+		panic("woda")
+	}()
+}
+
+func t2() {
+	panic("woda")
 }
 
 func test() {
@@ -39,6 +58,8 @@ type BA struct {
 
 func (a A) Show(msg string) {
 	fmt.Println(">>>", msg)
+	m, e := regexp.Match("[^/home/index/verify]", []byte("/home/index/verify"))
+	fmt.Println(m, e)
 }
 
 func (a A) Hello() {

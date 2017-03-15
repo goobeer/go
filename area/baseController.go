@@ -27,23 +27,57 @@ type BaseController struct {
 	Ctx *fasthttp.RequestCtx
 }
 
-func injectFilter(rtFilter *filter.RouteFilter, handle func(ctx *fasthttp.RequestCtx)) func(ctx *fasthttp.RequestCtx) {
-	if rtFilter == nil {
-		return handle
+func injectFilter(httpVerb, uri string, m reflect.Method, ci interface{}) (handle func(ctx *fasthttp.RequestCtx)) {
+	if !(filter.MapFilter != nil && len(filter.MapFilter) > 0) {
+		handle = func(ctx *fasthttp.RequestCtx) {
+			defer func() {
+				if err := recover(); err != nil {
+					filter.ErrLog(err, ctx)
+				}
+			}()
+			rVal := reflect.ValueOf(ci)
+			rVal.Elem().FieldByName("BaseController").Elem().FieldByName("Ctx").Set(reflect.ValueOf(ctx))
+			rVal.MethodByName(m.Name).Call(nil)
+		}
+		return
 	}
-	return func(ctx *fasthttp.RequestCtx) {
+
+	var befReqHandlers, aftReqHandlers []fasthttp.RequestHandler
+
+	for _, rtFilter := range filter.MapFilter {
+		if !rtFilter.FilterMatch(uri, httpVerb) {
+			continue
+		}
+
 		if rtFilter.BeforeRequestHandlers != nil && len(rtFilter.BeforeRequestHandlers) > 0 {
-			for _, v := range rtFilter.BeforeRequestHandlers {
-				v(ctx)
-			}
+			befReqHandlers = append(befReqHandlers, rtFilter.BeforeRequestHandlers...)
 		}
-		handle(ctx)
+
 		if rtFilter.AfterRequestHandlers != nil && len(rtFilter.AfterRequestHandlers) > 0 {
-			for _, v := range rtFilter.AfterRequestHandlers {
-				v(ctx)
-			}
+			aftReqHandlers = append(aftReqHandlers, rtFilter.AfterRequestHandlers...)
 		}
 	}
+
+	handle = func(ctx *fasthttp.RequestCtx) {
+		defer func() {
+			if err := recover(); err != nil {
+				filter.ErrLog(err, ctx)
+			}
+		}()
+
+		for _, v := range befReqHandlers {
+			v(ctx)
+		}
+
+		rVal := reflect.ValueOf(ci)
+		rVal.Elem().FieldByName("BaseController").Elem().FieldByName("Ctx").Set(reflect.ValueOf(ctx))
+		rVal.MethodByName(m.Name).Call(nil)
+
+		for _, v := range aftReqHandlers {
+			v(ctx)
+		}
+	}
+	return
 }
 
 func (c *BaseController) InitBasePageData(areaName, ctrlName, title, kwd string) *BasePageData {
@@ -83,96 +117,57 @@ func (c *BaseController) RegistRoutes(areaFlag string, ci interface{}) {
 			url = strings.ToLower(fmt.Sprintf("/%s/%s/%s", areaFlag, typeStr, fName))
 			preFix = "get"
 
-			routeAction = func(ctx *fasthttp.RequestCtx) {
-				rVal := reflect.ValueOf(ci)
-				rVal.Elem().FieldByName("BaseController").Elem().FieldByName("Ctx").Set(reflect.ValueOf(ctx))
-				rVal.MethodByName(m.Name).Call(nil)
-			}
-
-			routeAction = injectFilter(filter.MapFilter[url], routeAction)
+			routeAction = injectFilter(preFix, url, m, ci)
 
 			router.R.GET(url, routeAction)
 		} else if strings.HasPrefix(fName, "post") {
 			fName = strings.TrimPrefix(fName, "post")
 			url = strings.ToLower(fmt.Sprintf("/%s/%s/%s", areaFlag, typeStr, fName))
 			preFix = "post"
-			routeAction = func(ctx *fasthttp.RequestCtx) {
-				rVal := reflect.ValueOf(ci)
-				rVal.Elem().FieldByName("BaseController").Elem().FieldByName("Ctx").Set(reflect.ValueOf(ctx))
-				rVal.MethodByName(m.Name).Call(nil)
-			}
-			routeAction = injectFilter(filter.MapFilter[url], routeAction)
+
+			routeAction = injectFilter(preFix, url, m, ci)
+
 			router.R.POST(url, routeAction)
 		} else if strings.HasPrefix(fName, "head") {
 			fName = strings.TrimPrefix(fName, "head")
 			url = strings.ToLower(fmt.Sprintf("/%s/%s/%s", areaFlag, typeStr, fName))
 			preFix = "head"
-			routeAction = func(ctx *fasthttp.RequestCtx) {
-				rVal := reflect.ValueOf(ci)
-				rVal.Elem().FieldByName("BaseController").Elem().FieldByName("Ctx").Set(reflect.ValueOf(ctx))
-				rVal.MethodByName(m.Name).Call(nil)
-			}
-			routeAction = injectFilter(filter.MapFilter[url], routeAction)
+			routeAction = injectFilter(preFix, url, m, ci)
 			router.R.HEAD(url, routeAction)
 		} else if strings.HasPrefix(fName, "put") {
 			fName = strings.TrimPrefix(fName, "put")
 			url = strings.ToLower(fmt.Sprintf("/%s/%s/%s", areaFlag, typeStr, fName))
 			preFix = "put"
-			routeAction = func(ctx *fasthttp.RequestCtx) {
-				rVal := reflect.ValueOf(ci)
-				rVal.Elem().FieldByName("BaseController").Elem().FieldByName("Ctx").Set(reflect.ValueOf(ctx))
-				rVal.MethodByName(m.Name).Call(nil)
-			}
-			routeAction = injectFilter(filter.MapFilter[url], routeAction)
+			routeAction = injectFilter(preFix, url, m, ci)
 			router.R.PUT(url, routeAction)
 		} else if strings.HasPrefix(fName, "options") {
 			fName = strings.TrimPrefix(fName, "options")
 			url = strings.ToLower(fmt.Sprintf("/%s/%s/%s", areaFlag, typeStr, fName))
 			preFix = "options"
-			routeAction = func(ctx *fasthttp.RequestCtx) {
-				rVal := reflect.ValueOf(ci)
-				rVal.Elem().FieldByName("BaseController").Elem().FieldByName("Ctx").Set(reflect.ValueOf(ctx))
-				rVal.MethodByName(m.Name).Call(nil)
-			}
-			routeAction = injectFilter(filter.MapFilter[url], routeAction)
+			routeAction = injectFilter(preFix, url, m, ci)
 			router.R.OPTIONS(url, routeAction)
 		} else if strings.HasPrefix(fName, "delete") {
 			fName = strings.TrimPrefix(fName, "delete")
 			url = strings.ToLower(fmt.Sprintf("/%s/%s/%s", areaFlag, typeStr, fName))
 			preFix = "delete"
-			routeAction = func(ctx *fasthttp.RequestCtx) {
-				rVal := reflect.ValueOf(ci)
-				rVal.Elem().FieldByName("BaseController").Elem().FieldByName("Ctx").Set(reflect.ValueOf(ctx))
-				rVal.MethodByName(m.Name).Call(nil)
-			}
-			routeAction = injectFilter(filter.MapFilter[url], routeAction)
+			routeAction = injectFilter(preFix, url, m, ci)
 			router.R.DELETE(url, routeAction)
 		} else if strings.HasPrefix(fName, "patch") {
 			fName = strings.TrimPrefix(fName, "patch")
 			url = strings.ToLower(fmt.Sprintf("/%s/%s/%s", areaFlag, typeStr, fName))
 			preFix = "patch"
-			routeAction = func(ctx *fasthttp.RequestCtx) {
-				rVal := reflect.ValueOf(ci)
-				rVal.Elem().FieldByName("BaseController").Elem().FieldByName("Ctx").Set(reflect.ValueOf(ctx))
-				rVal.MethodByName(m.Name).Call(nil)
-			}
-			routeAction = injectFilter(filter.MapFilter[url], routeAction)
+			routeAction = injectFilter(preFix, url, m, ci)
 			router.R.PATCH(url, routeAction)
 		} else {
 			fName = strings.TrimPrefix(fName, "get")
 			url = strings.ToLower(fmt.Sprintf("/%s/%s/%s", areaFlag, typeStr, fName))
 			preFix = "get"
-			routeAction = func(ctx *fasthttp.RequestCtx) {
-				rVal := reflect.ValueOf(ci)
-				rVal.Elem().FieldByName("BaseController").Elem().FieldByName("Ctx").Set(reflect.ValueOf(ctx))
-				rVal.MethodByName(m.Name).Call(nil)
-			}
-			routeAction = injectFilter(filter.MapFilter[url], routeAction)
+			routeAction = injectFilter(preFix, url, m, ci)
 			router.R.GET(url, routeAction)
 		}
 
 		RouteTables[fmt.Sprintf("%s_%s", preFix, strings.ToLower(url))] = routeAction
-		fmt.Println(url)
+		//		fmt.Println(url)
 	}
 }
 

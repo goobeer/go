@@ -3,7 +3,7 @@ package controllers
 import (
 	"fasthttpweb/area"
 	hv "fasthttpweb/area/home/views/index"
-	"fasthttpweb/common"
+	//	"fasthttpweb/common"
 	"fasthttpweb/model"
 	//	"fasthttpweb/router"
 	"fmt"
@@ -88,7 +88,7 @@ func (c *IndexController) Login() {
 	sess := c.StartSession()
 	verfyVal := sess.Get("verfy")
 	if verfyVal == nil {
-		ctx.Redirect("/home/verfy", fasthttp.StatusFound)
+		ctx.Redirect("/home/index/verify", fasthttp.StatusFound)
 		return
 	}
 	vfv := verfyVal.(int)
@@ -118,7 +118,9 @@ func (c *IndexController) PostLogin() {
 			user := new(model.Users)
 
 			has, err := user.VerfyUser(uname, pwd)
-			common.PanicError(err)
+			if err != nil {
+				panic(err)
+			}
 			if !has {
 				c.getErrorHomeLoginPage("用户名或密码错误!")
 				return
