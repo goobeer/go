@@ -24,20 +24,6 @@ func main() {
 	test()
 }
 
-func t1() {
-	func() {
-		defer func() {
-			if err := recover(); err != nil {
-				fmt.Println(err)
-			}
-		}()
-	}()
-
-	func() {
-		panic("woda")
-	}()
-}
-
 func t2() {
 	panic("woda")
 }
