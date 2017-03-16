@@ -6,20 +6,33 @@ import (
 
 //日志信息
 type LogInfo struct {
-	ID           int64
-	IP           string    `xorm:"char(15)"`
-	UserAgent    string    `xorm:"varchar(max)"`
-	ExceptionMsg string    `xorm:"text"`         //异常信息
-	Logger       string    `xorm:char(20)`       //日志源
-	LogCatelog   string    `xorm:"varchar(50)"`  //日志类别
-	Msg          string    `xorm:"text"`         //日志信息
-	Url          string    `xorm:"varchar(max)"` //请求地址
-	CreateTime   time.Time `xorm:"created"`
+	ID          int64
+	IP          string    `xorm:"char(15)"`
+	UserAgent   string    `xorm:"varchar(200)"`
+	ExpMsg      string    `xorm:"text"`
+	LoggerLevel string    `xorm:"char(20)"`
+	LogCatelog  string    `xorm:"varchar(50)"`
+	Msg         string    `xorm:"text"`
+	Url         string    `xorm:"varchar(200)"`
+	CreateTime  time.Time `xorm:"created"`
 }
 
 func (log *LogInfo) Add() (r int64, err error) {
-	var existLog *LogInfo
-	engine.Where("ip=? and UserAgent=? and Url=? and CreateTime", log.IP, log.UserAgent, log.Url)
-	r, err = engine.InsertOne(log)
+
+	var existLog []LogInfo
+	err = engine.Sync2(log)
+
+	err = engine.Where("ip=? and UserAgent=? and Url=? and CreateTime>date_add(now(),interval -2 hour)", log.IP, log.UserAgent, log.Url).Find(&existLog)
+	if err != nil {
+		return
+	}
+	if len(existLog) == 0 {
+		r, err = engine.InsertOne(log)
+	}
+	return
+}
+
+func (log *LogInfo) Get() (res []LogInfo) {
+	engine.Where(log)
 	return
 }

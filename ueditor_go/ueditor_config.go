@@ -83,5 +83,6 @@ func BuildItems() *UeditorConfig {
 		os.Stdout.Write(buf[:n])
 	}
 	json.Unmarshal(buf, config)
+
 	return config
 }
