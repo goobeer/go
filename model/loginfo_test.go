@@ -14,3 +14,13 @@ func TestAdd(t *testing.T) {
 		t.Log(r)
 	}
 }
+
+func TestGetList(t *testing.T) {
+	var log LogInfo
+	res, err := log.GetList(0, 10)
+	if err != nil {
+		t.Error(err)
+	} else {
+		t.Log("###", res, len(res))
+	}
+}

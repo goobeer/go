@@ -18,7 +18,6 @@ type LogInfo struct {
 }
 
 func (log *LogInfo) Add() (r int64, err error) {
-
 	var existLog []LogInfo
 	err = engine.Sync2(log)
 
@@ -32,7 +31,22 @@ func (log *LogInfo) Add() (r int64, err error) {
 	return
 }
 
-func (log *LogInfo) Get() (res []LogInfo) {
-	engine.Where(log)
+func (log *LogInfo) Get() (ok bool, err error) {
+	ok, err = engine.ID(log.ID).Get(log)
+	return
+}
+
+func (log *LogInfo) GetList(pageNumber, pageSize int) (res []LogInfo, err error) {
+	err = engine.Asc("ID").Limit(pageSize, pageNumber*pageSize).Find(&res)
+	return
+}
+
+func (log *LogInfo) Update() (r int64, err error) {
+	r, err = engine.ID(log.ID).Update(log)
+	return
+}
+
+func (log *LogInfo) Delete() (r int64, err error) {
+	r, err = engine.ID(log.ID).Delete(log)
 	return
 }

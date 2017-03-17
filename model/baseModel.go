@@ -7,18 +7,27 @@ import (
 )
 
 type BaseModel struct {
-	ID int64
 }
 
 var (
 	engine *xorm.Engine
+	bm     *BaseModel
 )
 
 func init() {
 	var err error
-	engine, err = xorm.NewEngine("mysql", "root:watersa@tcp(127.0.0.1:3306)/tdb?charset=utf8")
+	engine, err = xorm.NewEngine(DbDriverName, DataSrcName)
 	if err != nil {
-		panic(err.Error())
+		panic(err)
 	}
 	engine.SetMapper(core.SameMapper{})
+	bm = &BaseModel{}
+}
+
+func (bm *BaseModel) DbCommandSession(query interface{}, args ...interface{}) *xorm.Session {
+	return engine.Where(query, args)
+}
+
+func (bm *BaseModel) DbListCommandSession(pageNumber, pageSize int, query interface{}, args ...interface{}) *xorm.Session {
+	return engine.Asc("ID").Limit(pageSize, (pageNumber-1)*pageSize).Where(query, args)
 }
