@@ -18,35 +18,36 @@ type LogInfo struct {
 }
 
 func (log *LogInfo) Add() (r int64, err error) {
-	var existLog []LogInfo
-	err = engine.Sync2(log)
-
-	err = engine.Where("ip=? and UserAgent=? and Url=? and CreateTime>date_add(now(),interval -2 hour)", log.IP, log.UserAgent, log.Url).Find(&existLog)
+	r, err = bm.DbCommandSession("ip=? and UserAgent=? and Url=? and CreateTime>date_add(now(),interval -2 hour)", log.IP, log.UserAgent, log.Url).Count(log)
 	if err != nil {
 		return
 	}
-	if len(existLog) == 0 {
-		r, err = engine.InsertOne(log)
+
+	if r == 0 {
+		r, err = bm.Add(log)
+	} else {
+		r = 0
 	}
+
 	return
 }
 
-func (log *LogInfo) Get() (ok bool, err error) {
-	ok, err = engine.ID(log.ID).Get(log)
+func (log *LogInfo) UpdateByID(incCols, omitCols string) (r int64, err error) {
+	r, err = bm.UpdateByID(log.ID, log, incCols, omitCols)
 	return
 }
 
-func (log *LogInfo) GetList(pageNumber, pageSize int) (res []LogInfo, err error) {
-	err = engine.Asc("ID").Limit(pageSize, pageNumber*pageSize).Find(&res)
+func (log *LogInfo) Delete(query interface{}, args ...interface{}) (r int64, err error) {
+	r, err = bm.DbCommandSession(query, args...).Delete(log)
 	return
 }
 
-func (log *LogInfo) Update() (r int64, err error) {
-	r, err = engine.ID(log.ID).Update(log)
+func (log *LogInfo) Get(query interface{}, args ...interface{}) (ok bool, err error) {
+	ok, err = bm.DbCommandSession(query, args...).Get(log)
 	return
 }
 
-func (log *LogInfo) Delete() (r int64, err error) {
-	r, err = engine.ID(log.ID).Delete(log)
+func (log *LogInfo) GetList(pageNumber, pageSize uint, query interface{}, args ...interface{}) (res []LogInfo, err error) {
+	err = bm.DbListCommandSession(pageNumber, pageSize, query, args...).Find(&res)
 	return
 }

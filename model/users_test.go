@@ -5,8 +5,8 @@ import (
 )
 
 func TestUserAdd(t *testing.T) {
-	u1 := &Users{Name: "zs", Pwd: "123456", Used: true}
-	u2 := &Users{Name: "ls", Pwd: "123456", Used: true}
+	u1 := &Users{Name: "ms", Pwd: "123456", Used: true}
+	u2 := &Users{Name: "ws", Pwd: "123456", Used: true}
 	r, err := u1.Add(u1, u2)
 	if err != nil {
 		t.Error(err)
@@ -18,7 +18,7 @@ func TestUserAdd(t *testing.T) {
 func TestUserDelete(t *testing.T) {
 	u1 := &Users{}
 
-	r, err := u1.Delete("Name=?", "zs")
+	r, err := u1.Delete("id>?", 1)
 	if err != nil {
 		t.Error(err)
 	} else {
@@ -26,9 +26,23 @@ func TestUserDelete(t *testing.T) {
 	}
 }
 
-func TestUserSlt(t *testing.T) {
-	u1 := &Users{ID: 1}
-	r, err := u1.GetList(1, 10, "id>?", u1)
+func TestUserGet(t *testing.T) {
+	u1 := &Users{}
+
+	r, err := u1.GetList(0, 10, "createtime<?", "2015")
+
+	if err != nil {
+		t.Error(err)
+	} else {
+		for _, v := range r {
+			t.Log("success:", v)
+		}
+	}
+}
+
+func TestUserUpdate(t *testing.T) {
+	u1 := &Users{ID: 19, Used: false, Name: "wxbq"}
+	r, err := u1.UpdateByID("Used,CreateTime", "Name")
 	if err != nil {
 		t.Error(err)
 	} else {

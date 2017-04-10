@@ -21,7 +21,7 @@ const (
 
 	//过滤匹配 模型[支持 完全匹配、正则匹配]
 	MatchFull = iota
-	MatchReg  = iota
+	MatchReg
 )
 
 var (
@@ -45,10 +45,6 @@ func init() {
 
 func NewRouteFilter(filterExp string, httpVerbType, matchType int) *RouteFilter {
 	return &RouteFilter{FilterExp: filterExp, HttpVerbType: httpVerbType, MatchType: matchType, BeforeRequestHandlers: []fasthttp.RequestHandler{}, AfterRequestHandlers: []fasthttp.RequestHandler{}}
-}
-
-func ErrLog(err interface{}, ctx *fasthttp.RequestCtx) {
-	fmt.Println(err, string(ctx.Method()), string(ctx.RequestURI()))
 }
 
 func (rf *RouteFilter) generateFilterKey() (filterKey string) {

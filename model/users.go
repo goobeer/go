@@ -12,38 +12,40 @@ import (
 //用户信息
 type Users struct {
 	ID         int64
-	Name       string `xorm:"char(20)"`
-	Pwd        string `xorm:"char(50)"`
-	CreateTime time.Time
+	Name       string    `xorm:"char(20)"`
+	Pwd        string    `xorm:"char(50)"`
+	CreateTime time.Time `xorm:"created"`
 	Used       bool
 }
 
 func (u *Users) Add(users ...*Users) (r int64, err error) {
+	var ms []interface{}
 	for _, v := range users {
 		v.ChangePwd()
+		ms = append(ms, v)
 	}
-	r, err = engine.Insert(users)
+
+	r, err = bm.Add(ms...)
 	return
 }
 
-func (u *Users) Update(users *Users, condiBeans ...interface{}) (r int64, err error) {
-	r, err = engine.Update(users, condiBeans)
+func (u *Users) UpdateByID(incCols, omitCols string) (r int64, err error) {
+	r, err = bm.UpdateByID(u.ID, u, incCols, omitCols)
 	return
 }
 
 func (u *Users) Delete(query interface{}, args ...interface{}) (r int64, err error) {
-	engine.ShowSQL(true)
-	r, err = bm.DbCommandSession(query, args).Delete(u)
+	r, err = bm.DbCommandSession(query, args...).Delete(u)
 	return
 }
 
 func (u *Users) Get(query interface{}, args ...interface{}) (ok bool, err error) {
-	ok, err = bm.DbCommandSession(query, args).Get(u)
+	ok, err = bm.DbCommandSession(query, args...).Get(u)
 	return
 }
 
-func (u *Users) GetList(pageNumber, pageSize int, query interface{}, args ...interface{}) (data []Users, err error) {
-	err = bm.DbListCommandSession(pageNumber, pageSize, query, args).Find(&data)
+func (u *Users) GetList(pageNumber, pageSize uint, query interface{}, args ...interface{}) (data []Users, err error) {
+	err = bm.DbListCommandSession(pageNumber, pageSize, query, args...).Find(&data)
 	return
 }
 
