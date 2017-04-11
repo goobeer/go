@@ -17,7 +17,8 @@ func TestLogAdd(t *testing.T) {
 
 func TestLogGet(t *testing.T) {
 	var log LogInfo
-	res, err := log.GetList(0, 10, nil, nil)
+	var res []*LogInfo
+	err := log.GetList(&res, 0, 10, nil, nil)
 	if err != nil {
 		t.Error(err)
 	} else {
@@ -28,8 +29,8 @@ func TestLogGet(t *testing.T) {
 }
 
 func TestLogUpdate(t *testing.T) {
-	log := &LogInfo{ID: 3, Msg: "duang~duang", Url: "http://www.g.com"}
-	r, err := log.UpdateByID("Msg,Url", "")
+	log := &LogInfo{BaseModel: &BaseModel{ID: 3}, Msg: "guang~duang", Url: "http://www.g.com"}
+	r, err := log.UpdateByID(log, "Msg,Url", "")
 	if err != nil {
 		t.Error(err)
 	} else {

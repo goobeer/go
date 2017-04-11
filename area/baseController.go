@@ -171,32 +171,39 @@ func (c *BaseController) RegistRoutes(areaFlag string, ci interface{}) {
 	}
 }
 
-func (c *BaseController) RegistRoute(newPath, httpVerb, oldPath string) {
+func (c *BaseController) RegistRoute(httpVerb, oldPath string, newPaths ...string) {
 	if len(httpVerb) == 0 {
 		httpVerb = "get"
 	}
-	newPathTemp := fmt.Sprintf("%s_%s", httpVerb, strings.ToLower(newPath))
-	oldPath = fmt.Sprintf("%s_%s", httpVerb, strings.ToLower(oldPath))
-	if len(newPathTemp) > 0 && len(oldPath) > 0 && RouteTables[newPathTemp] == nil && RouteTables[oldPath] != nil {
-		RouteTables[newPathTemp] = RouteTables[oldPath]
-		switch httpVerb {
-		case "get":
-			router.R.GET(newPath, RouteTables[oldPath])
-		case "post":
-			router.R.POST(newPath, RouteTables[oldPath])
-		case "head":
-			router.R.HEAD(newPath, RouteTables[oldPath])
-		case "put":
-			router.R.PUT(newPath, RouteTables[oldPath])
-		case "options":
-			router.R.OPTIONS(newPath, RouteTables[oldPath])
-		case "delete":
-			router.R.DELETE(newPath, RouteTables[oldPath])
-		case "patch":
-			router.R.PATCH(newPath, RouteTables[oldPath])
+	if len(newPaths) == 0 {
+		return
+	}
+
+	for _, newPath := range newPaths {
+
+		newPathTemp := fmt.Sprintf("%s_%s", httpVerb, strings.ToLower(newPath))
+		oldPath = fmt.Sprintf("%s_%s", httpVerb, strings.ToLower(oldPath))
+		if len(newPathTemp) > 0 && len(oldPath) > 0 && RouteTables[newPathTemp] == nil && RouteTables[oldPath] != nil {
+			RouteTables[newPathTemp] = RouteTables[oldPath]
+			switch httpVerb {
+			case "get":
+				router.R.GET(newPath, RouteTables[oldPath])
+			case "post":
+				router.R.POST(newPath, RouteTables[oldPath])
+			case "head":
+				router.R.HEAD(newPath, RouteTables[oldPath])
+			case "put":
+				router.R.PUT(newPath, RouteTables[oldPath])
+			case "options":
+				router.R.OPTIONS(newPath, RouteTables[oldPath])
+			case "delete":
+				router.R.DELETE(newPath, RouteTables[oldPath])
+			case "patch":
+				router.R.PATCH(newPath, RouteTables[oldPath])
+			}
+		} else {
+			fmt.Printf("url:[%s] is already mapped to url:[%s].\r\n", newPath, oldPath)
 		}
-	} else {
-		fmt.Printf("url:[%s] is already mapped to url:[%s].", newPath, oldPath)
 	}
 }
 

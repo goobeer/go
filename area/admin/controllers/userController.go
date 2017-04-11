@@ -14,7 +14,7 @@ type userController struct {
 func init() {
 	c := &userController{BaseController: &area.BaseController{}}
 	c.RegistRoutes(areaName, c)
-	c.RegistRoute("/admin/user", "get", "/admin/user/index")
+	c.RegistRoute("get", "/admin/user/index", "/admin/user")
 }
 
 func (c *userController) Index() {

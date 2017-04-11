@@ -5,8 +5,8 @@ import (
 )
 
 func TestUserAdd(t *testing.T) {
-	u1 := &Users{Name: "ms", Pwd: "123456", Used: true}
-	u2 := &Users{Name: "ws", Pwd: "123456", Used: true}
+	u1 := &Users{Name: "mawu", Pwd: "123456", Used: true}
+	u2 := &Users{Name: "zhangfei", Pwd: "123456", Used: true}
 	r, err := u1.Add(u1, u2)
 	if err != nil {
 		t.Error(err)
@@ -18,7 +18,7 @@ func TestUserAdd(t *testing.T) {
 func TestUserDelete(t *testing.T) {
 	u1 := &Users{}
 
-	r, err := u1.Delete("id>?", 1)
+	r, err := u1.Delete(u1, "id>?", 1)
 	if err != nil {
 		t.Error(err)
 	} else {
@@ -28,8 +28,8 @@ func TestUserDelete(t *testing.T) {
 
 func TestUserGet(t *testing.T) {
 	u1 := &Users{}
-
-	r, err := u1.GetList(0, 10, "createtime<?", "2015")
+	var r []*Users
+	err := u1.GetList(&r, 0, 10, "id>?", 18)
 
 	if err != nil {
 		t.Error(err)
@@ -41,8 +41,8 @@ func TestUserGet(t *testing.T) {
 }
 
 func TestUserUpdate(t *testing.T) {
-	u1 := &Users{ID: 19, Used: false, Name: "wxbq"}
-	r, err := u1.UpdateByID("Used,CreateTime", "Name")
+	u1 := &Users{BaseModel: &BaseModel{ID: 20}, Used: false, Name: "JJ"}
+	r, err := u1.UpdateByID(u1, "Used,CreateTime", "Name")
 	if err != nil {
 		t.Error(err)
 	} else {

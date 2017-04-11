@@ -3,12 +3,10 @@ package controllers
 import (
 	"fasthttpweb/area"
 	hv "fasthttpweb/area/home/views/index"
+
 	//	"fasthttpweb/common"
 	"fasthttpweb/model"
 	//	"fasthttpweb/router"
-	"fmt"
-	//	"reflect"
-	//	"strings"
 
 	"github.com/valyala/fasthttp"
 )
@@ -28,9 +26,8 @@ type IndexController struct {
 func init() {
 	ic := &IndexController{BaseController: &area.BaseController{}}
 	ic.RegistRoutes(areaName, ic)
-	ic.RegistRoute("/", "get", "/home/index/index")
-	ic.RegistRoute("/home", "get", "/home/index/index")
-	ic.RegistRoute("/home/index", "get", "/home/index/index")
+	ic.RegistRoute("get", "/home/index/index", "/", "/home", "/home/index")
+
 	//auto regist route
 
 	//func intercept
@@ -50,15 +47,16 @@ func (c *IndexController) Index() {
 		return
 	}
 
+	user := sess.Get("user")
 	bpd := c.InitBasePageData(areaName, "Index", "", "")
+	bpd.Data["user"] = user
 	bp := &area.BasePage{CTX: ctx, BPD: bpd}
-	ip := &hv.IndexPage{BP: bp}
+	ip := &hv.IndexPage{BasePage: bp}
 
 	c.View(ip, "text/html")
 }
 
 func (c *IndexController) Verify() {
-
 	bpd := c.InitBasePageData(areaName, "Index", "", "")
 	bp := &area.BasePage{CTX: c.Ctx, BPD: bpd}
 	ip := &hv.VerfyPage{BasePage: bp}
@@ -127,6 +125,7 @@ func (c *IndexController) PostLogin() {
 			}
 
 			sess.Set("verfy", LoginVerfied)
+			sess.Set("user", user)
 			ctx.Redirect("/home/index/index", fasthttp.StatusContinue)
 			return
 		}
@@ -135,13 +134,18 @@ func (c *IndexController) PostLogin() {
 }
 
 func (c *IndexController) Logout() {
-	fmt.Println("woda====Logout")
+	sess := c.StartSession()
+	sess.Delete("vcode")
+	sess.Delete("verfy")
+
+	c.Ctx.Redirect("/home/index/Verify", fasthttp.StatusContinue)
 }
 
 func (c *IndexController) getErrorHomeVerfyPage(errMsg string) {
-
 	bpd := c.InitBasePageData(areaName, "Index", "", "")
 	bpd.Data["ErrMsg"] = errMsg
+	phoneBytes := c.Ctx.FormValue("phone")
+	bpd.Data["phone"] = string(phoneBytes)
 	bp := &area.BasePage{CTX: c.Ctx, BPD: bpd}
 	ip := &hv.VerfyPage{bp}
 

@@ -8,10 +8,11 @@ import (
 )
 
 type BaseModel struct {
+	ID int64
 }
 
 var (
-	bm     *BaseModel
+	//	bm     *BaseModel
 	engine *xorm.Engine
 )
 
@@ -25,6 +26,7 @@ func init() {
 	engine.Sync2(new(LogInfo))
 	engine.Sync2(new(Users))
 	engine.Sync2(new(Article))
+	engine.Sync2(new(Privilege))
 }
 
 func NewDBEngine() (*xorm.Engine, error) {
@@ -45,8 +47,8 @@ func (bm *BaseModel) Delete(bean, query interface{}, args ...interface{}) (r int
 	return
 }
 
-func (bm *BaseModel) UpdateByID(id, bean interface{}, incCols, omitCols string) (r int64, err error) {
-	sess := engine.ID(id)
+func (bm *BaseModel) UpdateByID(bean interface{}, incCols, omitCols string) (r int64, err error) {
+	sess := engine.ID(bm.ID)
 	if len(incCols) == 0 && len(omitCols) == 0 {
 		sess = sess.AllCols()
 	} else if len(incCols) > 0 {
@@ -55,6 +57,16 @@ func (bm *BaseModel) UpdateByID(id, bean interface{}, incCols, omitCols string) 
 		sess = sess.Omit(omitCols)
 	}
 	r, err = sess.Update(bean)
+	return
+}
+
+func (bm *BaseModel) Get(bean, query interface{}, args ...interface{}) (ok bool, err error) {
+	ok, err = bm.DbCommandSession(query, args...).Get(bean)
+	return
+}
+
+func (bm *BaseModel) GetList(rowSlicePtr interface{}, pageNumber, pageSize uint, query interface{}, args ...interface{}) (err error) {
+	err = bm.DbListCommandSession(pageNumber, pageSize, query, args...).Find(rowSlicePtr)
 	return
 }
 

@@ -19,7 +19,7 @@ func TestArticleAdd(t *testing.T) {
 
 func TestArticleDelete(t *testing.T) {
 	art := &Article{}
-	r, err := art.Delete("id>=?", 4)
+	r, err := art.Delete(art, "id>=?", 4)
 	if err != nil {
 		t.Error(err)
 	} else {
@@ -28,8 +28,8 @@ func TestArticleDelete(t *testing.T) {
 }
 
 func TestArticleUpdateByID(t *testing.T) {
-	art := &Article{ID: 3, Title: "我打啊"}
-	r, err := art.UpdateByID("Title,CreateTime", "")
+	art := &Article{BaseModel: &BaseModel{ID: 3}, Title: "我打啊"}
+	r, err := art.UpdateByID(art, "Title,CreateTime", "")
 	if err != nil {
 		t.Error(err)
 	} else {

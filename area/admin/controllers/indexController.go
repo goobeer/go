@@ -18,8 +18,7 @@ type IndexController struct {
 func init() {
 	c := &IndexController{BaseController: &area.BaseController{}}
 	c.RegistRoutes(areaName, c)
-	c.RegistRoute("/admin", "get", "/admin/index/index")
-	c.RegistRoute("/admin/index", "get", "/admin/index/index")
+	c.RegistRoute("get", "/admin/index/index", "/admin", "/admin/index")
 }
 
 func (c *IndexController) Index() {

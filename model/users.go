@@ -11,7 +11,7 @@ import (
 
 //用户信息
 type Users struct {
-	ID         int64
+	*BaseModel `xorm:"extends"`
 	Name       string    `xorm:"char(20)"`
 	Pwd        string    `xorm:"char(50)"`
 	CreateTime time.Time `xorm:"created"`
@@ -25,27 +25,7 @@ func (u *Users) Add(users ...*Users) (r int64, err error) {
 		ms = append(ms, v)
 	}
 
-	r, err = bm.Add(ms...)
-	return
-}
-
-func (u *Users) UpdateByID(incCols, omitCols string) (r int64, err error) {
-	r, err = bm.UpdateByID(u.ID, u, incCols, omitCols)
-	return
-}
-
-func (u *Users) Delete(query interface{}, args ...interface{}) (r int64, err error) {
-	r, err = bm.DbCommandSession(query, args...).Delete(u)
-	return
-}
-
-func (u *Users) Get(query interface{}, args ...interface{}) (ok bool, err error) {
-	ok, err = bm.DbCommandSession(query, args...).Get(u)
-	return
-}
-
-func (u *Users) GetList(pageNumber, pageSize uint, query interface{}, args ...interface{}) (data []Users, err error) {
-	err = bm.DbListCommandSession(pageNumber, pageSize, query, args...).Find(&data)
+	r, err = u.BaseModel.Add(ms...)
 	return
 }
 
@@ -58,7 +38,7 @@ func (u *Users) ChangePwd() {
 }
 
 func (user *Users) VerfyUser(name, pwd string) (has bool, err error) {
-	has, err = user.Get("Name=?", name)
+	has, err = user.Get(user, "Name=?", name)
 
 	if has {
 		pwdStr := strings.Split(user.Pwd, ":")

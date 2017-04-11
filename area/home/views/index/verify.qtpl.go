@@ -207,7 +207,15 @@ func (p *VerfyPage) StreamRenderBody(qw422016 *qt422016.Writer) {
 </div>
 	<div class="text-center">
 		<form action="/home/index/verify" method="POST">
-			手机号:<input type="phone" id="phone" name="phone" /><br />
+			手机号:<input type="phone" id="phone" name="phone" value="`)
+	//line home\views\index\verify.qtpl:47
+	if p.BPD.Data["phone"] != nil {
+		//line home\views\index\verify.qtpl:47
+		qw422016.E().S(p.BPD.Data["phone"].(string))
+		//line home\views\index\verify.qtpl:47
+	}
+	//line home\views\index\verify.qtpl:47
+	qw422016.N().S(`" /><br />
 			验证码:<input type="text" id="vc" name="vcode" /><img id="vcode" src="/api/verifyimg" title="点击切换验证码" />
 			<button type="submit" class="btn btn-default">去逛逛</button>
 		</form>

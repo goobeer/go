@@ -1,6 +1,7 @@
 package filter
 
 import (
+	"fasthttpweb/model"
 	"fmt"
 	"regexp"
 
@@ -47,6 +48,17 @@ func NewRouteFilter(filterExp string, httpVerbType, matchType int) *RouteFilter 
 	return &RouteFilter{FilterExp: filterExp, HttpVerbType: httpVerbType, MatchType: matchType, BeforeRequestHandlers: []fasthttp.RequestHandler{}, AfterRequestHandlers: []fasthttp.RequestHandler{}}
 }
 
+func ErrLog(err interface{}, ctx *fasthttp.RequestCtx) {
+	log := &model.LogInfo{Url: string(ctx.RequestURI()), IP: ctx.RemoteIP().String(), UserAgent: string(ctx.UserAgent()), LogCatelog: "sys_error", Msg: string(ctx.Method())}
+	if err != nil {
+		switch err.(type) {
+		case error:
+			log.ExpMsg = err.(error).Error()
+		}
+	}
+	log.Add()
+}
+
 func (rf *RouteFilter) generateFilterKey() (filterKey string) {
 	filterKey = fmt.Sprintf("%s%d_%d", rf.FilterExp, rf.HttpVerbType, rf.MatchType)
 	return
@@ -91,6 +103,17 @@ func (rf *RouteFilter) FilterMatch(uri, httpVerb string) bool {
 
 func (r *RouteFilter) Log(data interface{}) func(ctx *fasthttp.RequestCtx) {
 	return func(ctx *fasthttp.RequestCtx) {
+		log := &model.LogInfo{Url: string(ctx.RequestURI()), IP: ctx.RemoteIP().String(), UserAgent: string(ctx.UserAgent())}
+		if data != nil {
+			switch data.(type) {
+			case error:
+				log.ExpMsg = data.(error).Error()
+			case string:
+				log.Msg = data.(string)
+			}
+		}
+		log.Add()
+
 		fmt.Println(data, string(ctx.Method()), string(ctx.RequestURI()), ctx.RemoteIP().String(), string(ctx.UserAgent()))
 	}
 }
