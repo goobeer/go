@@ -3,11 +3,12 @@ package ueditor_go
 import (
 	"encoding/json"
 	"os"
+	"regexp"
 )
 
 const (
 	noCache           = true
-	ueditorConfigFile = "./public/ueditor/net/config.json"
+	ueditorConfigFile = "../public/ueditor/net/config.json"
 )
 
 type UeditorConfig struct {
@@ -67,22 +68,28 @@ type UeditorConfig struct {
 	FileManagerAllowFiles []string `json:"fileManagerAllowFiles"`
 }
 
-func BuildItems() *UeditorConfig {
-	var config *UeditorConfig
-	configFile, err := os.Open(ueditorConfigFile)
+func BuildItems() (config UeditorConfig, err error) {
+	var configFile *os.File
+	configFile, err = os.Open(ueditorConfigFile)
 	defer configFile.Close()
+
 	if err != nil {
-		return nil
+		return
 	}
+	var jsonDataBuf []byte
 	buf := make([]byte, 1024*4)
 	for {
 		n, _ := configFile.Read(buf)
+
 		if 0 == n {
 			break
 		}
-		os.Stdout.Write(buf[:n])
+		jsonDataBuf = append(jsonDataBuf, buf[:n]...)
 	}
-	json.Unmarshal(buf, config)
 
-	return config
+	reg, _ := regexp.Compile("/\\*.*\\*/")
+	jsonDataBuf = reg.ReplaceAll(jsonDataBuf, []byte(""))
+
+	err = json.Unmarshal(jsonDataBuf, &config)
+	return
 }
