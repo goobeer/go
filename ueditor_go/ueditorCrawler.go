@@ -1,8 +1,11 @@
 package ueditor_go
 
 import (
+	"fmt"
 	"net"
 	"net/url"
+	"os"
+	"path"
 	"strings"
 
 	"github.com/valyala/fasthttp"
@@ -18,52 +21,36 @@ func (u *UeditorCrawler) Fetch() {
 	if !u.isExternalIPAddress(u.SourceUrl) {
 		u.State = "INVALID_URL"
 	}
-	statusCode, body, err := fasthttp.Get(nil, u.SourceUrl)
+	req := fasthttp.AcquireRequest()
+	req.SetRequestURI(u.SourceUrl)
+	resp := fasthttp.AcquireResponse()
+	err := fasthttp.Do(req, resp)
+
 	if err == nil {
-		if statusCode != fasthttp.StatusOK {
-			u.State = "Url returns " + statusCode
+		if resp.StatusCode() != fasthttp.StatusOK {
+			u.State = fmt.Sprintf("Url returns %d", resp.StatusCode())
 			return
 		}
-		//TODO xx
+		if !strings.Contains(string(resp.Header.ContentType()), "image") {
+			u.State = "Url is not an image"
+		}
+
+		uConfig, _ := BuildItems()
+		u.ServerUrl = UeditorPathFormatter(path.Base(u.SourceUrl), uConfig.CatcherPathFormat)
+		savePath := u.ServerUrl
+		_, err = os.Stat(path.Base(savePath))
+		if err != nil && os.IsNotExist(err) {
+			os.Mkdir(path.Base(savePath), 0644)
+		}
+
+		fi, err := os.Create(savePath)
+		if err != nil {
+			u.State = "抓取错误：" + err.Error()
+			panic(err)
+		}
+		fi.Write(resp.Body())
+		u.State = "SUCCESS"
 	}
-	//        var request = HttpWebRequest.Create(this.SourceUrl) as HttpWebRequest;
-	//        using (var response = request.GetResponse() as HttpWebResponse)
-	//        {
-	//            if (response.ContentType.IndexOf("image") == -1)
-	//            {
-	//                State = "Url is not an image";
-	//                return this;
-	//            }
-	//            ServerUrl = PathFormatter.Format(Path.GetFileName(this.SourceUrl), Config.GetString("catcherPathFormat"));
-	//            var savePath = Server.MapPath(ServerUrl);
-	//            if (!Directory.Exists(Path.GetDirectoryName(savePath)))
-	//            {
-	//                Directory.CreateDirectory(Path.GetDirectoryName(savePath));
-	//            }
-	//            try
-	//            {
-	//                var stream = response.GetResponseStream();
-	//                var reader = new BinaryReader(stream);
-	//                byte[] bytes;
-	//                using (var ms = new MemoryStream())
-	//                {
-	//                    byte[] buffer = new byte[4096];
-	//                    int count;
-	//                    while ((count = reader.Read(buffer, 0, buffer.Length)) != 0)
-	//                    {
-	//                        ms.Write(buffer, 0, count);
-	//                    }
-	//                    bytes = ms.ToArray();
-	//                }
-	//                File.WriteAllBytes(savePath, bytes);
-	//                State = "SUCCESS";
-	//            }
-	//            catch (Exception e)
-	//            {
-	//                State = "抓取错误：" + e.Message;
-	//            }
-	//            return this;
-	//        }
 }
 
 func (u *UeditorCrawler) isExternalIPAddress(urlStr string) (ok bool) {
