@@ -4,6 +4,8 @@ import (
 	"encoding/base64"
 	"path"
 	"strings"
+
+	"github.com/valyala/fasthttp"
 )
 
 const (
@@ -12,6 +14,10 @@ const (
 	TypeNotAllow    = -2
 	FileAccessError = -3
 	NetworkError    = -4
+	InvalidParam    = -5
+	AuthorizError   = -6
+	IOError         = -7
+	PathNotFound    = -8
 	Unknown         = 1
 )
 
@@ -45,66 +51,40 @@ func (u *UeditorUploadHandler) Process() {
 		fileBytes := u.Ctx.FormValue(u.UploadFieldName)
 		base64.StdEncoding.Decode(uploadFileBytes, fileBytes)
 	} else {
-		//TODO xxx
+		fh, _ := u.Ctx.FormFile(u.UploadFieldName)
+		uploadFileName = fh.Filename
+
+		var TD struct {
+			State    string
+			Url      string
+			Title    string
+			Original string
+			Error    string
+		}
+
+		if !u.checkFileType(uploadFileName) {
+			u.State = TypeNotAllow
+
+			TD.State = u.getStateMessage(u.State)
+			TD.Url = string(u.Ctx.RequestURI())
+			TD.Original = uploadFileName
+			TD.Title = uploadFileName
+			u.WriteJson(TD)
+			return
+		}
+
+		TD.Original = uploadFileName
+		savePath := UeditorPathFormatter(uploadFileName, u.PathFormat)
+		err := fasthttp.SaveMultipartFile(fh, savePath)
+		if err == nil {
+			TD.Url = savePath
+			TD.State = u.getStateMessage(Success)
+		} else {
+			TD.Error = err.Error()
+			TD.State = u.getStateMessage(FileAccessError)
+		}
+		u.WriteJson(TD)
 	}
-	//        if (UploadConfig.Base64)
-	//        {
-	//            uploadFileName = UploadConfig.Base64Filename;
-	//            uploadFileBytes = Convert.FromBase64String(Request[UploadConfig.UploadFieldName]);
-	//        }
-	//        else
-	//        {
-	//            var file = Request.Files[UploadConfig.UploadFieldName];
-	//            uploadFileName = file.FileName;
-
-	//            if (!CheckFileType(uploadFileName))
-	//            {
-	//                Result.State = UploadState.TypeNotAllow;
-	//                WriteResult();
-	//                return;
-	//            }
-	//            if (!CheckFileSize(file.ContentLength))
-	//            {
-	//                Result.State = UploadState.SizeLimitExceed;
-	//                WriteResult();
-	//                return;
-	//            }
-
-	//            uploadFileBytes = new byte[file.ContentLength];
-	//            try
-	//            {
-	//                file.InputStream.Read(uploadFileBytes, 0, file.ContentLength);
-	//            }
-	//            catch (Exception)
-	//            {
-	//                Result.State = UploadState.NetworkError;
-	//                WriteResult();
-	//            }
-	//        }
-
-	//        Result.OriginFileName = uploadFileName;
-
-	//        var savePath = PathFormatter.Format(uploadFileName, UploadConfig.PathFormat);
-	//        var localPath = Server.MapPath(savePath);
-	//        try
-	//        {
-	//            if (!Directory.Exists(Path.GetDirectoryName(localPath)))
-	//            {
-	//                Directory.CreateDirectory(Path.GetDirectoryName(localPath));
-	//            }
-	//            File.WriteAllBytes(localPath, uploadFileBytes);
-	//            Result.Url = savePath;
-	//            Result.State = UploadState.Success;
-	//        }
-	//        catch (Exception e)
-	//        {
-	//            Result.State = UploadState.FileAccessError;
-	//            Result.ErrorMessage = e.Message;
-	//        }
-	//        finally
-	//        {
-	//            WriteResult();
-	//        }
 }
 
 func (u *UeditorUploadHandler) getStateMessage(state int) (stateStr string) {
@@ -133,8 +113,4 @@ func (u *UeditorUploadHandler) checkFileType(filename string) bool {
 		}
 	}
 	return false
-}
-
-func (u *UeditorUploadHandler) checkFileSize(size int64) bool {
-	return size < u.UeditorUploadConfig.SizeLimit
 }

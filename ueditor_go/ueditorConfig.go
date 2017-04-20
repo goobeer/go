@@ -14,10 +14,10 @@ const (
 type UeditorConfig struct {
 	ImageActionName     string   `json:"imageActionName"`
 	ImageFieldName      string   `json:"imageFieldName"`
-	ImageMaxSize        int      `json:"imageMaxSize"`
+	ImageMaxSize        int64    `json:"imageMaxSize"`
 	ImageAllowFiles     []string `json:"imageAllowFiles"`
 	ImageCompressEnable bool     `json:"imageCompressEnable"`
-	ImageCompressBorder int      `json:"imageCompressBorder"`
+	ImageCompressBorder int64    `json:"imageCompressBorder"`
 	ImageInsertAlign    string   `json:"imageInsertAlign"`
 	ImageUrlPrefix      string   `json:"imageUrlPrefix"`
 	ImagePathFormat     string   `json:"imagePathFormat"`
@@ -25,7 +25,7 @@ type UeditorConfig struct {
 	ScrawlActionName      string   `json:"scrawlActionName"`
 	ScrawlFieldName       string   `json:"scrawlFieldName"`
 	ScrawlPathFormat      string   `json:"scrawlPathFormat"`
-	ScrawlMaxSize         int      `json:"scrawlMaxSize"`
+	ScrawlMaxSize         int64    `json:"scrawlMaxSize"`
 	ScrawlUrlPrefix       string   `json:"scrawlUrlPrefix"`
 	ScrawlInsertAlign     string   `json:"scrawlInsertAlign"`
 	SnapscreenActionName  string   `json:"snapscreenActionName"`
@@ -37,26 +37,26 @@ type UeditorConfig struct {
 	CatcherFieldName      string   `json:"catcherFieldName"`
 	CatcherPathFormat     string   `json:"catcherPathFormat"`
 	CatcherUrlPrefix      string   `json:"catcherUrlPrefix"`
-	CatcherMaxSize        int      `json:"catcherMaxSize"`
+	CatcherMaxSize        int64    `json:"catcherMaxSize"`
 	CatcherAllowFiles     []string `json:"catcherAllowFiles"`
 
 	VideoActionName string   `json:"videoActionName"`
 	VideoFieldName  string   `json:"videoFieldName"`
 	VideoPathFormat string   `json:"videoPathFormat"`
 	VideoUrlPrefix  string   `json:"videoUrlPrefix"`
-	VideoMaxSize    int      `json:"videoMaxSize"`
+	VideoMaxSize    int64    `json:"videoMaxSize"`
 	VideoAllowFiles []string `json:"videoAllowFiles"`
 
 	FileActionName string   `json:"fileActionName"`
 	FileFieldName  string   `json:"fileFieldName"`
 	FilePathFormat string   `json:"filePathFormat"`
 	FileUrlPrefix  string   `json:"fileUrlPrefix"`
-	FileMaxSize    int      `json:"fileMaxSize"`
+	FileMaxSize    int64    `json:"fileMaxSize"`
 	FileAllowFiles []string `json:"fileAllowFiles"`
 
 	ImageManagerActionName  string   `json:"imageManagerActionName"`
 	ImageManagerListPath    string   `json:"imageManagerListPath"`
-	ImageManagerListSize    int      `json:"imageManagerListSize"`
+	ImageManagerListSize    int64    `json:"imageManagerListSize"`
 	ImageManagerUrlPrefix   string   `json:"imageManagerUrlPrefix"`
 	ImageManagerInsertAlign string   `json:"imageManagerInsertAlign"`
 	ImageManagerAllowFiles  []string `json:"imageManagerAllowFiles"`
@@ -64,7 +64,7 @@ type UeditorConfig struct {
 	FileManagerActionName string   `json:"fileManagerActionName"`
 	FileManagerListPath   string   `json:"fileManagerListPath"`
 	FileManagerUrlPrefix  string   `json:"fileManagerUrlPrefix"`
-	FileManagerListSize   int      `json:"fileManagerListSize"`
+	FileManagerListSize   int64    `json:"fileManagerListSize"`
 	FileManagerAllowFiles []string `json:"fileManagerAllowFiles"`
 }
 

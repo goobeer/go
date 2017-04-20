@@ -14,7 +14,39 @@ import (
 type UeditorCrawler struct {
 	SourceUrl string
 	ServerUrl string
+	BasePath  string
 	State     string
+	*UEditorHandler
+}
+
+func (u *UeditorCrawler) Process() {
+	sources := u.Ctx.FormValue("source[]")
+
+	var TD struct {
+		State string
+		List  []*UeditorCrawler
+	}
+	if sources == nil || len(sources) == 0 {
+		TD.State = "参数错误：没有指定抓取源"
+		u.WriteJson(TD)
+		return
+	}
+	//	var Crawlers []*UeditorCrawler
+	//	for _, v := range sources {
+	//		Crawlers = append(Crawlers, &UeditorCrawler{SourceUrl: v})
+	//	}
+
+	//        Crawlers = Sources.Select(x => new Crawler(x, Server).Fetch()).ToArray();
+	//        WriteJson(new
+	//        {
+	//            state = "SUCCESS",
+	//            list = Crawlers.Select(x => new
+	//            {
+	//                state = x.State,
+	//                source = x.SourceUrl,
+	//                url = x.ServerUrl
+	//            })
+	//        });
 }
 
 func (u *UeditorCrawler) Fetch() {
