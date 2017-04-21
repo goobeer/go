@@ -32,7 +32,7 @@ func injectFilter(httpVerb, uri string, m reflect.Method, ci interface{}) (handl
 		handle = func(ctx *fasthttp.RequestCtx) {
 			defer func() {
 				if err := recover(); err != nil {
-					filter.ErrLog(err, ctx)
+					filter.ErrLog(fmt.Errorf("%s", err), ctx)
 				}
 			}()
 			rVal := reflect.ValueOf(ci)
@@ -61,7 +61,7 @@ func injectFilter(httpVerb, uri string, m reflect.Method, ci interface{}) (handl
 	handle = func(ctx *fasthttp.RequestCtx) {
 		defer func() {
 			if err := recover(); err != nil {
-				filter.ErrLog(err, ctx)
+				filter.ErrLog(fmt.Errorf("%s", err), ctx)
 			}
 		}()
 
@@ -213,4 +213,8 @@ func (c *BaseController) ParseFunc(areaName, actionName string, ci interface{}) 
 	typeStr := t[len(t)-1]
 	typeStr = strings.TrimSuffix(typeStr, controllerFlag)
 	return fmt.Sprintf("/%s/%s/%s", areaName, typeStr, actionName)
+}
+
+func (c *BaseController) D() {
+
 }

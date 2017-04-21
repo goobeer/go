@@ -2,15 +2,8 @@ package controllers
 
 import (
 	"fasthttpweb/area"
-	//	hv "fasthttpweb/area/article/views/article"
-	//	"fasthttpweb/common"
-	//	"fasthttpweb/model"
-	//	"fasthttpweb/router"
-	//	"fmt"
-	//	"reflect"
-	//	"strings"
 
-	//	"github.com/valyala/fasthttp"
+	//	view "fasthttpweb/area/article/views/article"
 )
 
 type ArticleController struct {
@@ -18,7 +11,8 @@ type ArticleController struct {
 }
 
 func init() {
-
+	c := &ArticleController{BaseController: &area.BaseController{}}
+	c.RegistRoutes(areaName, c)
 }
 
 func (c *ArticleController) Index() {
