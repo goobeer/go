@@ -3,12 +3,13 @@
 {% 
 	import (
 		"fasthttpweb/area"
+		"fasthttpweb/model"
 	)
 %}
 
 {% code
 type IndexPage struct {
-	* area.BasePage
+	*area.BasePage
 }
 %}
 
@@ -17,24 +18,27 @@ type IndexPage struct {
 
 {% func (p *IndexPage) RenderCss() %}{% endfunc %}
 
-{% func (p *IndexPage) RenderScript() %}
-<script type="text/javascript" src="/public/ueditor/ueditor.config.js"></script>
-<script type="text/javascript" src="/public/ueditor/ueditor.all.js"></script>
-<script type="text/javascript">
-	$(function(){
-		var editor = new baidu.editor.ui.Editor({initialFrameWidth: 784,initialFrameHeight: 400});
-    	editor.render('ueditor');
-	});
-</script>
-{% endfunc %}
+{% func (p *IndexPage) RenderScript() %}{% endfunc %}
 
+{% func showModel(model []model.Article) %}
+	{% if model!=nil && len(model)>0 %}
+		<table class="table table-bordered table-hover">
+		{% for _,v:=range model %}
+			<tr>
+				<td>{%s v.Title %}</td>
+				<td>{%s= v.Content %}</td>
+				<td>{%s v.CreateTime.Format("2006-01-02 15:04:05") %}</td>
+				<td>{% if v.Used %}是{% else %}否{% endif %}</td>
+			</tr>
+		{% endfor %}
+		</table>
+	{% endif %}
+{% endfunc %}
 
 {% func (p *IndexPage) RenderBody() %}
 	<div class="text-center">
-		article- success
-		<form action="/admin/article/create" method="POST">
-			<textarea name="ueditor" id="ueditor"></textarea>
-			<input type="submit" />
-		</form>
+		{% if p.BasePage.BPD.Data["error"]!=nil %}{%v p.BasePage.BPD.Data["error"] %}{% endif %}
+		<a href="/admin/article/create">添加</a>
+		{%= showModel(p.BasePage.BPD.Data["Model"].([]model.Article)) %}
 	</div>
 {% endfunc %}
