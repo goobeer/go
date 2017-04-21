@@ -1,0 +1,40 @@
+// Main page template. Implements BasePage methods.
+
+{% 
+	import (
+		"fasthttpweb/area"
+	)
+%}
+
+{% code
+type IndexPage struct {
+	* area.BasePage
+}
+%}
+
+{% func (p *IndexPage) RenderTitle() %}{%= p.Render_Title() %} {% endfunc %}
+{% func (p *IndexPage) RenderKwd() %}{%= p.Render_Kwd() %} {% endfunc %}
+
+{% func (p *IndexPage) RenderCss() %}{% endfunc %}
+
+{% func (p *IndexPage) RenderScript() %}
+<script type="text/javascript" src="/public/ueditor/ueditor.config.js"></script>
+<script type="text/javascript" src="/public/ueditor/ueditor.all.js"></script>
+<script type="text/javascript">
+	$(function(){
+		var editor = new baidu.editor.ui.Editor({initialFrameWidth: 784,initialFrameHeight: 400});
+    	editor.render('ueditor');
+	});
+</script>
+{% endfunc %}
+
+
+{% func (p *IndexPage) RenderBody() %}
+	<div class="text-center">
+		article- success
+		<form action="/admin/article/create" method="POST">
+			<textarea name="ueditor" id="ueditor"></textarea>
+			<input type="submit" />
+		</form>
+	</div>
+{% endfunc %}

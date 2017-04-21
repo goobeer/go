@@ -43,24 +43,49 @@ type UeditorUploadHandler struct {
 	*UEditorHandler
 }
 
+func NewUeditorUploadHandler(ctx *fasthttp.RequestCtx) *UeditorUploadHandler {
+	uploadHandler := &UeditorUploadHandler{}
+	return uploadHandler
+}
+
 func (u *UeditorUploadHandler) Process() {
 	var uploadFileBytes []byte
 	var uploadFileName string
+	var TD struct {
+		State    string
+		Url      string
+		Title    string
+		Original string
+		Error    string
+	}
 	if u.UeditorUploadConfig.Base64 {
 		uploadFileName = u.Base64Filename
 		fileBytes := u.Ctx.FormValue(u.UploadFieldName)
+		if !(fileBytes != nil && len(fileBytes) > 0) {
+			u.State = InvalidParam
+
+			TD.State = u.getStateMessage(u.State)
+			TD.Url = string(u.Ctx.RequestURI())
+			TD.Original = uploadFileName
+			TD.Title = uploadFileName
+			u.WriteJson(TD)
+			return
+		}
 		base64.StdEncoding.Decode(uploadFileBytes, fileBytes)
 	} else {
 		fh, _ := u.Ctx.FormFile(u.UploadFieldName)
-		uploadFileName = fh.Filename
 
-		var TD struct {
-			State    string
-			Url      string
-			Title    string
-			Original string
-			Error    string
+		if fh == nil {
+			u.State = InvalidParam
+
+			TD.State = u.getStateMessage(u.State)
+			TD.Url = string(u.Ctx.RequestURI())
+			TD.Original = uploadFileName
+			TD.Title = uploadFileName
+			u.WriteJson(TD)
+			return
 		}
+		uploadFileName = fh.Filename
 
 		if !u.checkFileType(uploadFileName) {
 			u.State = TypeNotAllow

@@ -7,10 +7,6 @@ import (
 	//	"github.com/kataras/go-sessions"
 )
 
-const (
-	areaName = "Admin"
-)
-
 type IndexController struct {
 	*area.BaseController
 }

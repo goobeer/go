@@ -2,6 +2,7 @@ package ueditor_go
 
 import (
 	"encoding/json"
+	"fasthttpweb/router"
 
 	"github.com/valyala/fasthttp"
 )
@@ -12,32 +13,42 @@ var (
 
 type IUeditorHandler interface {
 	Process()
-	//	WriteJson(response interface{})
 }
 
 type UEditorHandler struct {
-	Ctx fasthttp.RequestCtx
+	Ctx *fasthttp.RequestCtx
 }
 
-func (h *UEditorHandler) Process(ctx fasthttp.RequestCtx) {
+func init() {
+	//注册 url
+
+	urlUeditor := "/ueditor/net/controller.ashx"
+	router.R.GET(urlUeditor, func(ctx *fasthttp.RequestCtx) {
+		ueditor := &UEditorHandler{Ctx: ctx}
+		ueditor.Process(ctx)
+	})
+}
+
+func (h *UEditorHandler) Process(ctx *fasthttp.RequestCtx) {
 	action := ctx.FormValue("action")
 	var ueditorHandle IUeditorHandler
 	if action != nil && len(action) > 0 {
 		actionStr := string(action)
 		switch actionStr {
 		case "config":
-			ueditorHandle = new(UeditorConfigHandler)
+			ueditorHandle = &UeditorConfigHandler{UEditorHandler: &UEditorHandler{Ctx: ctx}}
 		case "uploadimage":
-			ueditorHandle = &UeditorUploadHandler{UEditorHandler: &UEditorHandler{Ctx: ctx}, UeditorUploadConfig: &UeditorUploadConfig{AllowExtensions: config.ImageAllowFiles, PathFormat: config.ImagePathFormat, SizeLimit: config.ImageMaxSize, UploadFieldName: config.ImageFieldName}}
+			ueditorHandle = &UeditorUploadHandler{UEditorHandler: &UEditorHandler{Ctx: ctx}, UeditorUploadConfig: &UeditorUploadConfig{AllowExtensions: config.ImageAllowFiles, PathFormat: config.ImagePathFormat, SizeLimit: config.ImageMaxSize, UploadFieldName: config.ImageFieldName}, UeditorUploadResult: &UeditorUploadResult{}}
 		case "uploadscrawl":
-			ueditorHandle = &UeditorUploadHandler{UEditorHandler: &UEditorHandler{Ctx: ctx}, UeditorUploadConfig: &UeditorUploadConfig{AllowExtensions: []string{".png"}, PathFormat: config.ScrawlPathFormat, SizeLimit: config.ScrawlMaxSize, UploadFieldName: config.ScrawlFieldName, Base64: true, Base64Filename: "scrawl.png"}}
+			ueditorHandle = &UeditorUploadHandler{UEditorHandler: &UEditorHandler{Ctx: ctx}, UeditorUploadConfig: &UeditorUploadConfig{AllowExtensions: []string{".png"}, PathFormat: config.ScrawlPathFormat, SizeLimit: config.ScrawlMaxSize, UploadFieldName: config.ScrawlFieldName, Base64: true, Base64Filename: "scrawl.png"}, UeditorUploadResult: &UeditorUploadResult{}}
 		case "uploadvideo":
-			ueditorHandle = &UeditorUploadHandler{UEditorHandler: &UEditorHandler{Ctx: ctx}, UeditorUploadConfig: &UeditorUploadConfig{AllowExtensions: config.VideoAllowFiles, PathFormat: config.VideoPathFormat, SizeLimit: config.VideoMaxSize, UploadFieldName: config.VideoFieldName}}
+			ueditorHandle = &UeditorUploadHandler{UEditorHandler: &UEditorHandler{Ctx: ctx}, UeditorUploadConfig: &UeditorUploadConfig{AllowExtensions: config.VideoAllowFiles, PathFormat: config.VideoPathFormat, SizeLimit: config.VideoMaxSize, UploadFieldName: config.VideoFieldName}, UeditorUploadResult: &UeditorUploadResult{}}
 		case "uploadfile":
-			ueditorHandle = &UeditorUploadHandler{UEditorHandler: &UEditorHandler{Ctx: ctx}, UeditorUploadConfig: &UeditorUploadConfig{AllowExtensions: config.FileAllowFiles, PathFormat: config.FilePathFormat, SizeLimit: config.FileMaxSize, UploadFieldName: config.FileFieldName}}
+			ueditorHandle = &UeditorUploadHandler{UEditorHandler: &UEditorHandler{Ctx: ctx}, UeditorUploadConfig: &UeditorUploadConfig{AllowExtensions: config.FileAllowFiles, PathFormat: config.FilePathFormat, SizeLimit: config.FileMaxSize, UploadFieldName: config.FileFieldName}, UeditorUploadResult: &UeditorUploadResult{}}
 		case "listimage":
-			//			ueditorHandle = &UeditorL
+			ueditorHandle = &UeditorListFileManager{UEditorHandler: &UEditorHandler{Ctx: ctx}, PathToList: config.ImageManagerListPath, SearchExtensions: config.ImageManagerAllowFiles}
 		case "listfile":
+			ueditorHandle = &UeditorListFileManager{UEditorHandler: &UEditorHandler{Ctx: ctx}, PathToList: config.FileManagerListPath, SearchExtensions: config.FileManagerAllowFiles}
 		case "catchimage":
 			ueditorHandle = &UeditorCrawler{UEditorHandler: &UEditorHandler{Ctx: ctx}}
 		default:
@@ -61,9 +72,7 @@ func (h *UEditorHandler) WriteJson(response interface{}) {
 		h.Ctx.Write(reponseJson)
 	} else {
 		h.Ctx.SetContentType("application/javascript")
-		jsonpCallback = append(jsonpCallback, []byte("{")...)
 		jsonpCallback = append(jsonpCallback, reponseJson...)
-		jsonpCallback = append(jsonpCallback, []byte("}")...)
 		h.Ctx.Write(jsonpCallback)
 	}
 

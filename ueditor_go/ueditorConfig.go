@@ -8,7 +8,7 @@ import (
 
 const (
 	noCache           = true
-	ueditorConfigFile = "../public/ueditor/net/config.json"
+	ueditorConfigFile = "./public/ueditor/net/config.json"
 )
 
 type UeditorConfig struct {
@@ -89,7 +89,6 @@ func BuildItems() (config UeditorConfig, err error) {
 
 	reg, _ := regexp.Compile("/\\*.*\\*/")
 	jsonDataBuf = reg.ReplaceAll(jsonDataBuf, []byte(""))
-
 	err = json.Unmarshal(jsonDataBuf, &config)
 	return
 }

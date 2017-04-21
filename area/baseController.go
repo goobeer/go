@@ -93,9 +93,9 @@ func (c *BaseController) View(page Page, contentType string) {
 	c.Ctx.SetContentType(contentType)
 }
 
-func (c *BaseController) RegistRoutes(areaFlag string, ci interface{}) {
+func (c *BaseController) RegistRoutes(areaFlag string, ciPtr interface{}) {
 	rType := reflect.TypeOf(c)
-	ciType := reflect.TypeOf(ci)
+	ciType := reflect.TypeOf(ciPtr)
 
 	t := strings.Split(strings.ToLower(ciType.String()), ".")
 
@@ -117,7 +117,7 @@ func (c *BaseController) RegistRoutes(areaFlag string, ci interface{}) {
 			url = strings.ToLower(fmt.Sprintf("/%s/%s/%s", areaFlag, typeStr, fName))
 			preFix = "get"
 
-			routeAction = injectFilter(preFix, url, m, ci)
+			routeAction = injectFilter(preFix, url, m, ciPtr)
 
 			router.R.GET(url, routeAction)
 		} else if strings.HasPrefix(fName, "post") {
@@ -125,44 +125,44 @@ func (c *BaseController) RegistRoutes(areaFlag string, ci interface{}) {
 			url = strings.ToLower(fmt.Sprintf("/%s/%s/%s", areaFlag, typeStr, fName))
 			preFix = "post"
 
-			routeAction = injectFilter(preFix, url, m, ci)
+			routeAction = injectFilter(preFix, url, m, ciPtr)
 
 			router.R.POST(url, routeAction)
 		} else if strings.HasPrefix(fName, "head") {
 			fName = strings.TrimPrefix(fName, "head")
 			url = strings.ToLower(fmt.Sprintf("/%s/%s/%s", areaFlag, typeStr, fName))
 			preFix = "head"
-			routeAction = injectFilter(preFix, url, m, ci)
+			routeAction = injectFilter(preFix, url, m, ciPtr)
 			router.R.HEAD(url, routeAction)
 		} else if strings.HasPrefix(fName, "put") {
 			fName = strings.TrimPrefix(fName, "put")
 			url = strings.ToLower(fmt.Sprintf("/%s/%s/%s", areaFlag, typeStr, fName))
 			preFix = "put"
-			routeAction = injectFilter(preFix, url, m, ci)
+			routeAction = injectFilter(preFix, url, m, ciPtr)
 			router.R.PUT(url, routeAction)
 		} else if strings.HasPrefix(fName, "options") {
 			fName = strings.TrimPrefix(fName, "options")
 			url = strings.ToLower(fmt.Sprintf("/%s/%s/%s", areaFlag, typeStr, fName))
 			preFix = "options"
-			routeAction = injectFilter(preFix, url, m, ci)
+			routeAction = injectFilter(preFix, url, m, ciPtr)
 			router.R.OPTIONS(url, routeAction)
 		} else if strings.HasPrefix(fName, "delete") {
 			fName = strings.TrimPrefix(fName, "delete")
 			url = strings.ToLower(fmt.Sprintf("/%s/%s/%s", areaFlag, typeStr, fName))
 			preFix = "delete"
-			routeAction = injectFilter(preFix, url, m, ci)
+			routeAction = injectFilter(preFix, url, m, ciPtr)
 			router.R.DELETE(url, routeAction)
 		} else if strings.HasPrefix(fName, "patch") {
 			fName = strings.TrimPrefix(fName, "patch")
 			url = strings.ToLower(fmt.Sprintf("/%s/%s/%s", areaFlag, typeStr, fName))
 			preFix = "patch"
-			routeAction = injectFilter(preFix, url, m, ci)
+			routeAction = injectFilter(preFix, url, m, ciPtr)
 			router.R.PATCH(url, routeAction)
 		} else {
 			fName = strings.TrimPrefix(fName, "get")
 			url = strings.ToLower(fmt.Sprintf("/%s/%s/%s", areaFlag, typeStr, fName))
 			preFix = "get"
-			routeAction = injectFilter(preFix, url, m, ci)
+			routeAction = injectFilter(preFix, url, m, ciPtr)
 			router.R.GET(url, routeAction)
 		}
 
@@ -202,7 +202,7 @@ func (c *BaseController) RegistRoute(httpVerb, oldPath string, newPaths ...strin
 				router.R.PATCH(newPath, RouteTables[oldPath])
 			}
 		} else {
-			fmt.Printf("url:[%s] is already mapped to url:[%s].\r\n", newPath, oldPath)
+			//			fmt.Printf("url:[%s] is already mapped to url:[%s].\r\n", newPath, oldPath)
 		}
 	}
 }

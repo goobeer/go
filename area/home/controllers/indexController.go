@@ -16,7 +16,6 @@ const (
 	LoginVerfied   = iota
 	phoneNumber    = "13121327365"
 	controllerFlag = "controller"
-	areaName       = "Home"
 )
 
 type IndexController struct {

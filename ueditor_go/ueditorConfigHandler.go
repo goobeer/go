@@ -5,6 +5,9 @@ type UeditorConfigHandler struct {
 }
 
 func (h *UeditorConfigHandler) Process() {
-	responseData, _ := BuildItems()
+	responseData, err := BuildItems()
+	if err != nil {
+		panic(err)
+	}
 	h.WriteJson(responseData)
 }
