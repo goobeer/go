@@ -178,39 +178,52 @@ func (p *CreatePage) StreamRenderBody(qw422016 *qt422016.Writer) {
 	//line admin\views\article\create.qtpl:32
 	qw422016.N().S(`
 	<div class="text-center">
-		article- success
-		<form action="/admin/article/create" method="POST">
-			<input id="Title" name="Title"  />
-			<textarea name="Content" id="Content"></textarea>
-			<input type="submit" />
+		<form class="form-horizontal" action="/admin/article/create" method="POST">
+			<div class="form-group">
+				<label class="control-label col-md-2">标题：</label>
+				<div class="col-md-10">
+					<input class="form-control" id="Title" name="Title"  />
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-md-2">内容：</label>
+				<div class="col-md-10">
+					<textarea name="Content" id="Content"></textarea>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-md-offset-2 col-md-10">
+					<button type="submit" class="btn btn-default">添加</button>
+				</div>
+			</div>
 		</form>
 	</div>
 `)
-//line admin\views\article\create.qtpl:41
+//line admin\views\article\create.qtpl:54
 }
 
-//line admin\views\article\create.qtpl:41
+//line admin\views\article\create.qtpl:54
 func (p *CreatePage) WriteRenderBody(qq422016 qtio422016.Writer) {
-	//line admin\views\article\create.qtpl:41
+	//line admin\views\article\create.qtpl:54
 	qw422016 := qt422016.AcquireWriter(qq422016)
-	//line admin\views\article\create.qtpl:41
+	//line admin\views\article\create.qtpl:54
 	p.StreamRenderBody(qw422016)
-	//line admin\views\article\create.qtpl:41
+	//line admin\views\article\create.qtpl:54
 	qt422016.ReleaseWriter(qw422016)
-//line admin\views\article\create.qtpl:41
+//line admin\views\article\create.qtpl:54
 }
 
-//line admin\views\article\create.qtpl:41
+//line admin\views\article\create.qtpl:54
 func (p *CreatePage) RenderBody() string {
-	//line admin\views\article\create.qtpl:41
+	//line admin\views\article\create.qtpl:54
 	qb422016 := qt422016.AcquireByteBuffer()
-	//line admin\views\article\create.qtpl:41
+	//line admin\views\article\create.qtpl:54
 	p.WriteRenderBody(qb422016)
-	//line admin\views\article\create.qtpl:41
+	//line admin\views\article\create.qtpl:54
 	qs422016 := string(qb422016.B)
-	//line admin\views\article\create.qtpl:41
+	//line admin\views\article\create.qtpl:54
 	qt422016.ReleaseByteBuffer(qb422016)
-	//line admin\views\article\create.qtpl:41
+	//line admin\views\article\create.qtpl:54
 	return qs422016
-//line admin\views\article\create.qtpl:41
+//line admin\views\article\create.qtpl:54
 }

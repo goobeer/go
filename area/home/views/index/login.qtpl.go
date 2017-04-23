@@ -182,39 +182,61 @@ func (p *LoginPage) StreamRenderBody(qw422016 *qt422016.Writer) {
 	qw422016.N().S(`
 	</div>
 	<div class="text-center">
-		<form action="/home/index/login" method="POST">
-			用户名:<input type="phone" id="uname" name="uname" /><br />
-			密码:<input type="password" id="pwd" name="pwd" /><br />
-			验证码:<input type="text" id="vc" name="vcode" /><img id="vcode" src="/api/verifyimg" title="点击切换验证码" />
-			<button type="submit" class="btn btn-default">登录</button>
+		<form class="form-horizontal" action="/home/index/login" method="POST">
+			<div class="form-group">
+				<label class="control-label col-md-2">用户名:</label>
+				<div class="col-md-8">
+					<input class="form-control" id="uname" name="uname" />
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-md-2">密码:</label>
+				<div class="col-md-8">
+					<input type="password" class="form-control" id="pwd" name="pwd" />
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-md-2">验证码:</label>
+				<div class="col-md-8">
+					<input class="form-control" id="vc" name="vcode" />
+				</div>
+				<div class="col-md-2">
+					<img id="vcode" src="/api/verifyimg" title="点击切换验证码" />
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-md-offset-2 col-md-10">
+					<button type="submit" class="btn btn-default">登录</button>
+				</div>
+			</div>
 		</form>
 	</div>
 `)
-//line home\views\index\login.qtpl:35
+//line home\views\index\login.qtpl:57
 }
 
-//line home\views\index\login.qtpl:35
+//line home\views\index\login.qtpl:57
 func (p *LoginPage) WriteRenderBody(qq422016 qtio422016.Writer) {
-	//line home\views\index\login.qtpl:35
+	//line home\views\index\login.qtpl:57
 	qw422016 := qt422016.AcquireWriter(qq422016)
-	//line home\views\index\login.qtpl:35
+	//line home\views\index\login.qtpl:57
 	p.StreamRenderBody(qw422016)
-	//line home\views\index\login.qtpl:35
+	//line home\views\index\login.qtpl:57
 	qt422016.ReleaseWriter(qw422016)
-//line home\views\index\login.qtpl:35
+//line home\views\index\login.qtpl:57
 }
 
-//line home\views\index\login.qtpl:35
+//line home\views\index\login.qtpl:57
 func (p *LoginPage) RenderBody() string {
-	//line home\views\index\login.qtpl:35
+	//line home\views\index\login.qtpl:57
 	qb422016 := qt422016.AcquireByteBuffer()
-	//line home\views\index\login.qtpl:35
+	//line home\views\index\login.qtpl:57
 	p.WriteRenderBody(qb422016)
-	//line home\views\index\login.qtpl:35
+	//line home\views\index\login.qtpl:57
 	qs422016 := string(qb422016.B)
-	//line home\views\index\login.qtpl:35
+	//line home\views\index\login.qtpl:57
 	qt422016.ReleaseByteBuffer(qb422016)
-	//line home\views\index\login.qtpl:35
+	//line home\views\index\login.qtpl:57
 	return qs422016
-//line home\views\index\login.qtpl:35
+//line home\views\index\login.qtpl:57
 }

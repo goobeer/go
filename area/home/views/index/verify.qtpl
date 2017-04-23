@@ -37,16 +37,37 @@ type VerfyPage struct {
 {% endfunc %}
 
 {% func (p *VerfyPage) RenderBody() %}
-<div class="text-danger">
-{% if p.BPD.Data["ErrMsg"]!=nil %}
-{%s (p.BPD.Data["ErrMsg"]).(string) %}
-{% endif %}
-</div>
+	{% code
+		err:=p.BPD.Data["error"]
+		phone:= p.BPD.Data["phone"]
+	%}
+	
+	{% if err!=nil %}
+	 <div class="text-danger">{%s err.(string) %}</div>
+	{% endif %}
+	
 	<div class="text-center">
-		<form action="/home/index/verify" method="POST">
-			手机号:<input type="phone" id="phone" name="phone" value="{% if p.BPD.Data["phone"]!=nil %}{%s p.BPD.Data["phone"].(string) %}{% endif %}" /><br />
-			验证码:<input type="text" id="vc" name="vcode" /><img id="vcode" src="/api/verifyimg" title="点击切换验证码" />
-			<button type="submit" class="btn btn-default">去逛逛</button>
+		<form class="form-horizontal" action="/home/index/verify" method="POST">
+			<div class="form-group">
+				<label class="control-label col-md-2">手机号:</label>
+				<div class="col-md-8">
+					<input class="form-control" id="phone" name="phone" {% if phone!=nil %}value="{%s phone.(string) %}"{% endif %} />
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-md-2">验证码:</label>
+				<div class="col-md-8">
+					<input class="form-control" id="vc" name="vcode" />
+				</div>
+				<div class="col-md-2">
+					<img id="vcode" src="/api/verifyimg" title="点击切换验证码" />
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-md-offset-2 col-md-10">
+					<button type="submit" class="btn btn-default">去逛逛</button>
+				</div>
+			</div>
 		</form>
 	</div>
 {% endfunc %}

@@ -4,7 +4,7 @@ import (
 	"fasthttpweb/area"
 	hv "fasthttpweb/area/home/views/index"
 
-	//	"fasthttpweb/common"
+	"fasthttpweb/common"
 	"fasthttpweb/model"
 	//	"fasthttpweb/router"
 
@@ -12,8 +12,6 @@ import (
 )
 
 const (
-	Verfied        = iota
-	LoginVerfied   = iota
 	phoneNumber    = "13121327365"
 	controllerFlag = "controller"
 )
@@ -41,7 +39,7 @@ func (c *IndexController) Index() {
 		return
 	}
 	vfv := verfyVal.(int)
-	if vfv != LoginVerfied {
+	if vfv != common.LoginVerfied {
 		ctx.Redirect(c.ParseFunc(areaName, "login", c), fasthttp.StatusFound)
 		return
 	}
@@ -71,7 +69,7 @@ func (c *IndexController) PostVerify() {
 		sess := c.StartSession()
 		vcode := sess.Get("vcode")
 		if len(phoneBytes) > 0 && string(phoneBytes) == phoneNumber && len(vcodeBytes) > 0 && string(vcodeBytes) == vcode.(string) {
-			sess.Set("verfy", Verfied)
+			sess.Set("verfy", common.Verfied)
 
 			ctx.Redirect(c.ParseFunc(areaName, "login", c), fasthttp.StatusFound)
 			return
@@ -89,7 +87,7 @@ func (c *IndexController) Login() {
 		return
 	}
 	vfv := verfyVal.(int)
-	if vfv == LoginVerfied {
+	if vfv == common.LoginVerfied {
 		ctx.Redirect("/home/index", fasthttp.StatusFound)
 		return
 	}
@@ -123,7 +121,7 @@ func (c *IndexController) PostLogin() {
 				return
 			}
 
-			sess.Set("verfy", LoginVerfied)
+			sess.Set("verfy", common.LoginVerfied)
 			sess.Set("user", user)
 			ctx.Redirect("/home/index/index", fasthttp.StatusContinue)
 			return
@@ -142,7 +140,7 @@ func (c *IndexController) Logout() {
 
 func (c *IndexController) getErrorHomeVerfyPage(errMsg string) {
 	bpd := c.InitBasePageData(areaName, "Index", "", "")
-	bpd.Data["ErrMsg"] = errMsg
+	bpd.Data["error"] = errMsg
 	phoneBytes := c.Ctx.FormValue("phone")
 	bpd.Data["phone"] = string(phoneBytes)
 	bp := &area.BasePage{CTX: c.Ctx, BPD: bpd}

@@ -1,23 +1,22 @@
-// Main page template. Implements BasePage methods.
-
 {% 
 	import (
 		"fasthttpweb/area"
+		"fasthttpweb/model"
 	)
 %}
 
 {% code
-type CreatePage struct {
+type EditPage struct {
 	*area.BasePage
 }
 %}
 
-{% func (p *CreatePage) RenderTitle() %}{%= p.Render_Title() %} {% endfunc %}
-{% func (p *CreatePage) RenderKwd() %}{%= p.Render_Kwd() %} {% endfunc %}
+{% func (p *EditPage) RenderTitle() %}{%= p.Render_Title() %} {% endfunc %}
+{% func (p *EditPage) RenderKwd() %}{%= p.Render_Kwd() %} {% endfunc %}
 
-{% func (p *CreatePage) RenderCss() %}{% endfunc %}
+{% func (p *EditPage) RenderCss() %}{% endfunc %}
 
-{% func (p *CreatePage) RenderScript() %}
+{% func (p *EditPage) RenderScript() %}
 <script type="text/javascript" src="/public/ueditor/ueditor.config.js"></script>
 <script type="text/javascript" src="/public/ueditor/ueditor.all.js"></script>
 <script type="text/javascript">
@@ -29,26 +28,36 @@ type CreatePage struct {
 {% endfunc %}
 
 
-{% func (p *CreatePage) RenderBody() %}
+{% func (p *EditPage) RenderBody() %}
+	{% code 
+		art:= p.BasePage.BPD.Data["Model"]
+		var artVal *model.Article
+		if art!=nil{
+			artVal=art.(*model.Article)
+		}
+	%}
+	{% if artVal!=nil %}
 	<div class="text-center">
-		<form class="form-horizontal" action="/admin/article/create" method="POST">
+		<form class="form-horizontal" action="/admin/article/edit" method="POST">
+			<input type="hidden" name="ID" value="{%d int(artVal.ID) %}" />
 			<div class="form-group">
 				<label class="control-label col-md-2">标题：</label>
 				<div class="col-md-10">
-					<input class="form-control" id="Title" name="Title"  />
+					<input class="form-control" id="Title" name="Title" value="{%s artVal.Title %}"  />
 				</div>
 			</div>
 			<div class="form-group">
 				<label class="control-label col-md-2">内容：</label>
 				<div class="col-md-10">
-					<textarea name="Content" id="Content"></textarea>
+					<textarea name="Content" id="Content">{%s= artVal.Content %}</textarea>
 				</div>
 			</div>
 			<div class="form-group">
 				<div class="col-md-offset-2 col-md-10">
-					<button type="submit" class="btn btn-default">添加</button>
+					<button type="submit" class="btn btn-default">保存</button>
 				</div>
 			</div>
 		</form>
 	</div>
+	{% endif %}
 {% endfunc %}

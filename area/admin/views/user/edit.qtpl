@@ -1,0 +1,53 @@
+{% 
+	import (
+		"fasthttpweb/area"
+		"fasthttpweb/model"
+	)
+%}
+
+{% code
+type EditPage struct {
+	*area.BasePage
+}
+%}
+
+{% func (p *EditPage) RenderTitle() %}{%= p.Render_Title() %} {% endfunc %}
+{% func (p *EditPage) RenderKwd() %}{%= p.Render_Kwd() %} {% endfunc %}
+
+{% func (p *EditPage) RenderCss() %}{% endfunc %}
+
+{% func (p *EditPage) RenderScript() %}{% endfunc %}
+
+{% func (p *EditPage) RenderBody() %}
+	{% code
+		modelVal:=p.BasePage.BPD.Data["Model"]
+		var user *model.Users
+		if modelVal!=nil{
+			user=modelVal.(*model.Users)
+		}
+	%}
+	<div class="text-center">
+		{% if user!=nil %}
+			<form class="form-horizontal" action="/admin/user/edit" method="POST">
+			<input type="hidden" name="ID" value="{%d int(user.ID) %}" />
+			<div class="form-group">
+				<label class="control-label col-md-2">密码：</label>
+				<div class="col-md-10">
+					<input class="form-control" id="Pwd" name="Pwd"  />
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-md-2">重复输入密码：</label>
+				<div class="col-md-10">
+					<input class="form-control" id="rePwd" />
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-md-offset-2 col-md-10">
+					<button type="submit" class="btn btn-default">添加</button>
+				</div>
+			</div>
+			</form>
+		{% endif %}
+	</div>
+{% endfunc %}

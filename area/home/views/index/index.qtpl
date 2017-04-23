@@ -2,7 +2,6 @@
 
 {% import (
 	"fasthttpweb/area"
-	"fasthttpweb/model"
 ) %}
 
 {% code
@@ -19,7 +18,6 @@ type IndexPage struct {
 
 {% func (p *IndexPage) RenderBody() %}
 	<div class="text-center">
-		success
-		{%s p.BPD.Data["user"].(*model.Users).Name %}
+		<a href="/admin/user/logout">退出</a>
 	</div>
 {% endfunc %}

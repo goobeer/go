@@ -1,12 +1,13 @@
-// Main page template. Implements BasePage methods.
-
 {% 
-	import "fasthttpweb/area"
+	import (
+		"fasthttpweb/area"
+		"fasthttpweb/model"
+	)
 %}
 
 {% code
 type IndexPage struct {
-	* area.BasePage
+	*area.BasePage
 }
 %}
 
@@ -17,9 +18,33 @@ type IndexPage struct {
 
 {% func (p *IndexPage) RenderScript() %}{% endfunc %}
 
-
 {% func (p *IndexPage) RenderBody() %}
+	{% code
+		modelVal:=p.BasePage.BPD.Data["Model"]
+		var users []model.Users
+		if modelVal!=nil{
+			users=modelVal.([]model.Users)
+		}
+	%}
+	
 	<div class="text-center">
-		admin-user-body
+		<a class="btn btn-default" href="/admin/user/create">添加</a>
+		{% if users!=nil %}
+			<table class="table table-borderd table-hover">
+			{% for _,v:=range users %}
+			{% code 
+				id:=int(v.ID)
+			%}
+				<tr>
+					<td><a href="/admin/user/detail?id={%d id %}">{%s v.Name %}</a></td>
+					<td>{%s v.CreateTime.Format("2006-01-02 15:04:05") %}</td>
+					<td>{%v v.Used %}</td>
+					<td>
+						<a href="/admin/user/edit?id={%d id %}">编辑</a><a href="/admin/user/mdelete?id={%d id %}">删除</a>
+					</td>
+				</tr>
+			{% endfor %}
+			</table>
+		{% endif %}
 	</div>
 {% endfunc %}

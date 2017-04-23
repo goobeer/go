@@ -165,34 +165,35 @@ func (p *IndexPage) StreamRenderBody(qw422016 *qt422016.Writer) {
 	//line admin\views\index\index.qtpl:21
 	qw422016.N().S(`
 	<div class="text-center">
-		admin- success
+		<a href="/admin/article">文章列表</a>
+		<a href="admin/user">用户列表</a>
 	</div>
 `)
-//line admin\views\index\index.qtpl:25
+//line admin\views\index\index.qtpl:26
 }
 
-//line admin\views\index\index.qtpl:25
+//line admin\views\index\index.qtpl:26
 func (p *IndexPage) WriteRenderBody(qq422016 qtio422016.Writer) {
-	//line admin\views\index\index.qtpl:25
+	//line admin\views\index\index.qtpl:26
 	qw422016 := qt422016.AcquireWriter(qq422016)
-	//line admin\views\index\index.qtpl:25
+	//line admin\views\index\index.qtpl:26
 	p.StreamRenderBody(qw422016)
-	//line admin\views\index\index.qtpl:25
+	//line admin\views\index\index.qtpl:26
 	qt422016.ReleaseWriter(qw422016)
-//line admin\views\index\index.qtpl:25
+//line admin\views\index\index.qtpl:26
 }
 
-//line admin\views\index\index.qtpl:25
+//line admin\views\index\index.qtpl:26
 func (p *IndexPage) RenderBody() string {
-	//line admin\views\index\index.qtpl:25
+	//line admin\views\index\index.qtpl:26
 	qb422016 := qt422016.AcquireByteBuffer()
-	//line admin\views\index\index.qtpl:25
+	//line admin\views\index\index.qtpl:26
 	p.WriteRenderBody(qb422016)
-	//line admin\views\index\index.qtpl:25
+	//line admin\views\index\index.qtpl:26
 	qs422016 := string(qb422016.B)
-	//line admin\views\index\index.qtpl:25
+	//line admin\views\index\index.qtpl:26
 	qt422016.ReleaseByteBuffer(qb422016)
-	//line admin\views\index\index.qtpl:25
+	//line admin\views\index\index.qtpl:26
 	return qs422016
-//line admin\views\index\index.qtpl:25
+//line admin\views\index\index.qtpl:26
 }

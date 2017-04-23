@@ -164,138 +164,118 @@ func (p *IndexPage) RenderScript() string {
 }
 
 //line admin\views\article\index.qtpl:23
-func streamshowModel(qw422016 *qt422016.Writer, model []model.Article) {
+func (p *IndexPage) StreamRenderBody(qw422016 *qt422016.Writer) {
 	//line admin\views\article\index.qtpl:23
 	qw422016.N().S(`
 	`)
-	//line admin\views\article\index.qtpl:24
-	if model != nil && len(model) > 0 {
-		//line admin\views\article\index.qtpl:24
+	//line admin\views\article\index.qtpl:25
+	modelVal := p.BasePage.BPD.Data["Model"]
+	var arts []model.Article
+	if modelVal != nil {
+		arts = modelVal.([]model.Article)
+	}
+
+	//line admin\views\article\index.qtpl:30
+	qw422016.N().S(`
+	<div class="text-center">
+		<a class="btn btn-default" href="/admin/article/create">添加</a>
+		
+		`)
+	//line admin\views\article\index.qtpl:34
+	if arts != nil && len(arts) > 0 {
+		//line admin\views\article\index.qtpl:34
 		qw422016.N().S(`
 		<table class="table table-bordered table-hover">
 		`)
-		//line admin\views\article\index.qtpl:26
-		for _, v := range model {
-			//line admin\views\article\index.qtpl:26
+		//line admin\views\article\index.qtpl:36
+		for _, v := range arts {
+			//line admin\views\article\index.qtpl:36
+			qw422016.N().S(`
+		`)
+			//line admin\views\article\index.qtpl:38
+			id := int(v.ID)
+
+			//line admin\views\article\index.qtpl:39
 			qw422016.N().S(`
 			<tr>
-				<td>`)
-			//line admin\views\article\index.qtpl:28
+				<td><a href="/admin/article/detail?id=`)
+			//line admin\views\article\index.qtpl:41
+			qw422016.N().D(id)
+			//line admin\views\article\index.qtpl:41
+			qw422016.N().S(`">`)
+			//line admin\views\article\index.qtpl:41
 			qw422016.E().S(v.Title)
-			//line admin\views\article\index.qtpl:28
-			qw422016.N().S(`</td>
+			//line admin\views\article\index.qtpl:41
+			qw422016.N().S(`</a></td>
 				<td>`)
-			//line admin\views\article\index.qtpl:29
-			qw422016.N().S(v.Content)
-			//line admin\views\article\index.qtpl:29
-			qw422016.N().S(`</td>
-				<td>`)
-			//line admin\views\article\index.qtpl:30
+			//line admin\views\article\index.qtpl:42
 			qw422016.E().S(v.CreateTime.Format("2006-01-02 15:04:05"))
-			//line admin\views\article\index.qtpl:30
+			//line admin\views\article\index.qtpl:42
 			qw422016.N().S(`</td>
 				<td>`)
-			//line admin\views\article\index.qtpl:31
+			//line admin\views\article\index.qtpl:43
 			if v.Used {
-				//line admin\views\article\index.qtpl:31
+				//line admin\views\article\index.qtpl:43
 				qw422016.N().S(`是`)
-				//line admin\views\article\index.qtpl:31
+				//line admin\views\article\index.qtpl:43
 			} else {
-				//line admin\views\article\index.qtpl:31
+				//line admin\views\article\index.qtpl:43
 				qw422016.N().S(`否`)
-				//line admin\views\article\index.qtpl:31
+				//line admin\views\article\index.qtpl:43
 			}
-			//line admin\views\article\index.qtpl:31
+			//line admin\views\article\index.qtpl:43
 			qw422016.N().S(`</td>
+				<td>
+					<a href="/admin/article/edit?id=`)
+			//line admin\views\article\index.qtpl:45
+			qw422016.N().D(id)
+			//line admin\views\article\index.qtpl:45
+			qw422016.N().S(`">编辑</a>
+					<a href="/admin/article/mdelete?id=`)
+			//line admin\views\article\index.qtpl:46
+			qw422016.N().D(id)
+			//line admin\views\article\index.qtpl:46
+			qw422016.N().S(`">删除</a>
+				</td>
 			</tr>
 		`)
-			//line admin\views\article\index.qtpl:33
+			//line admin\views\article\index.qtpl:49
 		}
-		//line admin\views\article\index.qtpl:33
+		//line admin\views\article\index.qtpl:49
 		qw422016.N().S(`
 		</table>
-	`)
-		//line admin\views\article\index.qtpl:35
-	}
-	//line admin\views\article\index.qtpl:35
-	qw422016.N().S(`
-`)
-//line admin\views\article\index.qtpl:36
-}
-
-//line admin\views\article\index.qtpl:36
-func writeshowModel(qq422016 qtio422016.Writer, model []model.Article) {
-	//line admin\views\article\index.qtpl:36
-	qw422016 := qt422016.AcquireWriter(qq422016)
-	//line admin\views\article\index.qtpl:36
-	streamshowModel(qw422016, model)
-	//line admin\views\article\index.qtpl:36
-	qt422016.ReleaseWriter(qw422016)
-//line admin\views\article\index.qtpl:36
-}
-
-//line admin\views\article\index.qtpl:36
-func showModel(model []model.Article) string {
-	//line admin\views\article\index.qtpl:36
-	qb422016 := qt422016.AcquireByteBuffer()
-	//line admin\views\article\index.qtpl:36
-	writeshowModel(qb422016, model)
-	//line admin\views\article\index.qtpl:36
-	qs422016 := string(qb422016.B)
-	//line admin\views\article\index.qtpl:36
-	qt422016.ReleaseByteBuffer(qb422016)
-	//line admin\views\article\index.qtpl:36
-	return qs422016
-//line admin\views\article\index.qtpl:36
-}
-
-//line admin\views\article\index.qtpl:38
-func (p *IndexPage) StreamRenderBody(qw422016 *qt422016.Writer) {
-	//line admin\views\article\index.qtpl:38
-	qw422016.N().S(`
-	<div class="text-center">
 		`)
-	//line admin\views\article\index.qtpl:40
-	if p.BasePage.BPD.Data["error"] != nil {
-		//line admin\views\article\index.qtpl:40
-		qw422016.E().V(p.BasePage.BPD.Data["error"])
-		//line admin\views\article\index.qtpl:40
+		//line admin\views\article\index.qtpl:51
 	}
-	//line admin\views\article\index.qtpl:40
-	qw422016.N().S(`
-		<a href="/admin/article/create">添加</a>
-		`)
-	//line admin\views\article\index.qtpl:42
-	streamshowModel(qw422016, p.BasePage.BPD.Data["Model"].([]model.Article))
-	//line admin\views\article\index.qtpl:42
+	//line admin\views\article\index.qtpl:51
 	qw422016.N().S(`
 	</div>
 `)
-//line admin\views\article\index.qtpl:44
+//line admin\views\article\index.qtpl:53
 }
 
-//line admin\views\article\index.qtpl:44
+//line admin\views\article\index.qtpl:53
 func (p *IndexPage) WriteRenderBody(qq422016 qtio422016.Writer) {
-	//line admin\views\article\index.qtpl:44
+	//line admin\views\article\index.qtpl:53
 	qw422016 := qt422016.AcquireWriter(qq422016)
-	//line admin\views\article\index.qtpl:44
+	//line admin\views\article\index.qtpl:53
 	p.StreamRenderBody(qw422016)
-	//line admin\views\article\index.qtpl:44
+	//line admin\views\article\index.qtpl:53
 	qt422016.ReleaseWriter(qw422016)
-//line admin\views\article\index.qtpl:44
+//line admin\views\article\index.qtpl:53
 }
 
-//line admin\views\article\index.qtpl:44
+//line admin\views\article\index.qtpl:53
 func (p *IndexPage) RenderBody() string {
-	//line admin\views\article\index.qtpl:44
+	//line admin\views\article\index.qtpl:53
 	qb422016 := qt422016.AcquireByteBuffer()
-	//line admin\views\article\index.qtpl:44
+	//line admin\views\article\index.qtpl:53
 	p.WriteRenderBody(qb422016)
-	//line admin\views\article\index.qtpl:44
+	//line admin\views\article\index.qtpl:53
 	qs422016 := string(qb422016.B)
-	//line admin\views\article\index.qtpl:44
+	//line admin\views\article\index.qtpl:53
 	qt422016.ReleaseByteBuffer(qb422016)
-	//line admin\views\article\index.qtpl:44
+	//line admin\views\article\index.qtpl:53
 	return qs422016
-//line admin\views\article\index.qtpl:44
+//line admin\views\article\index.qtpl:53
 }

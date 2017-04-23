@@ -179,10 +179,11 @@ func (c *BaseController) RegistRoute(httpVerb, oldPath string, newPaths ...strin
 		return
 	}
 
+	oldPath = fmt.Sprintf("%s_%s", httpVerb, strings.ToLower(oldPath))
 	for _, newPath := range newPaths {
 
 		newPathTemp := fmt.Sprintf("%s_%s", httpVerb, strings.ToLower(newPath))
-		oldPath = fmt.Sprintf("%s_%s", httpVerb, strings.ToLower(oldPath))
+
 		if len(newPathTemp) > 0 && len(oldPath) > 0 && RouteTables[newPathTemp] == nil && RouteTables[oldPath] != nil {
 			RouteTables[newPathTemp] = RouteTables[oldPath]
 			switch httpVerb {
@@ -215,6 +216,10 @@ func (c *BaseController) ParseFunc(areaName, actionName string, ci interface{}) 
 	return fmt.Sprintf("/%s/%s/%s", areaName, typeStr, actionName)
 }
 
-func (c *BaseController) D() {
-
+func (c *BaseController) ErrorView(areaName, ctrlName, title string, err error) {
+	bpd := c.InitBasePageData(areaName, ctrlName, title, "")
+	bp := &BasePage{CTX: c.Ctx, BPD: bpd}
+	bpd.Data["error"] = err.Error()
+	page := &ErrorPage{bp}
+	c.View(page, "text/html")
 }

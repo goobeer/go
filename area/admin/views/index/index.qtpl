@@ -20,6 +20,7 @@ type IndexPage struct {
 
 {% func (p *IndexPage) RenderBody() %}
 	<div class="text-center">
-		admin- success
+		<a href="/admin/article">文章列表</a>
+		<a href="admin/user">用户列表</a>
 	</div>
 {% endfunc %}

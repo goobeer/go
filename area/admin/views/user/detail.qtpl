@@ -1,0 +1,36 @@
+{% 
+	import (
+		"fasthttpweb/area"
+		"fasthttpweb/model"
+	)
+%}
+
+{% code
+type DetailPage struct {
+	*area.BasePage
+}
+%}
+
+{% func (p *DetailPage) RenderTitle() %}{%= p.Render_Title() %} {% endfunc %}
+{% func (p *DetailPage) RenderKwd() %}{%= p.Render_Kwd() %} {% endfunc %}
+
+{% func (p *DetailPage) RenderCss() %}{% endfunc %}
+
+{% func (p *DetailPage) RenderScript() %}{% endfunc %}
+
+{% func (p *DetailPage) RenderBody() %}
+	{% code 
+		modelVal:=p.BasePage.BPD.Data["Model"]
+		var user *model.Users
+		if modelVal!=nil{
+			user=modelVal.(*model.Users)
+		}
+	%}
+	<div class="text-center">
+		{% if user!=nil %}
+			<div>{%s user.Name %}</div>
+			<div>{%s user.CreateTime.Format("2006-01-02 15:04:05") %}</div>
+			<div>{% if user.Used %}是{% else %}否{% endif %}</div>
+		{% endif %}
+	</div>
+{% endfunc %}

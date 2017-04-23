@@ -188,64 +188,92 @@ func (p *VerfyPage) RenderScript() string {
 func (p *VerfyPage) StreamRenderBody(qw422016 *qt422016.Writer) {
 	//line home\views\index\verify.qtpl:39
 	qw422016.N().S(`
-<div class="text-danger">
-`)
+	`)
 	//line home\views\index\verify.qtpl:41
-	if p.BPD.Data["ErrMsg"] != nil {
-		//line home\views\index\verify.qtpl:41
-		qw422016.N().S(`
-`)
-		//line home\views\index\verify.qtpl:42
-		qw422016.E().S((p.BPD.Data["ErrMsg"]).(string))
-		//line home\views\index\verify.qtpl:42
-		qw422016.N().S(`
-`)
-		//line home\views\index\verify.qtpl:43
-	}
+	err := p.BPD.Data["error"]
+	phone := p.BPD.Data["phone"]
+
 	//line home\views\index\verify.qtpl:43
 	qw422016.N().S(`
-</div>
-	<div class="text-center">
-		<form action="/home/index/verify" method="POST">
-			手机号:<input type="phone" id="phone" name="phone" value="`)
-	//line home\views\index\verify.qtpl:47
-	if p.BPD.Data["phone"] != nil {
-		//line home\views\index\verify.qtpl:47
-		qw422016.E().S(p.BPD.Data["phone"].(string))
+	
+	`)
+	//line home\views\index\verify.qtpl:45
+	if err != nil {
+		//line home\views\index\verify.qtpl:45
+		qw422016.N().S(`
+	 <div class="text-danger">`)
+		//line home\views\index\verify.qtpl:46
+		qw422016.E().S(err.(string))
+		//line home\views\index\verify.qtpl:46
+		qw422016.N().S(`</div>
+	`)
 		//line home\views\index\verify.qtpl:47
 	}
 	//line home\views\index\verify.qtpl:47
-	qw422016.N().S(`" /><br />
-			验证码:<input type="text" id="vc" name="vcode" /><img id="vcode" src="/api/verifyimg" title="点击切换验证码" />
-			<button type="submit" class="btn btn-default">去逛逛</button>
+	qw422016.N().S(`
+	
+	<div class="text-center">
+		<form class="form-horizontal" action="/home/index/verify" method="POST">
+			<div class="form-group">
+				<label class="control-label col-md-2">手机号:</label>
+				<div class="col-md-8">
+					<input class="form-control" id="phone" name="phone" `)
+	//line home\views\index\verify.qtpl:54
+	if phone != nil {
+		//line home\views\index\verify.qtpl:54
+		qw422016.N().S(`value="`)
+		//line home\views\index\verify.qtpl:54
+		qw422016.E().S(phone.(string))
+		//line home\views\index\verify.qtpl:54
+		qw422016.N().S(`"`)
+		//line home\views\index\verify.qtpl:54
+	}
+	//line home\views\index\verify.qtpl:54
+	qw422016.N().S(` />
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-md-2">验证码:</label>
+				<div class="col-md-8">
+					<input class="form-control" id="vc" name="vcode" />
+				</div>
+				<div class="col-md-2">
+					<img id="vcode" src="/api/verifyimg" title="点击切换验证码" />
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-md-offset-2 col-md-10">
+					<button type="submit" class="btn btn-default">去逛逛</button>
+				</div>
+			</div>
 		</form>
 	</div>
 `)
-//line home\views\index\verify.qtpl:52
+//line home\views\index\verify.qtpl:73
 }
 
-//line home\views\index\verify.qtpl:52
+//line home\views\index\verify.qtpl:73
 func (p *VerfyPage) WriteRenderBody(qq422016 qtio422016.Writer) {
-	//line home\views\index\verify.qtpl:52
+	//line home\views\index\verify.qtpl:73
 	qw422016 := qt422016.AcquireWriter(qq422016)
-	//line home\views\index\verify.qtpl:52
+	//line home\views\index\verify.qtpl:73
 	p.StreamRenderBody(qw422016)
-	//line home\views\index\verify.qtpl:52
+	//line home\views\index\verify.qtpl:73
 	qt422016.ReleaseWriter(qw422016)
-//line home\views\index\verify.qtpl:52
+//line home\views\index\verify.qtpl:73
 }
 
-//line home\views\index\verify.qtpl:52
+//line home\views\index\verify.qtpl:73
 func (p *VerfyPage) RenderBody() string {
-	//line home\views\index\verify.qtpl:52
+	//line home\views\index\verify.qtpl:73
 	qb422016 := qt422016.AcquireByteBuffer()
-	//line home\views\index\verify.qtpl:52
+	//line home\views\index\verify.qtpl:73
 	p.WriteRenderBody(qb422016)
-	//line home\views\index\verify.qtpl:52
+	//line home\views\index\verify.qtpl:73
 	qs422016 := string(qb422016.B)
-	//line home\views\index\verify.qtpl:52
+	//line home\views\index\verify.qtpl:73
 	qt422016.ReleaseByteBuffer(qb422016)
-	//line home\views\index\verify.qtpl:52
+	//line home\views\index\verify.qtpl:73
 	return qs422016
-//line home\views\index\verify.qtpl:52
+//line home\views\index\verify.qtpl:73
 }

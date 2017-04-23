@@ -5,6 +5,9 @@ import (
 	"fmt"
 	"regexp"
 
+	"fasthttpweb/common"
+
+	"github.com/kataras/go-sessions"
 	"github.com/valyala/fasthttp"
 )
 
@@ -35,17 +38,23 @@ type RouteFilter struct {
 	FilterExp             string
 	HttpVerbType          int
 	MatchType             int
+	MatchOnOff            bool //匹配方式:true:匹配成功执行过滤器，false:匹配失败执行过滤器
 }
 
 func init() {
-	comFilter := NewRouteFilter("[^/home/index/verify]", All, MatchReg)
+	comFilter := NewRouteFilter("^/home/index/verify", Get, MatchReg, false)
+	comFilter.BeforeRequestHandlers = append(comFilter.BeforeRequestHandlers, comFilter.PhonehFilter(nil))
 	comFilter.BeforeRequestHandlers = append(comFilter.BeforeRequestHandlers, comFilter.Log(nil))
 
+	comFilter1 := NewRouteFilter("[^/home/index/verify|/home/index/login]", Get, MatchReg, true)
+	comFilter1.BeforeRequestHandlers = append(comFilter1.BeforeRequestHandlers, comFilter1.LoginAuthFilter(nil))
+
 	MapFilter[comFilter.generateFilterKey()] = comFilter
+	MapFilter[comFilter1.generateFilterKey()] = comFilter1
 }
 
-func NewRouteFilter(filterExp string, httpVerbType, matchType int) *RouteFilter {
-	return &RouteFilter{FilterExp: filterExp, HttpVerbType: httpVerbType, MatchType: matchType, BeforeRequestHandlers: []fasthttp.RequestHandler{}, AfterRequestHandlers: []fasthttp.RequestHandler{}}
+func NewRouteFilter(filterExp string, httpVerbType, matchType int, matchOnOff bool) *RouteFilter {
+	return &RouteFilter{FilterExp: filterExp, HttpVerbType: httpVerbType, MatchType: matchType, MatchOnOff: matchOnOff, BeforeRequestHandlers: []fasthttp.RequestHandler{}, AfterRequestHandlers: []fasthttp.RequestHandler{}}
 }
 
 func ErrLog(err interface{}, ctx *fasthttp.RequestCtx) {
@@ -90,9 +99,22 @@ func (rf *RouteFilter) FilterMatch(uri, httpVerb string) bool {
 	if isMatched {
 		switch rf.MatchType {
 		case MatchFull:
-			isMatched = uri == rf.FilterExp
+			if rf.MatchOnOff {
+				isMatched = uri == rf.FilterExp
+			} else {
+				isMatched = uri != rf.FilterExp
+			}
+
 		case MatchReg:
-			isMatched, _ = regexp.MatchString(rf.FilterExp, uri)
+			reg, err := regexp.Compile(rf.FilterExp)
+			if err != nil {
+				panic(err)
+			}
+			if rf.MatchOnOff {
+				isMatched = reg.MatchString(uri)
+			} else {
+				isMatched = !reg.MatchString(uri)
+			}
 
 		default:
 			isMatched = false
@@ -118,8 +140,24 @@ func (r *RouteFilter) Log(data interface{}) func(ctx *fasthttp.RequestCtx) {
 	}
 }
 
-func (r *RouteFilter) Auth(data interface{}) func(ctx *fasthttp.RequestCtx) {
+func (r *RouteFilter) PhonehFilter(data interface{}) func(ctx *fasthttp.RequestCtx) {
 	return func(ctx *fasthttp.RequestCtx) {
-		fmt.Println("auth processing")
+		sess := sessions.StartFasthttp(ctx)
+		verfy := sess.Get("verfy")
+		if verfy == nil {
+			ctx.Redirect("/home/index/Verify", fasthttp.StatusNonAuthoritativeInfo)
+		}
+	}
+}
+
+func (r *RouteFilter) LoginAuthFilter(data interface{}) func(ctx *fasthttp.RequestCtx) {
+	return func(ctx *fasthttp.RequestCtx) {
+		sess := sessions.StartFasthttp(ctx)
+		verfy := sess.Get("verfy")
+		if verfy != nil {
+			if verfy.(int) < common.LoginVerfied {
+				ctx.Redirect("/home/index/login", fasthttp.StatusNonAuthoritativeInfo)
+			}
+		}
 	}
 }

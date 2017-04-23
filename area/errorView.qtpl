@@ -1,0 +1,20 @@
+{% code
+type ErrorPage struct {
+	*BasePage
+}
+%}
+
+{% func (p *ErrorPage) RenderTitle() %}{%= p.Render_Title() %} {% endfunc %}
+{% func (p *ErrorPage) RenderKwd() %}{%= p.Render_Kwd() %} {% endfunc %}
+
+{% func (p *ErrorPage) RenderCss() %}{% endfunc %}
+
+{% func (p *ErrorPage) RenderScript() %}{% endfunc %}
+
+
+{% func (p *ErrorPage) RenderBody() %}
+	{% code 
+		err:= p.BasePage.BPD.Data["error"]
+	%}
+	<div class="text-center text-danger">{%s err.(string) %}</div>
+{% endfunc %}

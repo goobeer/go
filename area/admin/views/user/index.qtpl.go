@@ -11,188 +11,259 @@ import (
 	qt422016 "github.com/valyala/quicktemplate"
 )
 
-// Main page template. Implements BasePage methods.
-//
+//line admin\views\user\index.qtpl:2
+import (
+	"fasthttpweb/area"
+	"fasthttpweb/model"
+)
 
-//line admin\views\user\index.qtpl:4
-import "fasthttpweb/area"
-
-//line admin\views\user\index.qtpl:7
+//line admin\views\user\index.qtpl:8
 var (
 	_ = qtio422016.Copy
 	_ = qt422016.AcquireByteBuffer
 )
 
-//line admin\views\user\index.qtpl:8
+//line admin\views\user\index.qtpl:9
 type IndexPage struct {
 	*area.BasePage
 }
 
-//line admin\views\user\index.qtpl:13
+//line admin\views\user\index.qtpl:14
 func (p *IndexPage) StreamRenderTitle(qw422016 *qt422016.Writer) {
-	//line admin\views\user\index.qtpl:13
+	//line admin\views\user\index.qtpl:14
 	p.StreamRender_Title(qw422016)
-	//line admin\views\user\index.qtpl:13
+	//line admin\views\user\index.qtpl:14
 	qw422016.N().S(` `)
-//line admin\views\user\index.qtpl:13
+//line admin\views\user\index.qtpl:14
 }
 
-//line admin\views\user\index.qtpl:13
+//line admin\views\user\index.qtpl:14
 func (p *IndexPage) WriteRenderTitle(qq422016 qtio422016.Writer) {
-	//line admin\views\user\index.qtpl:13
+	//line admin\views\user\index.qtpl:14
 	qw422016 := qt422016.AcquireWriter(qq422016)
-	//line admin\views\user\index.qtpl:13
+	//line admin\views\user\index.qtpl:14
 	p.StreamRenderTitle(qw422016)
-	//line admin\views\user\index.qtpl:13
+	//line admin\views\user\index.qtpl:14
 	qt422016.ReleaseWriter(qw422016)
-//line admin\views\user\index.qtpl:13
+//line admin\views\user\index.qtpl:14
 }
 
-//line admin\views\user\index.qtpl:13
+//line admin\views\user\index.qtpl:14
 func (p *IndexPage) RenderTitle() string {
-	//line admin\views\user\index.qtpl:13
+	//line admin\views\user\index.qtpl:14
 	qb422016 := qt422016.AcquireByteBuffer()
-	//line admin\views\user\index.qtpl:13
+	//line admin\views\user\index.qtpl:14
 	p.WriteRenderTitle(qb422016)
-	//line admin\views\user\index.qtpl:13
+	//line admin\views\user\index.qtpl:14
 	qs422016 := string(qb422016.B)
-	//line admin\views\user\index.qtpl:13
+	//line admin\views\user\index.qtpl:14
 	qt422016.ReleaseByteBuffer(qb422016)
-	//line admin\views\user\index.qtpl:13
+	//line admin\views\user\index.qtpl:14
 	return qs422016
-//line admin\views\user\index.qtpl:13
+//line admin\views\user\index.qtpl:14
 }
 
-//line admin\views\user\index.qtpl:14
+//line admin\views\user\index.qtpl:15
 func (p *IndexPage) StreamRenderKwd(qw422016 *qt422016.Writer) {
-	//line admin\views\user\index.qtpl:14
+	//line admin\views\user\index.qtpl:15
 	p.StreamRender_Kwd(qw422016)
-	//line admin\views\user\index.qtpl:14
+	//line admin\views\user\index.qtpl:15
 	qw422016.N().S(` `)
-//line admin\views\user\index.qtpl:14
+//line admin\views\user\index.qtpl:15
 }
 
-//line admin\views\user\index.qtpl:14
+//line admin\views\user\index.qtpl:15
 func (p *IndexPage) WriteRenderKwd(qq422016 qtio422016.Writer) {
-	//line admin\views\user\index.qtpl:14
+	//line admin\views\user\index.qtpl:15
 	qw422016 := qt422016.AcquireWriter(qq422016)
-	//line admin\views\user\index.qtpl:14
+	//line admin\views\user\index.qtpl:15
 	p.StreamRenderKwd(qw422016)
-	//line admin\views\user\index.qtpl:14
+	//line admin\views\user\index.qtpl:15
 	qt422016.ReleaseWriter(qw422016)
-//line admin\views\user\index.qtpl:14
+//line admin\views\user\index.qtpl:15
 }
 
-//line admin\views\user\index.qtpl:14
+//line admin\views\user\index.qtpl:15
 func (p *IndexPage) RenderKwd() string {
-	//line admin\views\user\index.qtpl:14
+	//line admin\views\user\index.qtpl:15
 	qb422016 := qt422016.AcquireByteBuffer()
-	//line admin\views\user\index.qtpl:14
+	//line admin\views\user\index.qtpl:15
 	p.WriteRenderKwd(qb422016)
-	//line admin\views\user\index.qtpl:14
+	//line admin\views\user\index.qtpl:15
 	qs422016 := string(qb422016.B)
-	//line admin\views\user\index.qtpl:14
+	//line admin\views\user\index.qtpl:15
 	qt422016.ReleaseByteBuffer(qb422016)
-	//line admin\views\user\index.qtpl:14
+	//line admin\views\user\index.qtpl:15
 	return qs422016
-//line admin\views\user\index.qtpl:14
+//line admin\views\user\index.qtpl:15
 }
 
-//line admin\views\user\index.qtpl:16
+//line admin\views\user\index.qtpl:17
 func (p *IndexPage) StreamRenderCss(qw422016 *qt422016.Writer) {
-//line admin\views\user\index.qtpl:16
+//line admin\views\user\index.qtpl:17
 }
 
-//line admin\views\user\index.qtpl:16
+//line admin\views\user\index.qtpl:17
 func (p *IndexPage) WriteRenderCss(qq422016 qtio422016.Writer) {
-	//line admin\views\user\index.qtpl:16
+	//line admin\views\user\index.qtpl:17
 	qw422016 := qt422016.AcquireWriter(qq422016)
-	//line admin\views\user\index.qtpl:16
+	//line admin\views\user\index.qtpl:17
 	p.StreamRenderCss(qw422016)
-	//line admin\views\user\index.qtpl:16
+	//line admin\views\user\index.qtpl:17
 	qt422016.ReleaseWriter(qw422016)
-//line admin\views\user\index.qtpl:16
+//line admin\views\user\index.qtpl:17
 }
 
-//line admin\views\user\index.qtpl:16
+//line admin\views\user\index.qtpl:17
 func (p *IndexPage) RenderCss() string {
-	//line admin\views\user\index.qtpl:16
+	//line admin\views\user\index.qtpl:17
 	qb422016 := qt422016.AcquireByteBuffer()
-	//line admin\views\user\index.qtpl:16
+	//line admin\views\user\index.qtpl:17
 	p.WriteRenderCss(qb422016)
-	//line admin\views\user\index.qtpl:16
+	//line admin\views\user\index.qtpl:17
 	qs422016 := string(qb422016.B)
-	//line admin\views\user\index.qtpl:16
+	//line admin\views\user\index.qtpl:17
 	qt422016.ReleaseByteBuffer(qb422016)
-	//line admin\views\user\index.qtpl:16
+	//line admin\views\user\index.qtpl:17
 	return qs422016
-//line admin\views\user\index.qtpl:16
+//line admin\views\user\index.qtpl:17
 }
 
-//line admin\views\user\index.qtpl:18
+//line admin\views\user\index.qtpl:19
 func (p *IndexPage) StreamRenderScript(qw422016 *qt422016.Writer) {
-//line admin\views\user\index.qtpl:18
+//line admin\views\user\index.qtpl:19
 }
 
-//line admin\views\user\index.qtpl:18
+//line admin\views\user\index.qtpl:19
 func (p *IndexPage) WriteRenderScript(qq422016 qtio422016.Writer) {
-	//line admin\views\user\index.qtpl:18
+	//line admin\views\user\index.qtpl:19
 	qw422016 := qt422016.AcquireWriter(qq422016)
-	//line admin\views\user\index.qtpl:18
+	//line admin\views\user\index.qtpl:19
 	p.StreamRenderScript(qw422016)
-	//line admin\views\user\index.qtpl:18
+	//line admin\views\user\index.qtpl:19
 	qt422016.ReleaseWriter(qw422016)
-//line admin\views\user\index.qtpl:18
+//line admin\views\user\index.qtpl:19
 }
 
-//line admin\views\user\index.qtpl:18
+//line admin\views\user\index.qtpl:19
 func (p *IndexPage) RenderScript() string {
-	//line admin\views\user\index.qtpl:18
+	//line admin\views\user\index.qtpl:19
 	qb422016 := qt422016.AcquireByteBuffer()
-	//line admin\views\user\index.qtpl:18
+	//line admin\views\user\index.qtpl:19
 	p.WriteRenderScript(qb422016)
-	//line admin\views\user\index.qtpl:18
+	//line admin\views\user\index.qtpl:19
 	qs422016 := string(qb422016.B)
-	//line admin\views\user\index.qtpl:18
+	//line admin\views\user\index.qtpl:19
 	qt422016.ReleaseByteBuffer(qb422016)
-	//line admin\views\user\index.qtpl:18
+	//line admin\views\user\index.qtpl:19
 	return qs422016
-//line admin\views\user\index.qtpl:18
+//line admin\views\user\index.qtpl:19
 }
 
 //line admin\views\user\index.qtpl:21
 func (p *IndexPage) StreamRenderBody(qw422016 *qt422016.Writer) {
 	//line admin\views\user\index.qtpl:21
 	qw422016.N().S(`
+	`)
+	//line admin\views\user\index.qtpl:23
+	modelVal := p.BasePage.BPD.Data["Model"]
+	var users []model.Users
+	if modelVal != nil {
+		users = modelVal.([]model.Users)
+	}
+
+	//line admin\views\user\index.qtpl:28
+	qw422016.N().S(`
+	
 	<div class="text-center">
-		admin-user-body
+		<a class="btn btn-default" href="/admin/user/create">添加</a>
+		`)
+	//line admin\views\user\index.qtpl:32
+	if users != nil {
+		//line admin\views\user\index.qtpl:32
+		qw422016.N().S(`
+			<table class="table table-borderd table-hover">
+			`)
+		//line admin\views\user\index.qtpl:34
+		for _, v := range users {
+			//line admin\views\user\index.qtpl:34
+			qw422016.N().S(`
+			`)
+			//line admin\views\user\index.qtpl:36
+			id := int(v.ID)
+
+			//line admin\views\user\index.qtpl:37
+			qw422016.N().S(`
+				<tr>
+					<td><a href="/admin/user/detail?id=`)
+			//line admin\views\user\index.qtpl:39
+			qw422016.N().D(id)
+			//line admin\views\user\index.qtpl:39
+			qw422016.N().S(`">`)
+			//line admin\views\user\index.qtpl:39
+			qw422016.E().S(v.Name)
+			//line admin\views\user\index.qtpl:39
+			qw422016.N().S(`</a></td>
+					<td>`)
+			//line admin\views\user\index.qtpl:40
+			qw422016.E().S(v.CreateTime.Format("2006-01-02 15:04:05"))
+			//line admin\views\user\index.qtpl:40
+			qw422016.N().S(`</td>
+					<td>`)
+			//line admin\views\user\index.qtpl:41
+			qw422016.E().V(v.Used)
+			//line admin\views\user\index.qtpl:41
+			qw422016.N().S(`</td>
+					<td>
+						<a href="/admin/user/edit?id=`)
+			//line admin\views\user\index.qtpl:43
+			qw422016.N().D(id)
+			//line admin\views\user\index.qtpl:43
+			qw422016.N().S(`">编辑</a><a href="/admin/user/mdelete?id=`)
+			//line admin\views\user\index.qtpl:43
+			qw422016.N().D(id)
+			//line admin\views\user\index.qtpl:43
+			qw422016.N().S(`">删除</a>
+					</td>
+				</tr>
+			`)
+			//line admin\views\user\index.qtpl:46
+		}
+		//line admin\views\user\index.qtpl:46
+		qw422016.N().S(`
+			</table>
+		`)
+		//line admin\views\user\index.qtpl:48
+	}
+	//line admin\views\user\index.qtpl:48
+	qw422016.N().S(`
 	</div>
 `)
-//line admin\views\user\index.qtpl:25
+//line admin\views\user\index.qtpl:50
 }
 
-//line admin\views\user\index.qtpl:25
+//line admin\views\user\index.qtpl:50
 func (p *IndexPage) WriteRenderBody(qq422016 qtio422016.Writer) {
-	//line admin\views\user\index.qtpl:25
+	//line admin\views\user\index.qtpl:50
 	qw422016 := qt422016.AcquireWriter(qq422016)
-	//line admin\views\user\index.qtpl:25
+	//line admin\views\user\index.qtpl:50
 	p.StreamRenderBody(qw422016)
-	//line admin\views\user\index.qtpl:25
+	//line admin\views\user\index.qtpl:50
 	qt422016.ReleaseWriter(qw422016)
-//line admin\views\user\index.qtpl:25
+//line admin\views\user\index.qtpl:50
 }
 
-//line admin\views\user\index.qtpl:25
+//line admin\views\user\index.qtpl:50
 func (p *IndexPage) RenderBody() string {
-	//line admin\views\user\index.qtpl:25
+	//line admin\views\user\index.qtpl:50
 	qb422016 := qt422016.AcquireByteBuffer()
-	//line admin\views\user\index.qtpl:25
+	//line admin\views\user\index.qtpl:50
 	p.WriteRenderBody(qb422016)
-	//line admin\views\user\index.qtpl:25
+	//line admin\views\user\index.qtpl:50
 	qs422016 := string(qb422016.B)
-	//line admin\views\user\index.qtpl:25
+	//line admin\views\user\index.qtpl:50
 	qt422016.ReleaseByteBuffer(qb422016)
-	//line admin\views\user\index.qtpl:25
+	//line admin\views\user\index.qtpl:50
 	return qs422016
-//line admin\views\user\index.qtpl:25
+//line admin\views\user\index.qtpl:50
 }

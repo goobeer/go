@@ -1,0 +1,57 @@
+{% 
+	import (
+		"fasthttpweb/area"
+		"fasthttpweb/model"
+	)
+%}
+
+{% code
+type DetailPage struct {
+	*area.BasePage
+}
+%}
+
+{% func (p *DetailPage) RenderTitle() %}{%= p.Render_Title() %} {% endfunc %}
+{% func (p *DetailPage) RenderKwd() %}{%= p.Render_Kwd() %} {% endfunc %}
+
+{% func (p *DetailPage) RenderCss() %}{% endfunc %}
+
+{% func (p *DetailPage) RenderScript() %}
+<script type="text/javascript" src="/public/ueditor/ueditor.config.js"></script>
+<script type="text/javascript" src="/public/ueditor/ueditor.all.js"></script>
+<script type="text/javascript">
+	$(function(){
+		var editor = new baidu.editor.ui.Editor({initialFrameWidth: 784,initialFrameHeight: 400});
+    	editor.render('Content');
+	});
+</script>
+{% endfunc %}
+
+
+{% func (p *DetailPage) RenderBody() %}
+	<div class="text-center">
+		{% code 
+			err:=p.BasePage.BPD.Data["error"]
+			art:=p.BasePage.BPD.Data["Model"]
+			var artVal *model.Article
+			if art!=nil{
+				artVal=art.(*model.Article)
+			}
+		%}
+		{% if err!=nil %}<div class="text-danger">{%s err.(string) %}</div>{% endif %}
+		{% if artVal!=nil %}
+			<div>
+				标题:{%s artVal.Title %}
+			</div>
+			<div>
+				创建时间:{%s artVal.CreateTime.Format("2006-01-02 15:04:05") %}
+			</div>
+			<div>
+				启用:{% if artVal.Used %}是{% else %}否{% endif %}
+			</div>
+			<div>
+				{%s= artVal.Content %}
+			</div>
+		{% endif %}
+	</div>
+{% endfunc %}

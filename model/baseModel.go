@@ -27,6 +27,15 @@ func init() {
 	engine.Sync2(new(Users))
 	engine.Sync2(new(Article))
 	engine.Sync2(new(Privilege))
+
+	user := &Users{BaseModel: &BaseModel{}}
+	user.Name = "root"
+	user.Pwd = "123456"
+	user.Used = true
+	user.GeneratePwd()
+	if !user.RepeatName() {
+		user.Add(user)
+	}
 }
 
 func NewDBEngine() (*xorm.Engine, error) {
@@ -65,8 +74,34 @@ func (bm *BaseModel) Get(bean, query interface{}, args ...interface{}) (ok bool,
 	return
 }
 
+func (bm *BaseModel) GetWithCols(bean interface{}, incCols, omitCols string, query interface{}, args ...interface{}) (ok bool, err error) {
+	var session *xorm.Session
+	if len(incCols) > 0 {
+		session = bm.DbCommandSession(query, args...).Cols(incCols)
+	} else if len(omitCols) > 0 {
+		session = bm.DbCommandSession(query, args...).Omit(omitCols)
+	} else {
+		session = bm.DbCommandSession(query, args...)
+	}
+	ok, err = session.Get(bean)
+	return
+}
+
 func (bm *BaseModel) GetList(rowSlicePtr interface{}, pageNumber, pageSize uint, query interface{}, args ...interface{}) (err error) {
 	err = bm.DbListCommandSession(pageNumber, pageSize, query, args...).Find(rowSlicePtr)
+	return
+}
+
+func (bm *BaseModel) GetListWithCols(rowSlicePtr interface{}, incCols, omitCols string, pageNumber, pageSize uint, query interface{}, args ...interface{}) (err error) {
+	var session *xorm.Session
+	if len(incCols) > 0 {
+		session = bm.DbListCommandSession(pageNumber, pageSize, query, args...).Cols(incCols)
+	} else if len(omitCols) > 0 {
+		session = bm.DbListCommandSession(pageNumber, pageSize, query, args...).Omit(omitCols)
+	} else {
+		session = bm.DbListCommandSession(pageNumber, pageSize, query, args...)
+	}
+	err = session.Find(rowSlicePtr)
 	return
 }
 

@@ -20,25 +20,34 @@ type IndexPage struct {
 
 {% func (p *IndexPage) RenderScript() %}{% endfunc %}
 
-{% func showModel(model []model.Article) %}
-	{% if model!=nil && len(model)>0 %}
+{% func (p *IndexPage) RenderBody() %}
+	{% code 
+		modelVal:=p.BasePage.BPD.Data["Model"]
+		var arts []model.Article
+		if modelVal!=nil{
+			arts=modelVal.([]model.Article)
+		}
+	%}
+	<div class="text-center">
+		<a class="btn btn-default" href="/admin/article/create">添加</a>
+		
+		{% if arts!=nil && len(arts)>0 %}
 		<table class="table table-bordered table-hover">
-		{% for _,v:=range model %}
+		{% for _,v:=range arts %}
+		{% code
+			id:=int(v.ID)
+		%}
 			<tr>
-				<td>{%s v.Title %}</td>
-				<td>{%s= v.Content %}</td>
+				<td><a href="/admin/article/detail?id={%d id %}">{%s v.Title %}</a></td>
 				<td>{%s v.CreateTime.Format("2006-01-02 15:04:05") %}</td>
 				<td>{% if v.Used %}是{% else %}否{% endif %}</td>
+				<td>
+					<a href="/admin/article/edit?id={%d id %}">编辑</a>
+					<a href="/admin/article/mdelete?id={%d id %}">删除</a>
+				</td>
 			</tr>
 		{% endfor %}
 		</table>
-	{% endif %}
-{% endfunc %}
-
-{% func (p *IndexPage) RenderBody() %}
-	<div class="text-center">
-		{% if p.BasePage.BPD.Data["error"]!=nil %}{%v p.BasePage.BPD.Data["error"] %}{% endif %}
-		<a href="/admin/article/create">添加</a>
-		{%= showModel(p.BasePage.BPD.Data["Model"].([]model.Article)) %}
+		{% endif %}
 	</div>
 {% endfunc %}

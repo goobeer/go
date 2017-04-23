@@ -21,7 +21,6 @@ type Users struct {
 func (u *Users) Add(users ...*Users) (r int64, err error) {
 	var ms []interface{}
 	for _, v := range users {
-		v.ChangePwd()
 		ms = append(ms, v)
 	}
 
@@ -29,12 +28,20 @@ func (u *Users) Add(users ...*Users) (r int64, err error) {
 	return
 }
 
-func (u *Users) ChangePwd() {
+func (u *Users) GeneratePwd() {
 	salt, _ := common.CreateRandom(5, 4)
 	hash := md5.New()
 	hash.Write([]byte(u.Pwd + salt))
 	chash := hash.Sum(nil)
 	u.Pwd = fmt.Sprintf("%s:%s", hex.EncodeToString(chash), salt)
+}
+
+func (u *Users) RepeatName() (isRepeat bool) {
+	count, err := u.DbCommandSession("Name=?", u.Name).Count(u)
+	if err == nil {
+		isRepeat = count > 0
+	}
+	return
 }
 
 func (user *Users) VerfyUser(name, pwd string) (has bool, err error) {
