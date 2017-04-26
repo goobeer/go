@@ -20,7 +20,8 @@ type IndexPage struct {
 
 {% func (p *IndexPage) RenderBody() %}
 	<div class="text-center">
-		<a href="/admin/article">文章列表</a>
-		<a href="admin/user">用户列表</a>
+		<a href="{%s area.Url2("admin","article","index",nil) %}">文章列表</a>
+		<a href="{%s area.Url2("admin","articletype","",nil) %}">文章类型</a>
+		<a href="{%s area.Url2("admin","user","",nil) %}">用户列表</a>
 	</div>
 {% endfunc %}

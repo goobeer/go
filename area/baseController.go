@@ -112,6 +112,26 @@ func Url(bp *BasePage, actionName string, data map[string]interface{}) string {
 	return url
 }
 
+func Url2(areaName, ctrlName, actionName string, data map[string]interface{}) string {
+	url := fmt.Sprintf("/%s/%s/%s", areaName, ctrlName, actionName)
+	if data != nil && len(data) > 0 {
+		var urlParams string
+		i := 0
+		for k, v := range data {
+			if i == 0 {
+				i++
+			}
+			if i > 1 {
+				urlParams += fmt.Sprintf("&%s=%v", k, v)
+			} else {
+				urlParams = fmt.Sprintf("?%s=%v", k, v)
+			}
+		}
+		url += urlParams
+	}
+	return url
+}
+
 func (c *BaseController) StartSession() sessions.Session {
 	return sessions.StartFasthttp(c.Ctx)
 }

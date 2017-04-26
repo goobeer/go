@@ -165,35 +165,48 @@ func (p *IndexPage) StreamRenderBody(qw422016 *qt422016.Writer) {
 	//line admin\views\index\index.qtpl:21
 	qw422016.N().S(`
 	<div class="text-center">
-		<a href="/admin/article">文章列表</a>
-		<a href="admin/user">用户列表</a>
+		<a href="`)
+	//line admin\views\index\index.qtpl:23
+	qw422016.E().S(area.Url2("admin", "article", "index", nil))
+	//line admin\views\index\index.qtpl:23
+	qw422016.N().S(`">文章列表</a>
+		<a href="`)
+	//line admin\views\index\index.qtpl:24
+	qw422016.E().S(area.Url2("admin", "articletype", "", nil))
+	//line admin\views\index\index.qtpl:24
+	qw422016.N().S(`">文章类型</a>
+		<a href="`)
+	//line admin\views\index\index.qtpl:25
+	qw422016.E().S(area.Url2("admin", "user", "", nil))
+	//line admin\views\index\index.qtpl:25
+	qw422016.N().S(`">用户列表</a>
 	</div>
 `)
-//line admin\views\index\index.qtpl:26
+//line admin\views\index\index.qtpl:27
 }
 
-//line admin\views\index\index.qtpl:26
+//line admin\views\index\index.qtpl:27
 func (p *IndexPage) WriteRenderBody(qq422016 qtio422016.Writer) {
-	//line admin\views\index\index.qtpl:26
+	//line admin\views\index\index.qtpl:27
 	qw422016 := qt422016.AcquireWriter(qq422016)
-	//line admin\views\index\index.qtpl:26
+	//line admin\views\index\index.qtpl:27
 	p.StreamRenderBody(qw422016)
-	//line admin\views\index\index.qtpl:26
+	//line admin\views\index\index.qtpl:27
 	qt422016.ReleaseWriter(qw422016)
-//line admin\views\index\index.qtpl:26
+//line admin\views\index\index.qtpl:27
 }
 
-//line admin\views\index\index.qtpl:26
+//line admin\views\index\index.qtpl:27
 func (p *IndexPage) RenderBody() string {
-	//line admin\views\index\index.qtpl:26
+	//line admin\views\index\index.qtpl:27
 	qb422016 := qt422016.AcquireByteBuffer()
-	//line admin\views\index\index.qtpl:26
+	//line admin\views\index\index.qtpl:27
 	p.WriteRenderBody(qb422016)
-	//line admin\views\index\index.qtpl:26
+	//line admin\views\index\index.qtpl:27
 	qs422016 := string(qb422016.B)
-	//line admin\views\index\index.qtpl:26
+	//line admin\views\index\index.qtpl:27
 	qt422016.ReleaseByteBuffer(qb422016)
-	//line admin\views\index\index.qtpl:26
+	//line admin\views\index\index.qtpl:27
 	return qs422016
-//line admin\views\index\index.qtpl:26
+//line admin\views\index\index.qtpl:27
 }

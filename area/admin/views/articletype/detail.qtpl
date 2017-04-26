@@ -1,0 +1,39 @@
+{% 
+	import (
+		"fasthttpweb/area"
+		"fasthttpweb/model"
+	)
+%}
+
+{% code
+type DetailPage struct {
+	*area.BasePage
+}
+%}
+
+{% func (p *DetailPage) RenderTitle() %}{%= p.BasePage.RenderTitle() %} {% endfunc %}
+{% func (p *DetailPage) RenderKwd() %}{%= p.BasePage.RenderKwd() %} {% endfunc %}
+
+{% func (p *DetailPage) RenderCss() %}{% endfunc %}
+
+{% func (p *DetailPage) RenderScript() %}{% endfunc %}
+
+{% func (p *DetailPage) RenderBody() %}
+	<div class="text-center">
+		{% code 
+			art:=p.BasePage.BPD.Data["Model"]
+			var artVal *model.ArticleType
+			if art!=nil{
+				artVal=art.(*model.ArticleType)
+			}
+		%}
+		{% if artVal!=nil %}
+			<div>
+				名称:{%s artVal.Name %}
+			</div>
+			<div>
+				排序:{%d artVal.Ord %}
+			</div>
+		{% endif %}
+	</div>
+{% endfunc %}

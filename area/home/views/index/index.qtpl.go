@@ -165,34 +165,43 @@ func (p *IndexPage) StreamRenderBody(qw422016 *qt422016.Writer) {
 	//line home\views\index\index.qtpl:19
 	qw422016.N().S(`
 	<div class="text-center">
-		<a href="/admin/user/logout">退出</a>
+		<a href="`)
+	//line home\views\index\index.qtpl:21
+	qw422016.E().S(area.Url2("admin", "user", "logout", nil))
+	//line home\views\index\index.qtpl:21
+	qw422016.N().S(`">退出</a>
+		<a href="`)
+	//line home\views\index\index.qtpl:22
+	qw422016.E().S(area.Url2("admin", "index", "index", nil))
+	//line home\views\index\index.qtpl:22
+	qw422016.N().S(`">后台</a>
 	</div>
 `)
-//line home\views\index\index.qtpl:23
+//line home\views\index\index.qtpl:24
 }
 
-//line home\views\index\index.qtpl:23
+//line home\views\index\index.qtpl:24
 func (p *IndexPage) WriteRenderBody(qq422016 qtio422016.Writer) {
-	//line home\views\index\index.qtpl:23
+	//line home\views\index\index.qtpl:24
 	qw422016 := qt422016.AcquireWriter(qq422016)
-	//line home\views\index\index.qtpl:23
+	//line home\views\index\index.qtpl:24
 	p.StreamRenderBody(qw422016)
-	//line home\views\index\index.qtpl:23
+	//line home\views\index\index.qtpl:24
 	qt422016.ReleaseWriter(qw422016)
-//line home\views\index\index.qtpl:23
+//line home\views\index\index.qtpl:24
 }
 
-//line home\views\index\index.qtpl:23
+//line home\views\index\index.qtpl:24
 func (p *IndexPage) RenderBody() string {
-	//line home\views\index\index.qtpl:23
+	//line home\views\index\index.qtpl:24
 	qb422016 := qt422016.AcquireByteBuffer()
-	//line home\views\index\index.qtpl:23
+	//line home\views\index\index.qtpl:24
 	p.WriteRenderBody(qb422016)
-	//line home\views\index\index.qtpl:23
+	//line home\views\index\index.qtpl:24
 	qs422016 := string(qb422016.B)
-	//line home\views\index\index.qtpl:23
+	//line home\views\index\index.qtpl:24
 	qt422016.ReleaseByteBuffer(qb422016)
-	//line home\views\index\index.qtpl:23
+	//line home\views\index\index.qtpl:24
 	return qs422016
-//line home\views\index\index.qtpl:23
+//line home\views\index\index.qtpl:24
 }
