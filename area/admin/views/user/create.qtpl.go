@@ -164,7 +164,11 @@ func (p *CreatePage) StreamRenderBody(qw422016 *qt422016.Writer) {
 	//line admin\views\user\create.qtpl:20
 	qw422016.N().S(`
 	<div class="text-center">
-		<form class="form-horizontal" action="/admin/user/create" method="POST">
+		<form class="form-horizontal" action="`)
+	//line admin\views\user\create.qtpl:22
+	qw422016.E().S(area.Url(p.BasePage, "create", nil))
+	//line admin\views\user\create.qtpl:22
+	qw422016.N().S(`" method="POST">
 			<div class="form-group">
 				<label class="control-label col-md-2">用户名：</label>
 				<div class="col-md-10">

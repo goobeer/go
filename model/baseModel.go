@@ -53,11 +53,6 @@ func (bm *BaseModel) Add(m ...interface{}) (r int64, err error) {
 	return
 }
 
-func (bm *BaseModel) Add1(m ...interface{}) (r int64, err error) {
-	r, err = engine.Insert(m...)
-	return
-}
-
 func (bm *BaseModel) Delete(bean, query interface{}, args ...interface{}) (r int64, err error) {
 	r, err = bm.DbCommandSession(query, args...).Delete(bean)
 	return

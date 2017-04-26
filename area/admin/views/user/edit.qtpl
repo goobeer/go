@@ -28,7 +28,7 @@ type EditPage struct {
 	%}
 	<div class="text-center">
 		{% if user!=nil %}
-			<form class="form-horizontal" action="/admin/user/edit" method="POST">
+			<form class="form-horizontal" action="{%s area.Url(p.BasePage,"edit",nil) %}" method="POST">
 			<input type="hidden" name="ID" value="{%d int(user.ID) %}" />
 			<div class="form-group">
 				<label class="control-label col-md-2">密码：</label>

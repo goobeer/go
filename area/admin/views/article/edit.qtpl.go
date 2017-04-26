@@ -191,7 +191,11 @@ func (p *EditPage) StreamRenderBody(qw422016 *qt422016.Writer) {
 		//line admin\views\article\edit.qtpl:39
 		qw422016.N().S(`
 	<div class="text-center">
-		<form class="form-horizontal" action="/admin/article/edit" method="POST">
+		<form class="form-horizontal" action="`)
+		//line admin\views\article\edit.qtpl:41
+		qw422016.E().S(area.Url(p.BasePage, "edit", nil))
+		//line admin\views\article\edit.qtpl:41
+		qw422016.N().S(`" method="POST">
 			<input type="hidden" name="ID" value="`)
 		//line admin\views\article\edit.qtpl:42
 		qw422016.N().D(int(artVal.ID))

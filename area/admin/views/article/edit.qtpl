@@ -38,7 +38,7 @@ type EditPage struct {
 	%}
 	{% if artVal!=nil %}
 	<div class="text-center">
-		<form class="form-horizontal" action="/admin/article/edit" method="POST">
+		<form class="form-horizontal" action="{%s area.Url(p.BasePage,"edit",nil) %}" method="POST">
 			<input type="hidden" name="ID" value="{%d int(artVal.ID) %}" />
 			<div class="form-group">
 				<label class="control-label col-md-2">标题：</label>

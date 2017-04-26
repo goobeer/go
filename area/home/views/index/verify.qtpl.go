@@ -214,7 +214,11 @@ func (p *VerfyPage) StreamRenderBody(qw422016 *qt422016.Writer) {
 	qw422016.N().S(`
 	
 	<div class="text-center">
-		<form class="form-horizontal" action="/home/index/verify" method="POST">
+		<form class="form-horizontal" action="`)
+	//line home\views\index\verify.qtpl:50
+	qw422016.E().S(area.Url(p.BasePage, "verify", nil))
+	//line home\views\index\verify.qtpl:50
+	qw422016.N().S(`" method="POST">
 			<div class="form-group">
 				<label class="control-label col-md-2">手机号:</label>
 				<div class="col-md-8">

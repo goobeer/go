@@ -18,7 +18,7 @@ func init() {
 }
 
 func (c *ArticleTypeController) Index() {
-	bpd := area.NewBasePageData(areaName, "articletype", "articleType", "")
+	bpd := area.NewBasePageData(areaName, "articleType", "", c)
 	bp := area.NewBasePage(c.Ctx, bpd)
 	pageNumber := c.Ctx.FormValue("pageNumber")
 	pageNumVal, pageSize := 1, 10

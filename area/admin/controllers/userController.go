@@ -21,7 +21,7 @@ func init() {
 }
 
 func (c *UserController) Index() {
-	bpd := area.NewBasePageData(areaName, "User", "admin-user-title", "admin-user-kwd")
+	bpd := area.NewBasePageData(areaName, "admin-user-title", "admin-user-kwd", c)
 	bp := area.NewBasePage(c.Ctx, bpd)
 	user := &model.Users{}
 	var users []model.Users
@@ -37,7 +37,7 @@ func (c *UserController) Index() {
 }
 
 func (c *UserController) Create() {
-	bpd := area.NewBasePageData(areaName, "User", "admin-user-title", "admin-user-kwd")
+	bpd := area.NewBasePageData(areaName, "admin-user-title", "admin-user-kwd", c)
 	bp := area.NewBasePage(c.Ctx, bpd)
 	page := &view.CreatePage{bp}
 	c.View(page, "text/html")
@@ -74,7 +74,7 @@ func (c *UserController) Edit() {
 			user := &model.Users{BaseModel: &model.BaseModel{}}
 			_, err = user.Get(user, "id=?", idv)
 			if err == nil {
-				bpd := area.NewBasePageData(areaName, "User", "admin-user-title", "admin-user-kwd")
+				bpd := area.NewBasePageData(areaName, "admin-user-title", "admin-user-kwd", c)
 				bp := area.NewBasePage(c.Ctx, bpd)
 				bpd.Data["Model"] = user
 				page := &view.EditPage{bp}

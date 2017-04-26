@@ -180,7 +180,11 @@ func (p *EditPage) StreamRenderBody(qw422016 *qt422016.Writer) {
 	if user != nil {
 		//line admin\views\user\edit.qtpl:30
 		qw422016.N().S(`
-			<form class="form-horizontal" action="/admin/user/edit" method="POST">
+			<form class="form-horizontal" action="`)
+		//line admin\views\user\edit.qtpl:31
+		qw422016.E().S(area.Url(p.BasePage, "edit", nil))
+		//line admin\views\user\edit.qtpl:31
+		qw422016.N().S(`" method="POST">
 			<input type="hidden" name="ID" value="`)
 		//line admin\views\user\edit.qtpl:32
 		qw422016.N().D(int(user.ID))

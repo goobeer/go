@@ -1,5 +1,3 @@
-// Main page template. Implements BasePage methods.
-
 {% import "fasthttpweb/area" %}
 
 {% code
@@ -24,7 +22,7 @@ type LoginPage struct {
 	{% endif %}
 	</div>
 	<div class="text-center">
-		<form class="form-horizontal" action="/home/index/login" method="POST">
+		<form class="form-horizontal" action="{%s area.Url(p.BasePage,"login",nil) %}" method="POST">
 			<div class="form-group">
 				<label class="control-label col-md-2">用户名:</label>
 				<div class="col-md-8">

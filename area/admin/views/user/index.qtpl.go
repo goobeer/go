@@ -176,7 +176,11 @@ func (p *IndexPage) StreamRenderBody(qw422016 *qt422016.Writer) {
 	qw422016.N().S(`
 	
 	<div class="text-center">
-		<a class="btn btn-default" href="/admin/user/create">添加</a>
+		<a class="btn btn-default" href="`)
+	//line admin\views\user\index.qtpl:31
+	qw422016.E().S(area.Url(p.BasePage, "create", nil))
+	//line admin\views\user\index.qtpl:31
+	qw422016.N().S(`">添加</a>
 		`)
 	//line admin\views\user\index.qtpl:32
 	if users != nil {
@@ -191,79 +195,82 @@ func (p *IndexPage) StreamRenderBody(qw422016 *qt422016.Writer) {
 			`)
 			//line admin\views\user\index.qtpl:36
 			id := int(v.ID)
+			data := make(map[string]interface{})
+			data["id"] = id
 
-			//line admin\views\user\index.qtpl:37
+			//line admin\views\user\index.qtpl:39
 			qw422016.N().S(`
 				<tr>
-					<td><a href="/admin/user/detail?id=`)
-			//line admin\views\user\index.qtpl:39
-			qw422016.N().D(id)
-			//line admin\views\user\index.qtpl:39
+					<td><a href="`)
+			//line admin\views\user\index.qtpl:41
+			qw422016.E().S(area.Url(p.BasePage, "detail", data))
+			//line admin\views\user\index.qtpl:41
 			qw422016.N().S(`">`)
-			//line admin\views\user\index.qtpl:39
+			//line admin\views\user\index.qtpl:41
 			qw422016.E().S(v.Name)
-			//line admin\views\user\index.qtpl:39
+			//line admin\views\user\index.qtpl:41
 			qw422016.N().S(`</a></td>
 					<td>`)
-			//line admin\views\user\index.qtpl:40
+			//line admin\views\user\index.qtpl:42
 			qw422016.E().S(v.CreateTime.Format("2006-01-02 15:04:05"))
-			//line admin\views\user\index.qtpl:40
+			//line admin\views\user\index.qtpl:42
 			qw422016.N().S(`</td>
 					<td>`)
-			//line admin\views\user\index.qtpl:41
+			//line admin\views\user\index.qtpl:43
 			qw422016.E().V(v.Used)
-			//line admin\views\user\index.qtpl:41
+			//line admin\views\user\index.qtpl:43
 			qw422016.N().S(`</td>
 					<td>
-						<a href="/admin/user/edit?id=`)
-			//line admin\views\user\index.qtpl:43
-			qw422016.N().D(id)
-			//line admin\views\user\index.qtpl:43
-			qw422016.N().S(`">编辑</a><a href="/admin/user/mdelete?id=`)
-			//line admin\views\user\index.qtpl:43
-			qw422016.N().D(id)
-			//line admin\views\user\index.qtpl:43
+						<a href="`)
+			//line admin\views\user\index.qtpl:45
+			qw422016.E().S(area.Url(p.BasePage, "edit", data))
+			//line admin\views\user\index.qtpl:45
+			qw422016.N().S(`">编辑</a>
+						<a href="`)
+			//line admin\views\user\index.qtpl:46
+			qw422016.E().S(area.Url(p.BasePage, "mdelete", data))
+			//line admin\views\user\index.qtpl:46
 			qw422016.N().S(`">删除</a>
 					</td>
 				</tr>
 			`)
-			//line admin\views\user\index.qtpl:46
+			//line admin\views\user\index.qtpl:49
 		}
-		//line admin\views\user\index.qtpl:46
+		//line admin\views\user\index.qtpl:49
 		qw422016.N().S(`
 			</table>
 		`)
-		//line admin\views\user\index.qtpl:48
+		//line admin\views\user\index.qtpl:51
 	}
-	//line admin\views\user\index.qtpl:48
+	//line admin\views\user\index.qtpl:51
 	qw422016.N().S(`
 	</div>
 `)
-//line admin\views\user\index.qtpl:50
+//line admin\views\user\index.qtpl:53
 }
 
-//line admin\views\user\index.qtpl:50
+//line admin\views\user\index.qtpl:53
 func (p *IndexPage) WriteRenderBody(qq422016 qtio422016.Writer) {
-	//line admin\views\user\index.qtpl:50
+	//line admin\views\user\index.qtpl:53
 	qw422016 := qt422016.AcquireWriter(qq422016)
-	//line admin\views\user\index.qtpl:50
+	//line admin\views\user\index.qtpl:53
 	p.StreamRenderBody(qw422016)
-	//line admin\views\user\index.qtpl:50
+	//line admin\views\user\index.qtpl:53
 	qt422016.ReleaseWriter(qw422016)
-//line admin\views\user\index.qtpl:50
+//line admin\views\user\index.qtpl:53
 }
 
-//line admin\views\user\index.qtpl:50
+//line admin\views\user\index.qtpl:53
 func (p *IndexPage) RenderBody() string {
-	//line admin\views\user\index.qtpl:50
+	//line admin\views\user\index.qtpl:53
 	qb422016 := qt422016.AcquireByteBuffer()
-	//line admin\views\user\index.qtpl:50
+	//line admin\views\user\index.qtpl:53
 	p.WriteRenderBody(qb422016)
-	//line admin\views\user\index.qtpl:50
+	//line admin\views\user\index.qtpl:53
 	qs422016 := string(qb422016.B)
-	//line admin\views\user\index.qtpl:50
+	//line admin\views\user\index.qtpl:53
 	qt422016.ReleaseByteBuffer(qb422016)
-	//line admin\views\user\index.qtpl:50
+	//line admin\views\user\index.qtpl:53
 	return qs422016
-//line admin\views\user\index.qtpl:50
+//line admin\views\user\index.qtpl:53
 }

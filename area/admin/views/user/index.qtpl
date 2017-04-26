@@ -28,19 +28,22 @@ type IndexPage struct {
 	%}
 	
 	<div class="text-center">
-		<a class="btn btn-default" href="/admin/user/create">添加</a>
+		<a class="btn btn-default" href="{%s area.Url(p.BasePage,"create",nil) %}">添加</a>
 		{% if users!=nil %}
 			<table class="table table-borderd table-hover">
 			{% for _,v:=range users %}
 			{% code 
 				id:=int(v.ID)
+				data:=make(map[string]interface{})
+				data["id"]=id
 			%}
 				<tr>
-					<td><a href="/admin/user/detail?id={%d id %}">{%s v.Name %}</a></td>
+					<td><a href="{%s area.Url(p.BasePage,"detail",data) %}">{%s v.Name %}</a></td>
 					<td>{%s v.CreateTime.Format("2006-01-02 15:04:05") %}</td>
 					<td>{%v v.Used %}</td>
 					<td>
-						<a href="/admin/user/edit?id={%d id %}">编辑</a><a href="/admin/user/mdelete?id={%d id %}">删除</a>
+						<a href="{%s area.Url(p.BasePage,"edit",data) %}">编辑</a>
+						<a href="{%s area.Url(p.BasePage,"mdelete",data) %}">删除</a>
 					</td>
 				</tr>
 			{% endfor %}

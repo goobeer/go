@@ -19,7 +19,7 @@ type CreatePage struct {
 
 {% func (p *CreatePage) RenderBody() %}
 	<div class="text-center">
-		<form class="form-horizontal" action="/admin/user/create" method="POST">
+		<form class="form-horizontal" action="{%s area.Url(p.BasePage,"create",nil) %}" method="POST">
 			<div class="form-group">
 				<label class="control-label col-md-2">用户名：</label>
 				<div class="col-md-10">

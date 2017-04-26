@@ -45,7 +45,7 @@ func (c *IndexController) Index() {
 	}
 
 	user := sess.Get("user")
-	bpd := area.NewBasePageData(areaName, "Index", "", "")
+	bpd := area.NewBasePageData(areaName, "", "", c)
 	bp := area.NewBasePage(c.Ctx, bpd)
 	bpd.Data["user"] = user
 	ip := &hv.IndexPage{BasePage: bp}
@@ -54,7 +54,7 @@ func (c *IndexController) Index() {
 }
 
 func (c *IndexController) Verify() {
-	bpd := area.NewBasePageData(areaName, "Index", "", "")
+	bpd := area.NewBasePageData(areaName, "", "", c)
 	bp := area.NewBasePage(c.Ctx, bpd)
 	ip := &hv.VerfyPage{BasePage: bp}
 
@@ -92,7 +92,7 @@ func (c *IndexController) Login() {
 		return
 	}
 
-	bpd := area.NewBasePageData(areaName, "Index", "", "")
+	bpd := area.NewBasePageData(areaName, "", "", c)
 	bp := area.NewBasePage(c.Ctx, bpd)
 
 	page := &hv.LoginPage{bp}
@@ -140,7 +140,7 @@ func (c *IndexController) Logout() {
 }
 
 func (c *IndexController) getErrorHomeVerfyPage(errMsg string) {
-	bpd := area.NewBasePageData(areaName, "Index", "", "")
+	bpd := area.NewBasePageData(areaName, "", "", c)
 	bp := area.NewBasePage(c.Ctx, bpd)
 	bpd.Data["error"] = errMsg
 	phoneBytes := c.Ctx.FormValue("phone")
@@ -151,7 +151,7 @@ func (c *IndexController) getErrorHomeVerfyPage(errMsg string) {
 }
 
 func (c *IndexController) getErrorHomeLoginPage(errMsg string) {
-	bpd := area.NewBasePageData(areaName, "Index", "", "")
+	bpd := area.NewBasePageData(areaName, "", "", c)
 	bp := area.NewBasePage(c.Ctx, bpd)
 	bpd.Data["ErrMsg"] = errMsg
 	page := &hv.LoginPage{bp}

@@ -84,7 +84,11 @@ func NewBasePage(ctx *fasthttp.RequestCtx, bpd *BasePageData) *BasePage {
 	return &BasePage{CTX: ctx, BPD: bpd}
 }
 
-func NewBasePageData(areaName, ctrlName, title, kwd string) *BasePageData {
+func NewBasePageData(areaName, title, kwd string, ciPtr interface{}) *BasePageData {
+	ciType := reflect.TypeOf(ciPtr)
+	t := strings.Split(strings.ToLower(ciType.String()), ".")
+	ctrlName := t[len(t)-1]
+	ctrlName = strings.TrimSuffix(ctrlName, controllerFlag)
 	return &BasePageData{AreaName: areaName, CtrlName: ctrlName, Title: title, Kwd: kwd, Data: make(map[string]interface{})}
 }
 
@@ -244,8 +248,8 @@ func (c *BaseController) ParseFunc(areaName, actionName string, ci interface{}) 
 	return fmt.Sprintf("/%s/%s/%s", areaName, typeStr, actionName)
 }
 
-func (c *BaseController) ErrorView(areaName, ctrlName, title string, err error) {
-	bpd := NewBasePageData(areaName, ctrlName, title, "")
+func (c *BaseController) ErrorView(areaName, title string, ciPtr interface{}, err error) {
+	bpd := NewBasePageData(areaName, title, "", ciPtr)
 	bp := NewBasePage(c.Ctx, bpd)
 
 	bpd.Data["error"] = err.Error()

@@ -19,7 +19,7 @@ func init() {
 }
 
 func (c *ArticleController) Index() {
-	bpd := area.NewBasePageData(areaName, "article", "article-title", "article-kwd")
+	bpd := area.NewBasePageData(areaName, "article-title", "article-kwd", c)
 	bp := area.NewBasePage(c.Ctx, bpd)
 
 	var err error
@@ -48,7 +48,7 @@ func (c *ArticleController) Index() {
 }
 
 func (c *ArticleController) Create() {
-	bpd := area.NewBasePageData(areaName, "Index", "article-create", "article-create")
+	bpd := area.NewBasePageData(areaName, "article-create", "article-create", c)
 	bp := area.NewBasePage(c.Ctx, bpd)
 
 	page := &view.CreatePage{bp}
@@ -56,7 +56,7 @@ func (c *ArticleController) Create() {
 }
 
 func (c *ArticleController) PostCreate() {
-	bpd := area.NewBasePageData(areaName, "Index", "article-title", "article-kwd")
+	bpd := area.NewBasePageData(areaName, "article-title", "article-kwd", c)
 	bp := area.NewBasePage(c.Ctx, bpd)
 
 	title := c.Ctx.FormValue("Title")
@@ -76,7 +76,7 @@ func (c *ArticleController) PostCreate() {
 }
 
 func (c *ArticleController) Detail() {
-	bpd := area.NewBasePageData(areaName, "Index", "article-title", "article-kwd")
+	bpd := area.NewBasePageData(areaName, "article-title", "article-kwd", c)
 	bp := area.NewBasePage(c.Ctx, bpd)
 	id := c.Ctx.FormValue("id")
 	idv := -1
@@ -109,7 +109,7 @@ func (c *ArticleController) Edit() {
 			c.ErrorView(areaName, "article", "article-edit", errors.New("invilated param"))
 			return
 		}
-		bpd := area.NewBasePageData(areaName, "Index", "article-title", "article-kwd")
+		bpd := area.NewBasePageData(areaName, "article-title", "article-kwd", c)
 		bp := area.NewBasePage(c.Ctx, bpd)
 		art := &model.Article{}
 		_, err = art.Get(art, "id=?", int(idv))
