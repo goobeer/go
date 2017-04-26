@@ -4,13 +4,12 @@ type ErrorPage struct {
 }
 %}
 
-{% func (p *ErrorPage) RenderTitle() %}{%= p.Render_Title() %} {% endfunc %}
-{% func (p *ErrorPage) RenderKwd() %}{%= p.Render_Kwd() %} {% endfunc %}
+{% func (p *ErrorPage) RenderTitle() %}{%= p.BasePage.RenderTitle() %} {% endfunc %}
+{% func (p *ErrorPage) RenderKwd() %}{%= p.BasePage.RenderKwd() %} {% endfunc %}
 
 {% func (p *ErrorPage) RenderCss() %}{% endfunc %}
 
 {% func (p *ErrorPage) RenderScript() %}{% endfunc %}
-
 
 {% func (p *ErrorPage) RenderBody() %}
 	{% code 

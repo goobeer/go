@@ -11,8 +11,8 @@ type EditPage struct {
 }
 %}
 
-{% func (p *EditPage) RenderTitle() %}{%= p.Render_Title() %} {% endfunc %}
-{% func (p *EditPage) RenderKwd() %}{%= p.Render_Kwd() %} {% endfunc %}
+{% func (p *EditPage) RenderTitle() %}{%= p.BasePage.RenderTitle() %} {% endfunc %}
+{% func (p *EditPage) RenderKwd() %}{%= p.BasePage.RenderKwd() %} {% endfunc %}
 
 {% func (p *EditPage) RenderCss() %}{% endfunc %}
 

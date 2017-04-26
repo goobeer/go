@@ -8,8 +8,8 @@ type VerfyPage struct {
 }
 %}
 
-{% func (p *VerfyPage) RenderTitle() %}{%= p.Render_Title() %}{% endfunc %}
-{% func (p *VerfyPage) RenderKwd() %} {%= p.Render_Kwd() %} {% endfunc %}
+{% func (p *VerfyPage) RenderTitle() %}{%= p.BasePage.RenderTitle() %}{% endfunc %}
+{% func (p *VerfyPage) RenderKwd() %} {%= p.BasePage.RenderKwd() %} {% endfunc %}
 
 {% func (p *VerfyPage) RenderCss() %}
 	<style type="text/css">

@@ -31,7 +31,7 @@ type EditPage struct {
 //line admin\views\user\edit.qtpl:14
 func (p *EditPage) StreamRenderTitle(qw422016 *qt422016.Writer) {
 	//line admin\views\user\edit.qtpl:14
-	p.StreamRender_Title(qw422016)
+	p.BasePage.StreamRenderTitle(qw422016)
 	//line admin\views\user\edit.qtpl:14
 	qw422016.N().S(` `)
 //line admin\views\user\edit.qtpl:14
@@ -66,7 +66,7 @@ func (p *EditPage) RenderTitle() string {
 //line admin\views\user\edit.qtpl:15
 func (p *EditPage) StreamRenderKwd(qw422016 *qt422016.Writer) {
 	//line admin\views\user\edit.qtpl:15
-	p.StreamRender_Kwd(qw422016)
+	p.BasePage.StreamRenderKwd(qw422016)
 	//line admin\views\user\edit.qtpl:15
 	qw422016.N().S(` `)
 //line admin\views\user\edit.qtpl:15

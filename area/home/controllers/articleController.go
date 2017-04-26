@@ -16,8 +16,8 @@ func init() {
 }
 
 func (c *ArticleController) Index() {
-	bpd := c.InitBasePageData(areaName, "Index", "article-title", "article-kwd")
-	bp := &area.BasePage{CTX: c.Ctx, BPD: bpd}
+	bpd := area.NewBasePageData(areaName, "Index", "article-title", "article-kwd")
+	bp := area.NewBasePage(c.Ctx, bpd)
 
 	ip := &view.IndexPage{bp}
 

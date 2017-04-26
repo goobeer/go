@@ -17,6 +17,17 @@ func TestArticleAdd(t *testing.T) {
 	}
 }
 
+func TestArticleAdd1(t *testing.T) {
+	art := &Article{Title: "党中xxxx央", Content: "不xxx错哟", Used: true}
+	artType := &ArticleType{Name: "C#", Ord: 1}
+	r, err := artType.Add1(art, artType)
+	if err != nil {
+		t.Error(err)
+	} else {
+		t.Log(r)
+	}
+}
+
 func TestArticleDelete(t *testing.T) {
 	art := &Article{}
 	r, err := art.Delete(art, "id>=?", 4)

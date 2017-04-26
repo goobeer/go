@@ -30,10 +30,11 @@ type VerfyPage struct {
 
 //line home\views\index\verify.qtpl:11
 func (p *VerfyPage) StreamRenderTitle(qw422016 *qt422016.Writer) {
+	//line home\views\index\verify.qtpl:11
+	p.BasePage.StreamRenderTitle(qw422016)
 //line home\views\index\verify.qtpl:11
-p.StreamRender_Title(qw422016) }
+}
 
-//line home\views\index\verify.qtpl:11
 //line home\views\index\verify.qtpl:11
 func (p *VerfyPage) WriteRenderTitle(qq422016 qtio422016.Writer) {
 	//line home\views\index\verify.qtpl:11
@@ -65,7 +66,7 @@ func (p *VerfyPage) StreamRenderKwd(qw422016 *qt422016.Writer) {
 	//line home\views\index\verify.qtpl:12
 	qw422016.N().S(` `)
 	//line home\views\index\verify.qtpl:12
-	p.StreamRender_Kwd(qw422016)
+	p.BasePage.StreamRenderKwd(qw422016)
 	//line home\views\index\verify.qtpl:12
 	qw422016.N().S(` `)
 //line home\views\index\verify.qtpl:12

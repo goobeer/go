@@ -10,8 +10,8 @@ type IndexPage struct {
 }
 %}
 
-{% func (p *IndexPage) RenderTitle() %}{%= p.Render_Title() %}{% endfunc %}
-{% func (p *IndexPage) RenderKwd() %} {%= p.Render_Kwd() %}{% endfunc %}
+{% func (p *IndexPage) RenderTitle() %}{%= p.BasePage.RenderTitle() %}{% endfunc %}
+{% func (p *IndexPage) RenderKwd() %} {%= p.BasePage.RenderKwd() %}{% endfunc %}
 
 {% func (p *IndexPage) RenderCss() %}{% endfunc %}
 {% func (p *IndexPage) RenderScript() %}{% endfunc %}

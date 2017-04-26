@@ -2,7 +2,8 @@ This is a base page template. All the other template pages implement this interf
 
 {% import (
 	"github.com/valyala/fasthttp"
-) %}
+	)
+%}
 
 {% interface
 Page {
@@ -37,24 +38,23 @@ Page prints a page implementing Page interface.
 Base page implementation. Other pages may inherit from it if they need
 overriding only certain Page methods
 
-{% code type BasePageData struct{
+{% code 
+	type BasePageData struct{
 	AreaName string
 	CtrlName string
 	Title string
 	Kwd string
 	Data map[string]interface{}
-} %}
+	}
+	
+	type BasePage struct {
+		CTX *fasthttp.RequestCtx
+		BPD *BasePageData
+	}
+%}
 
-{% code type BasePage struct {
-	CTX *fasthttp.RequestCtx
-	BPD *BasePageData
-} %}
-
-{% func (p *BasePage) RenderTitle() %}<title>{% if p.BPD!=nil && len(p.BPD.Title)>0 %} {%s p.BPD.Title %} {% else %}This is a title {% endif %}</title>{% endfunc %}
-{% func (p *BasePage) Render_Title() %}<title>{% if p.BPD!=nil && len(p.BPD.Title)>0 %} {%s p.BPD.Title %} {% else %}This is a title {% endif %}</title>{% endfunc %}
-
+{% func (p *BasePage) RenderTitle() %}<title>{% if p.BPD!=nil && len(p.BPD.Title)>0 %}{%s p.BPD.Title %}{% else %}This is a title {% endif %}</title>{% endfunc %}
 {% func (p *BasePage) RenderKwd() %}{% if p.BPD!=nil && len(p.BPD.Kwd)>0 %}<meta name="keywords" content="{%s p.BPD.Kwd %}" />{% endif %} {% endfunc %}
-{% func (p *BasePage) Render_Kwd() %}{% if p.BPD!=nil && len(p.BPD.Kwd)>0 %}<meta name="keywords" content="{%s p.BPD.Kwd %}" />{% endif %} {% endfunc %}
 
 {% func (p *BasePage) RenderBody() %}This is a body{% endfunc %}
 {% func (p *BasePage) RenderCss() %} {% endfunc %}

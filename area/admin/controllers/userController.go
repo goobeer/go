@@ -21,8 +21,8 @@ func init() {
 }
 
 func (c *UserController) Index() {
-	bpd := c.InitBasePageData(areaName, "User", "admin-user-title", "admin-user-kwd")
-	bp := &area.BasePage{CTX: c.Ctx, BPD: bpd}
+	bpd := area.NewBasePageData(areaName, "User", "admin-user-title", "admin-user-kwd")
+	bp := area.NewBasePage(c.Ctx, bpd)
 	user := &model.Users{}
 	var users []model.Users
 	pageNumber, pageSize := 0, 10
@@ -37,8 +37,8 @@ func (c *UserController) Index() {
 }
 
 func (c *UserController) Create() {
-	bpd := c.InitBasePageData(areaName, "User", "admin-user-title", "admin-user-kwd")
-	bp := &area.BasePage{CTX: c.Ctx, BPD: bpd}
+	bpd := area.NewBasePageData(areaName, "User", "admin-user-title", "admin-user-kwd")
+	bp := area.NewBasePage(c.Ctx, bpd)
 	page := &view.CreatePage{bp}
 	c.View(page, "text/html")
 }
@@ -74,8 +74,8 @@ func (c *UserController) Edit() {
 			user := &model.Users{BaseModel: &model.BaseModel{}}
 			_, err = user.Get(user, "id=?", idv)
 			if err == nil {
-				bpd := c.InitBasePageData(areaName, "User", "admin-user-title", "admin-user-kwd")
-				bp := &area.BasePage{CTX: c.Ctx, BPD: bpd}
+				bpd := area.NewBasePageData(areaName, "User", "admin-user-title", "admin-user-kwd")
+				bp := area.NewBasePage(c.Ctx, bpd)
 				bpd.Data["Model"] = user
 				page := &view.EditPage{bp}
 				c.View(page, "text/html")
@@ -126,8 +126,8 @@ func (c *UserController) Detail() {
 			user := &model.Users{BaseModel: &model.BaseModel{}}
 			_, err = user.Get(user, "id=?", idv)
 			if err == nil {
-				bpd := c.InitBasePageData(areaName, "User", "admin-user-title", "admin-user-kwd")
-				bp := &area.BasePage{CTX: c.Ctx, BPD: bpd}
+				bpd := area.NewBasePageData(areaName, "User", "admin-user-title", "admin-user-kwd")
+				bp := area.NewBasePage(c.Ctx, bpd)
 				bpd.Data["Model"] = user
 				page := &view.DetailPage{bp}
 				c.View(page, "text/html")

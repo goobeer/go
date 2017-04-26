@@ -18,16 +18,6 @@ type Users struct {
 	Used       bool
 }
 
-func (u *Users) Add(users ...*Users) (r int64, err error) {
-	var ms []interface{}
-	for _, v := range users {
-		ms = append(ms, v)
-	}
-
-	r, err = u.BaseModel.Add(ms...)
-	return
-}
-
 func (u *Users) GeneratePwd() {
 	salt, _ := common.CreateRandom(5, 4)
 	hash := md5.New()

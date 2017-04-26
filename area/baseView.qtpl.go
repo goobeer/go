@@ -19,124 +19,124 @@ import (
 	"github.com/valyala/fasthttp"
 )
 
-//line baseView.qtpl:7
+//line baseView.qtpl:8
 var (
 	_ = qtio422016.Copy
 	_ = qt422016.AcquireByteBuffer
 )
 
-//line baseView.qtpl:8
+//line baseView.qtpl:9
 type Page interface {
-	//line baseView.qtpl:8
+	//line baseView.qtpl:9
 	RenderTitle() string
-	//line baseView.qtpl:8
+	//line baseView.qtpl:9
 	StreamRenderTitle(qw422016 *qt422016.Writer)
-	//line baseView.qtpl:8
+	//line baseView.qtpl:9
 	WriteRenderTitle(qq422016 qtio422016.Writer)
-	//line baseView.qtpl:8
+	//line baseView.qtpl:9
 	RenderKwd() string
-	//line baseView.qtpl:8
+	//line baseView.qtpl:9
 	StreamRenderKwd(qw422016 *qt422016.Writer)
-	//line baseView.qtpl:8
+	//line baseView.qtpl:9
 	WriteRenderKwd(qq422016 qtio422016.Writer)
-	//line baseView.qtpl:8
+	//line baseView.qtpl:9
 	RenderBody() string
-	//line baseView.qtpl:8
+	//line baseView.qtpl:9
 	StreamRenderBody(qw422016 *qt422016.Writer)
-	//line baseView.qtpl:8
+	//line baseView.qtpl:9
 	WriteRenderBody(qq422016 qtio422016.Writer)
-	//line baseView.qtpl:8
+	//line baseView.qtpl:9
 	RenderCss() string
-	//line baseView.qtpl:8
+	//line baseView.qtpl:9
 	StreamRenderCss(qw422016 *qt422016.Writer)
-	//line baseView.qtpl:8
+	//line baseView.qtpl:9
 	WriteRenderCss(qq422016 qtio422016.Writer)
-	//line baseView.qtpl:8
+	//line baseView.qtpl:9
 	RenderScript() string
-	//line baseView.qtpl:8
+	//line baseView.qtpl:9
 	StreamRenderScript(qw422016 *qt422016.Writer)
-	//line baseView.qtpl:8
+	//line baseView.qtpl:9
 	WriteRenderScript(qq422016 qtio422016.Writer)
-//line baseView.qtpl:8
+//line baseView.qtpl:9
 }
 
 // Page prints a page implementing Page interface.
 
-//line baseView.qtpl:18
+//line baseView.qtpl:19
 func StreamPageTemplate(qw422016 *qt422016.Writer, p Page) {
-	//line baseView.qtpl:18
+	//line baseView.qtpl:19
 	qw422016.N().S(`
 <html>
 	<head>
 		`)
-	//line baseView.qtpl:21
+	//line baseView.qtpl:22
 	p.StreamRenderTitle(qw422016)
-	//line baseView.qtpl:21
+	//line baseView.qtpl:22
 	qw422016.N().S(`
 		<meta charset="utf-8" />
 		`)
-	//line baseView.qtpl:23
+	//line baseView.qtpl:24
 	p.StreamRenderKwd(qw422016)
-	//line baseView.qtpl:23
+	//line baseView.qtpl:24
 	qw422016.N().S(`
 		<link href="/public/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 		<link href="/public/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
 		`)
-	//line baseView.qtpl:26
+	//line baseView.qtpl:27
 	p.StreamRenderCss(qw422016)
-	//line baseView.qtpl:26
+	//line baseView.qtpl:27
 	qw422016.N().S(`
 	</head>
 	<body>
 		`)
-	//line baseView.qtpl:29
+	//line baseView.qtpl:30
 	p.StreamRenderBody(qw422016)
-	//line baseView.qtpl:29
+	//line baseView.qtpl:30
 	qw422016.N().S(`
 		<script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
 		<script src="/public/bootstrap/js/bootstrap.min.js"></script>
 		`)
-	//line baseView.qtpl:32
+	//line baseView.qtpl:33
 	p.StreamRenderScript(qw422016)
-	//line baseView.qtpl:32
+	//line baseView.qtpl:33
 	qw422016.N().S(`
 	</body>
 </html>
 `)
-//line baseView.qtpl:35
+//line baseView.qtpl:36
 }
 
-//line baseView.qtpl:35
+//line baseView.qtpl:36
 func WritePageTemplate(qq422016 qtio422016.Writer, p Page) {
-	//line baseView.qtpl:35
+	//line baseView.qtpl:36
 	qw422016 := qt422016.AcquireWriter(qq422016)
-	//line baseView.qtpl:35
+	//line baseView.qtpl:36
 	StreamPageTemplate(qw422016, p)
-	//line baseView.qtpl:35
+	//line baseView.qtpl:36
 	qt422016.ReleaseWriter(qw422016)
-//line baseView.qtpl:35
+//line baseView.qtpl:36
 }
 
-//line baseView.qtpl:35
+//line baseView.qtpl:36
 func PageTemplate(p Page) string {
-	//line baseView.qtpl:35
+	//line baseView.qtpl:36
 	qb422016 := qt422016.AcquireByteBuffer()
-	//line baseView.qtpl:35
+	//line baseView.qtpl:36
 	WritePageTemplate(qb422016, p)
-	//line baseView.qtpl:35
+	//line baseView.qtpl:36
 	qs422016 := string(qb422016.B)
-	//line baseView.qtpl:35
+	//line baseView.qtpl:36
 	qt422016.ReleaseByteBuffer(qb422016)
-	//line baseView.qtpl:35
+	//line baseView.qtpl:36
 	return qs422016
-//line baseView.qtpl:35
+//line baseView.qtpl:36
 }
 
 // Base page implementation. Other pages may inherit from it if they need
 // overriding only certain Page methods
 //
 
-//line baseView.qtpl:40
+//line baseView.qtpl:42
 type BasePageData struct {
 	AreaName string
 	CtrlName string
@@ -145,187 +145,90 @@ type BasePageData struct {
 	Data     map[string]interface{}
 }
 
-//line baseView.qtpl:48
 type BasePage struct {
 	CTX *fasthttp.RequestCtx
 	BPD *BasePageData
 }
 
-//line baseView.qtpl:53
+//line baseView.qtpl:56
 func (p *BasePage) StreamRenderTitle(qw422016 *qt422016.Writer) {
-	//line baseView.qtpl:53
+	//line baseView.qtpl:56
 	qw422016.N().S(`<title>`)
-	//line baseView.qtpl:53
+	//line baseView.qtpl:56
 	if p.BPD != nil && len(p.BPD.Title) > 0 {
-		//line baseView.qtpl:53
-		qw422016.N().S(` `)
-		//line baseView.qtpl:53
+		//line baseView.qtpl:56
 		qw422016.E().S(p.BPD.Title)
-		//line baseView.qtpl:53
-		qw422016.N().S(` `)
-		//line baseView.qtpl:53
+		//line baseView.qtpl:56
 	} else {
-		//line baseView.qtpl:53
+		//line baseView.qtpl:56
 		qw422016.N().S(`This is a title `)
-		//line baseView.qtpl:53
+		//line baseView.qtpl:56
 	}
-	//line baseView.qtpl:53
+	//line baseView.qtpl:56
 	qw422016.N().S(`</title>`)
-//line baseView.qtpl:53
+//line baseView.qtpl:56
 }
 
-//line baseView.qtpl:53
+//line baseView.qtpl:56
 func (p *BasePage) WriteRenderTitle(qq422016 qtio422016.Writer) {
-	//line baseView.qtpl:53
+	//line baseView.qtpl:56
 	qw422016 := qt422016.AcquireWriter(qq422016)
-	//line baseView.qtpl:53
+	//line baseView.qtpl:56
 	p.StreamRenderTitle(qw422016)
-	//line baseView.qtpl:53
+	//line baseView.qtpl:56
 	qt422016.ReleaseWriter(qw422016)
-//line baseView.qtpl:53
+//line baseView.qtpl:56
 }
 
-//line baseView.qtpl:53
+//line baseView.qtpl:56
 func (p *BasePage) RenderTitle() string {
-	//line baseView.qtpl:53
+	//line baseView.qtpl:56
 	qb422016 := qt422016.AcquireByteBuffer()
-	//line baseView.qtpl:53
+	//line baseView.qtpl:56
 	p.WriteRenderTitle(qb422016)
-	//line baseView.qtpl:53
+	//line baseView.qtpl:56
 	qs422016 := string(qb422016.B)
-	//line baseView.qtpl:53
+	//line baseView.qtpl:56
 	qt422016.ReleaseByteBuffer(qb422016)
-	//line baseView.qtpl:53
+	//line baseView.qtpl:56
 	return qs422016
-//line baseView.qtpl:53
-}
-
-//line baseView.qtpl:54
-func (p *BasePage) StreamRender_Title(qw422016 *qt422016.Writer) {
-	//line baseView.qtpl:54
-	qw422016.N().S(`<title>`)
-	//line baseView.qtpl:54
-	if p.BPD != nil && len(p.BPD.Title) > 0 {
-		//line baseView.qtpl:54
-		qw422016.N().S(` `)
-		//line baseView.qtpl:54
-		qw422016.E().S(p.BPD.Title)
-		//line baseView.qtpl:54
-		qw422016.N().S(` `)
-		//line baseView.qtpl:54
-	} else {
-		//line baseView.qtpl:54
-		qw422016.N().S(`This is a title `)
-		//line baseView.qtpl:54
-	}
-	//line baseView.qtpl:54
-	qw422016.N().S(`</title>`)
-//line baseView.qtpl:54
-}
-
-//line baseView.qtpl:54
-func (p *BasePage) WriteRender_Title(qq422016 qtio422016.Writer) {
-	//line baseView.qtpl:54
-	qw422016 := qt422016.AcquireWriter(qq422016)
-	//line baseView.qtpl:54
-	p.StreamRender_Title(qw422016)
-	//line baseView.qtpl:54
-	qt422016.ReleaseWriter(qw422016)
-//line baseView.qtpl:54
-}
-
-//line baseView.qtpl:54
-func (p *BasePage) Render_Title() string {
-	//line baseView.qtpl:54
-	qb422016 := qt422016.AcquireByteBuffer()
-	//line baseView.qtpl:54
-	p.WriteRender_Title(qb422016)
-	//line baseView.qtpl:54
-	qs422016 := string(qb422016.B)
-	//line baseView.qtpl:54
-	qt422016.ReleaseByteBuffer(qb422016)
-	//line baseView.qtpl:54
-	return qs422016
-//line baseView.qtpl:54
-}
-
 //line baseView.qtpl:56
+}
+
+//line baseView.qtpl:57
 func (p *BasePage) StreamRenderKwd(qw422016 *qt422016.Writer) {
-	//line baseView.qtpl:56
+	//line baseView.qtpl:57
 	if p.BPD != nil && len(p.BPD.Kwd) > 0 {
-		//line baseView.qtpl:56
+		//line baseView.qtpl:57
 		qw422016.N().S(`<meta name="keywords" content="`)
-		//line baseView.qtpl:56
+		//line baseView.qtpl:57
 		qw422016.E().S(p.BPD.Kwd)
-		//line baseView.qtpl:56
+		//line baseView.qtpl:57
 		qw422016.N().S(`" />`)
-		//line baseView.qtpl:56
+		//line baseView.qtpl:57
 	}
-	//line baseView.qtpl:56
+	//line baseView.qtpl:57
 	qw422016.N().S(` `)
-//line baseView.qtpl:56
+//line baseView.qtpl:57
 }
 
-//line baseView.qtpl:56
+//line baseView.qtpl:57
 func (p *BasePage) WriteRenderKwd(qq422016 qtio422016.Writer) {
-	//line baseView.qtpl:56
+	//line baseView.qtpl:57
 	qw422016 := qt422016.AcquireWriter(qq422016)
-	//line baseView.qtpl:56
+	//line baseView.qtpl:57
 	p.StreamRenderKwd(qw422016)
-	//line baseView.qtpl:56
+	//line baseView.qtpl:57
 	qt422016.ReleaseWriter(qw422016)
-//line baseView.qtpl:56
+//line baseView.qtpl:57
 }
 
-//line baseView.qtpl:56
+//line baseView.qtpl:57
 func (p *BasePage) RenderKwd() string {
-	//line baseView.qtpl:56
+	//line baseView.qtpl:57
 	qb422016 := qt422016.AcquireByteBuffer()
-	//line baseView.qtpl:56
+	//line baseView.qtpl:57
 	p.WriteRenderKwd(qb422016)
-	//line baseView.qtpl:56
-	qs422016 := string(qb422016.B)
-	//line baseView.qtpl:56
-	qt422016.ReleaseByteBuffer(qb422016)
-	//line baseView.qtpl:56
-	return qs422016
-//line baseView.qtpl:56
-}
-
-//line baseView.qtpl:57
-func (p *BasePage) StreamRender_Kwd(qw422016 *qt422016.Writer) {
-	//line baseView.qtpl:57
-	if p.BPD != nil && len(p.BPD.Kwd) > 0 {
-		//line baseView.qtpl:57
-		qw422016.N().S(`<meta name="keywords" content="`)
-		//line baseView.qtpl:57
-		qw422016.E().S(p.BPD.Kwd)
-		//line baseView.qtpl:57
-		qw422016.N().S(`" />`)
-		//line baseView.qtpl:57
-	}
-	//line baseView.qtpl:57
-	qw422016.N().S(` `)
-//line baseView.qtpl:57
-}
-
-//line baseView.qtpl:57
-func (p *BasePage) WriteRender_Kwd(qq422016 qtio422016.Writer) {
-	//line baseView.qtpl:57
-	qw422016 := qt422016.AcquireWriter(qq422016)
-	//line baseView.qtpl:57
-	p.StreamRender_Kwd(qw422016)
-	//line baseView.qtpl:57
-	qt422016.ReleaseWriter(qw422016)
-//line baseView.qtpl:57
-}
-
-//line baseView.qtpl:57
-func (p *BasePage) Render_Kwd() string {
-	//line baseView.qtpl:57
-	qb422016 := qt422016.AcquireByteBuffer()
-	//line baseView.qtpl:57
-	p.WriteRender_Kwd(qb422016)
 	//line baseView.qtpl:57
 	qs422016 := string(qb422016.B)
 	//line baseView.qtpl:57

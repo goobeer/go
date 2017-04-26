@@ -25,7 +25,7 @@ type ErrorPage struct {
 //line errorView.qtpl:7
 func (p *ErrorPage) StreamRenderTitle(qw422016 *qt422016.Writer) {
 	//line errorView.qtpl:7
-	p.StreamRender_Title(qw422016)
+	p.BasePage.StreamRenderTitle(qw422016)
 	//line errorView.qtpl:7
 	qw422016.N().S(` `)
 //line errorView.qtpl:7
@@ -60,7 +60,7 @@ func (p *ErrorPage) RenderTitle() string {
 //line errorView.qtpl:8
 func (p *ErrorPage) StreamRenderKwd(qw422016 *qt422016.Writer) {
 	//line errorView.qtpl:8
-	p.StreamRender_Kwd(qw422016)
+	p.BasePage.StreamRenderKwd(qw422016)
 	//line errorView.qtpl:8
 	qw422016.N().S(` `)
 //line errorView.qtpl:8
@@ -154,47 +154,47 @@ func (p *ErrorPage) RenderScript() string {
 //line errorView.qtpl:12
 }
 
-//line errorView.qtpl:15
+//line errorView.qtpl:14
 func (p *ErrorPage) StreamRenderBody(qw422016 *qt422016.Writer) {
-	//line errorView.qtpl:15
+	//line errorView.qtpl:14
 	qw422016.N().S(`
 	`)
-	//line errorView.qtpl:17
+	//line errorView.qtpl:16
 	err := p.BasePage.BPD.Data["error"]
 
-	//line errorView.qtpl:18
+	//line errorView.qtpl:17
 	qw422016.N().S(`
 	<div class="text-center text-danger">`)
-	//line errorView.qtpl:19
+	//line errorView.qtpl:18
 	qw422016.E().S(err.(string))
-	//line errorView.qtpl:19
+	//line errorView.qtpl:18
 	qw422016.N().S(`</div>
 `)
-//line errorView.qtpl:20
+//line errorView.qtpl:19
 }
 
-//line errorView.qtpl:20
+//line errorView.qtpl:19
 func (p *ErrorPage) WriteRenderBody(qq422016 qtio422016.Writer) {
-	//line errorView.qtpl:20
+	//line errorView.qtpl:19
 	qw422016 := qt422016.AcquireWriter(qq422016)
-	//line errorView.qtpl:20
+	//line errorView.qtpl:19
 	p.StreamRenderBody(qw422016)
-	//line errorView.qtpl:20
+	//line errorView.qtpl:19
 	qt422016.ReleaseWriter(qw422016)
-//line errorView.qtpl:20
+//line errorView.qtpl:19
 }
 
-//line errorView.qtpl:20
+//line errorView.qtpl:19
 func (p *ErrorPage) RenderBody() string {
-	//line errorView.qtpl:20
+	//line errorView.qtpl:19
 	qb422016 := qt422016.AcquireByteBuffer()
-	//line errorView.qtpl:20
+	//line errorView.qtpl:19
 	p.WriteRenderBody(qb422016)
-	//line errorView.qtpl:20
+	//line errorView.qtpl:19
 	qs422016 := string(qb422016.B)
-	//line errorView.qtpl:20
+	//line errorView.qtpl:19
 	qt422016.ReleaseByteBuffer(qb422016)
-	//line errorView.qtpl:20
+	//line errorView.qtpl:19
 	return qs422016
-//line errorView.qtpl:20
+//line errorView.qtpl:19
 }

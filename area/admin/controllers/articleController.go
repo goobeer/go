@@ -19,8 +19,9 @@ func init() {
 }
 
 func (c *ArticleController) Index() {
-	bpd := c.InitBasePageData(areaName, "article", "article-title", "article-kwd")
-	bp := &area.BasePage{CTX: c.Ctx, BPD: bpd}
+	bpd := area.NewBasePageData(areaName, "article", "article-title", "article-kwd")
+	bp := area.NewBasePage(c.Ctx, bpd)
+
 	var err error
 	pageNumber, pageSize := 0, 10
 	page := c.Ctx.FormValue("pageNumber")
@@ -47,16 +48,16 @@ func (c *ArticleController) Index() {
 }
 
 func (c *ArticleController) Create() {
-	bpd := c.InitBasePageData(areaName, "article", "article-create", "article-create")
-	bp := &area.BasePage{CTX: c.Ctx, BPD: bpd}
+	bpd := area.NewBasePageData(areaName, "Index", "article-create", "article-create")
+	bp := area.NewBasePage(c.Ctx, bpd)
 
 	page := &view.CreatePage{bp}
 	c.View(page, "text/html")
 }
 
 func (c *ArticleController) PostCreate() {
-	bpd := c.InitBasePageData(areaName, "article", "article-title", "article-kwd")
-	bp := &area.BasePage{CTX: c.Ctx, BPD: bpd}
+	bpd := area.NewBasePageData(areaName, "Index", "article-title", "article-kwd")
+	bp := area.NewBasePage(c.Ctx, bpd)
 
 	title := c.Ctx.FormValue("Title")
 	content := c.Ctx.FormValue("Content")
@@ -75,8 +76,8 @@ func (c *ArticleController) PostCreate() {
 }
 
 func (c *ArticleController) Detail() {
-	bpd := c.InitBasePageData(areaName, "article", "article-title", "article-kwd")
-	bp := &area.BasePage{CTX: c.Ctx, BPD: bpd}
+	bpd := area.NewBasePageData(areaName, "Index", "article-title", "article-kwd")
+	bp := area.NewBasePage(c.Ctx, bpd)
 	id := c.Ctx.FormValue("id")
 	idv := -1
 	var err error
@@ -108,8 +109,8 @@ func (c *ArticleController) Edit() {
 			c.ErrorView(areaName, "article", "article-edit", errors.New("invilated param"))
 			return
 		}
-		bpd := c.InitBasePageData(areaName, "article", "article-title", "article-kwd")
-		bp := &area.BasePage{CTX: c.Ctx, BPD: bpd}
+		bpd := area.NewBasePageData(areaName, "Index", "article-title", "article-kwd")
+		bp := area.NewBasePage(c.Ctx, bpd)
 		art := &model.Article{}
 		_, err = art.Get(art, "id=?", int(idv))
 		if err != nil {

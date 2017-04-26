@@ -11,8 +11,8 @@ type DetailPage struct {
 }
 %}
 
-{% func (p *DetailPage) RenderTitle() %}{%= p.Render_Title() %} {% endfunc %}
-{% func (p *DetailPage) RenderKwd() %}{%= p.Render_Kwd() %} {% endfunc %}
+{% func (p *DetailPage) RenderTitle() %}{%= p.BasePage.RenderTitle() %} {% endfunc %}
+{% func (p *DetailPage) RenderKwd() %}{%= p.BasePage.RenderKwd() %} {% endfunc %}
 
 {% func (p *DetailPage) RenderCss() %}{% endfunc %}
 

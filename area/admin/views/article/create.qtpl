@@ -12,8 +12,8 @@ type CreatePage struct {
 }
 %}
 
-{% func (p *CreatePage) RenderTitle() %}{%= p.Render_Title() %} {% endfunc %}
-{% func (p *CreatePage) RenderKwd() %}{%= p.Render_Kwd() %} {% endfunc %}
+{% func (p *CreatePage) RenderTitle() %}{%= p.BasePage.RenderTitle() %} {% endfunc %}
+{% func (p *CreatePage) RenderKwd() %}{%= p.BasePage.RenderKwd() %} {% endfunc %}
 
 {% func (p *CreatePage) RenderCss() %}{% endfunc %}
 

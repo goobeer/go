@@ -8,9 +8,8 @@ type LoginPage struct {
 }
 %}
 
-{% func (p *LoginPage) RenderTitle() %}{%= p.Render_Title() %}{% endfunc %}
-
-{% func (p *LoginPage) RenderKwd() %}{%= p.Render_Kwd() %}{% endfunc %}
+{% func (p *LoginPage) RenderTitle() %}{%= p.BasePage.RenderTitle() %}{% endfunc %}
+{% func (p *LoginPage) RenderKwd() %}{%= p.BasePage.RenderKwd() %}{% endfunc %}
 
 {% func (p *LoginPage) RenderCss() %}
 {% endfunc %}

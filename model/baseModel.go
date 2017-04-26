@@ -27,13 +27,15 @@ func init() {
 	engine.Sync2(new(Users))
 	engine.Sync2(new(Article))
 	engine.Sync2(new(Privilege))
+	engine.Sync2(new(ArticleType))
 
 	user := &Users{BaseModel: &BaseModel{}}
 	user.Name = "root"
-	user.Pwd = "123456"
-	user.Used = true
-	user.GeneratePwd()
+
 	if !user.RepeatName() {
+		user.Pwd = "123456"
+		user.Used = true
+		user.GeneratePwd()
 		user.Add(user)
 	}
 }
@@ -47,6 +49,11 @@ func NewDBEngine() (*xorm.Engine, error) {
 }
 
 func (bm *BaseModel) Add(m ...interface{}) (r int64, err error) {
+	r, err = engine.Insert(m...)
+	return
+}
+
+func (bm *BaseModel) Add1(m ...interface{}) (r int64, err error) {
 	r, err = engine.Insert(m...)
 	return
 }

@@ -31,7 +31,7 @@ type IndexPage struct {
 //line admin\views\user\index.qtpl:14
 func (p *IndexPage) StreamRenderTitle(qw422016 *qt422016.Writer) {
 	//line admin\views\user\index.qtpl:14
-	p.StreamRender_Title(qw422016)
+	p.BasePage.StreamRenderTitle(qw422016)
 	//line admin\views\user\index.qtpl:14
 	qw422016.N().S(` `)
 //line admin\views\user\index.qtpl:14
@@ -66,7 +66,7 @@ func (p *IndexPage) RenderTitle() string {
 //line admin\views\user\index.qtpl:15
 func (p *IndexPage) StreamRenderKwd(qw422016 *qt422016.Writer) {
 	//line admin\views\user\index.qtpl:15
-	p.StreamRender_Kwd(qw422016)
+	p.BasePage.StreamRenderKwd(qw422016)
 	//line admin\views\user\index.qtpl:15
 	qw422016.N().S(` `)
 //line admin\views\user\index.qtpl:15

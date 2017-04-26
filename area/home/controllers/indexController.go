@@ -45,17 +45,17 @@ func (c *IndexController) Index() {
 	}
 
 	user := sess.Get("user")
-	bpd := c.InitBasePageData(areaName, "Index", "", "")
+	bpd := area.NewBasePageData(areaName, "Index", "", "")
+	bp := area.NewBasePage(c.Ctx, bpd)
 	bpd.Data["user"] = user
-	bp := &area.BasePage{CTX: ctx, BPD: bpd}
 	ip := &hv.IndexPage{BasePage: bp}
 
 	c.View(ip, "text/html")
 }
 
 func (c *IndexController) Verify() {
-	bpd := c.InitBasePageData(areaName, "Index", "", "")
-	bp := &area.BasePage{CTX: c.Ctx, BPD: bpd}
+	bpd := area.NewBasePageData(areaName, "Index", "", "")
+	bp := area.NewBasePage(c.Ctx, bpd)
 	ip := &hv.VerfyPage{BasePage: bp}
 
 	c.View(ip, "text/html")
@@ -91,8 +91,9 @@ func (c *IndexController) Login() {
 		ctx.Redirect("/home/index", fasthttp.StatusFound)
 		return
 	}
-	bpd := c.InitBasePageData(areaName, "Index", "", "")
-	bp := &area.BasePage{CTX: ctx, BPD: bpd}
+
+	bpd := area.NewBasePageData(areaName, "Index", "", "")
+	bp := area.NewBasePage(c.Ctx, bpd)
 
 	page := &hv.LoginPage{bp}
 
@@ -139,21 +140,20 @@ func (c *IndexController) Logout() {
 }
 
 func (c *IndexController) getErrorHomeVerfyPage(errMsg string) {
-	bpd := c.InitBasePageData(areaName, "Index", "", "")
+	bpd := area.NewBasePageData(areaName, "Index", "", "")
+	bp := area.NewBasePage(c.Ctx, bpd)
 	bpd.Data["error"] = errMsg
 	phoneBytes := c.Ctx.FormValue("phone")
 	bpd.Data["phone"] = string(phoneBytes)
-	bp := &area.BasePage{CTX: c.Ctx, BPD: bpd}
 	ip := &hv.VerfyPage{bp}
 
 	c.View(ip, "text/html")
 }
 
 func (c *IndexController) getErrorHomeLoginPage(errMsg string) {
-
-	bpd := c.InitBasePageData(areaName, "Index", "", "")
+	bpd := area.NewBasePageData(areaName, "Index", "", "")
+	bp := area.NewBasePage(c.Ctx, bpd)
 	bpd.Data["ErrMsg"] = errMsg
-	bp := &area.BasePage{CTX: c.Ctx, BPD: bpd}
 	page := &hv.LoginPage{bp}
 
 	c.View(page, "text/html")

@@ -31,7 +31,7 @@ type DetailPage struct {
 //line admin\views\user\detail.qtpl:14
 func (p *DetailPage) StreamRenderTitle(qw422016 *qt422016.Writer) {
 	//line admin\views\user\detail.qtpl:14
-	p.StreamRender_Title(qw422016)
+	p.BasePage.StreamRenderTitle(qw422016)
 	//line admin\views\user\detail.qtpl:14
 	qw422016.N().S(` `)
 //line admin\views\user\detail.qtpl:14
@@ -66,7 +66,7 @@ func (p *DetailPage) RenderTitle() string {
 //line admin\views\user\detail.qtpl:15
 func (p *DetailPage) StreamRenderKwd(qw422016 *qt422016.Writer) {
 	//line admin\views\user\detail.qtpl:15
-	p.StreamRender_Kwd(qw422016)
+	p.BasePage.StreamRenderKwd(qw422016)
 	//line admin\views\user\detail.qtpl:15
 	qw422016.N().S(` `)
 //line admin\views\user\detail.qtpl:15

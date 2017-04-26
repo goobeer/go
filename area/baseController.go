@@ -80,8 +80,32 @@ func injectFilter(httpVerb, uri string, m reflect.Method, ci interface{}) (handl
 	return
 }
 
-func (c *BaseController) InitBasePageData(areaName, ctrlName, title, kwd string) *BasePageData {
+func NewBasePage(ctx *fasthttp.RequestCtx, bpd *BasePageData) *BasePage {
+	return &BasePage{CTX: ctx, BPD: bpd}
+}
+
+func NewBasePageData(areaName, ctrlName, title, kwd string) *BasePageData {
 	return &BasePageData{AreaName: areaName, CtrlName: ctrlName, Title: title, Kwd: kwd, Data: make(map[string]interface{})}
+}
+
+func Url(bp *BasePage, actionName string, data map[string]interface{}) string {
+	url := fmt.Sprintf("/%s/%s/%s", bp.BPD.AreaName, bp.BPD.CtrlName, actionName)
+	if data != nil && len(data) > 0 {
+		var urlParams string
+		i := 0
+		for k, v := range data {
+			if i == 0 {
+				i++
+			}
+			if i > 1 {
+				urlParams += fmt.Sprintf("&%s=%v", k, v)
+			} else {
+				urlParams = fmt.Sprintf("?%s=%v", k, v)
+			}
+		}
+		url += urlParams
+	}
+	return url
 }
 
 func (c *BaseController) StartSession() sessions.Session {
@@ -107,7 +131,11 @@ func (c *BaseController) RegistRoutes(areaFlag string, ciPtr interface{}) {
 		if _, ok := rType.MethodByName(m.Name); ok {
 			continue
 		}
+
 		fName := strings.ToLower(m.Name)
+		if strings.HasPrefix(fName, "notmap") {
+			continue
+		}
 
 		var url, preFix string
 		var routeAction func(ctx *fasthttp.RequestCtx)
@@ -217,8 +245,9 @@ func (c *BaseController) ParseFunc(areaName, actionName string, ci interface{}) 
 }
 
 func (c *BaseController) ErrorView(areaName, ctrlName, title string, err error) {
-	bpd := c.InitBasePageData(areaName, ctrlName, title, "")
-	bp := &BasePage{CTX: c.Ctx, BPD: bpd}
+	bpd := NewBasePageData(areaName, ctrlName, title, "")
+	bp := NewBasePage(c.Ctx, bpd)
+
 	bpd.Data["error"] = err.Error()
 	page := &ErrorPage{bp}
 	c.View(page, "text/html")
