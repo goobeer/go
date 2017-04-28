@@ -165,43 +165,48 @@ func (p *IndexPage) StreamRenderBody(qw422016 *qt422016.Writer) {
 	//line home\views\index\index.qtpl:19
 	qw422016.N().S(`
 	<div class="text-center">
+		`)
+	//line home\views\index\index.qtpl:21
+	qw422016.N().S(area.GeneratePageLink())
+	//line home\views\index\index.qtpl:21
+	qw422016.N().S(`
 		<a href="`)
-	//line home\views\index\index.qtpl:21
+	//line home\views\index\index.qtpl:22
 	qw422016.E().S(area.Url2("admin", "user", "logout", nil))
-	//line home\views\index\index.qtpl:21
+	//line home\views\index\index.qtpl:22
 	qw422016.N().S(`">退出</a>
 		<a href="`)
-	//line home\views\index\index.qtpl:22
+	//line home\views\index\index.qtpl:23
 	qw422016.E().S(area.Url2("admin", "index", "index", nil))
-	//line home\views\index\index.qtpl:22
+	//line home\views\index\index.qtpl:23
 	qw422016.N().S(`">后台</a>
 	</div>
 `)
-//line home\views\index\index.qtpl:24
+//line home\views\index\index.qtpl:25
 }
 
-//line home\views\index\index.qtpl:24
+//line home\views\index\index.qtpl:25
 func (p *IndexPage) WriteRenderBody(qq422016 qtio422016.Writer) {
-	//line home\views\index\index.qtpl:24
+	//line home\views\index\index.qtpl:25
 	qw422016 := qt422016.AcquireWriter(qq422016)
-	//line home\views\index\index.qtpl:24
+	//line home\views\index\index.qtpl:25
 	p.StreamRenderBody(qw422016)
-	//line home\views\index\index.qtpl:24
+	//line home\views\index\index.qtpl:25
 	qt422016.ReleaseWriter(qw422016)
-//line home\views\index\index.qtpl:24
+//line home\views\index\index.qtpl:25
 }
 
-//line home\views\index\index.qtpl:24
+//line home\views\index\index.qtpl:25
 func (p *IndexPage) RenderBody() string {
-	//line home\views\index\index.qtpl:24
+	//line home\views\index\index.qtpl:25
 	qb422016 := qt422016.AcquireByteBuffer()
-	//line home\views\index\index.qtpl:24
+	//line home\views\index\index.qtpl:25
 	p.WriteRenderBody(qb422016)
-	//line home\views\index\index.qtpl:24
+	//line home\views\index\index.qtpl:25
 	qs422016 := string(qb422016.B)
-	//line home\views\index\index.qtpl:24
+	//line home\views\index\index.qtpl:25
 	qt422016.ReleaseByteBuffer(qb422016)
-	//line home\views\index\index.qtpl:24
+	//line home\views\index\index.qtpl:25
 	return qs422016
-//line home\views\index\index.qtpl:24
+//line home\views\index\index.qtpl:25
 }
