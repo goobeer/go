@@ -1,12 +1,25 @@
 package ueditor_go
 
 import (
+	"fmt"
 	"os"
 	"path"
 	"path/filepath"
 	"strconv"
 	"strings"
 )
+
+type UeditorListFileRespData struct {
+	State string         `json:"state"`
+	List  []ListFileItem `json:"list"`
+	Start int            `json:"start"`
+	Size  int            `json:"size"`
+	Total int            `json:"total"`
+}
+
+type ListFileItem struct {
+	Url string `json:"url"`
+}
 
 type UeditorListFileManager struct {
 	*UEditorHandler
@@ -23,13 +36,7 @@ func (u *UeditorListFileManager) Process() {
 		startV, _ = strconv.Atoi(startStr)
 	}
 
-	var TD struct {
-		State string
-		List  []string
-		Start int
-		Size  int
-		Total int
-	}
+	TD := &UeditorListFileRespData{}
 	TD.Start = startV
 	sizev := u.Ctx.FormValue("size")
 	if sizev != nil && len(sizev) > 0 {
@@ -44,7 +51,8 @@ func (u *UeditorListFileManager) Process() {
 		sizeV = int(config.ImageManagerListSize)
 	}
 	TD.Size = sizeV
-	buildingList := make([]string, 0)
+	buildingList := make([]ListFileItem, 0)
+	fmt.Println(u.PathToList)
 	err := filepath.Walk(u.PathToList, func(pth string, f os.FileInfo, err error) error {
 		if f == nil {
 			return err
@@ -56,7 +64,7 @@ func (u *UeditorListFileManager) Process() {
 
 		for _, v := range u.SearchExtensions {
 			if strings.HasSuffix(v, strings.ToLower(path.Ext(f.Name()))) {
-				buildingList = append(buildingList, f.Name())
+				buildingList = append(buildingList, ListFileItem{Url: strings.TrimLeft(strings.Replace(pth, "\\", "/", -1), u.PathToList)})
 			}
 		}
 
@@ -66,6 +74,7 @@ func (u *UeditorListFileManager) Process() {
 	if err != nil {
 		TD.State = u.getStateString(AuthorizError)
 	} else {
+		TD.State = u.getStateString(Success)
 		TD.Total = len(buildingList)
 		TD.List = buildingList
 	}

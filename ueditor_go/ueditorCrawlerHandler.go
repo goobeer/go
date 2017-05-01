@@ -13,8 +13,8 @@ func (u *UeditorCrawlerHandler) Process() {
 			v.Fetch()
 		}
 		var TD struct {
-			State string
-			List  []UeditorCrawler
+			State string           `json:"state"`
+			List  []UeditorCrawler `json:"list"`
 		}
 		TD.State = "SUCCESS"
 		TD.List = u.Crawlers

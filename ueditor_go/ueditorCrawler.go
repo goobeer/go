@@ -11,6 +11,11 @@ import (
 	"github.com/valyala/fasthttp"
 )
 
+type UeditorCrawlerRespData struct {
+	State string            `json:"state"`
+	List  []*UeditorCrawler `json:"list"`
+}
+
 type UeditorCrawler struct {
 	SourceUrl string
 	ServerUrl string
@@ -22,10 +27,7 @@ type UeditorCrawler struct {
 func (u *UeditorCrawler) Process() {
 	sources := u.Ctx.FormValue("source[]")
 
-	var TD struct {
-		State string
-		List  []*UeditorCrawler
-	}
+	TD := &UeditorCrawlerRespData{}
 	if sources == nil || len(sources) == 0 {
 		TD.State = "参数错误：没有指定抓取源"
 		u.WriteJson(TD)

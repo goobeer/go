@@ -8,8 +8,16 @@ import (
 )
 
 var (
-	config = &UeditorConfig{}
+	config, _ = BuildItems()
 )
+
+type UeditorUploadImageResponseData struct {
+	State    string `json:"state"`
+	Url      string `json:"url"`
+	Title    string `json:"title"`
+	Original string `json:"original"`
+	Error    string `json:"error"`
+}
 
 type IUeditorHandler interface {
 	Process()
@@ -23,10 +31,14 @@ func init() {
 	//注册 url
 
 	urlUeditor := "/ueditor/net/controller.ashx"
-	router.R.GET(urlUeditor, func(ctx *fasthttp.RequestCtx) {
-		ueditor := &UEditorHandler{Ctx: ctx}
-		ueditor.Process(ctx)
-	})
+	router.R.GET(urlUeditor, ueditorRequestHandle)
+
+	router.R.POST(urlUeditor, ueditorRequestHandle)
+}
+
+func ueditorRequestHandle(ctx *fasthttp.RequestCtx) {
+	ueditor := &UEditorHandler{Ctx: ctx}
+	ueditor.Process(ctx)
 }
 
 func (h *UEditorHandler) Process(ctx *fasthttp.RequestCtx) {

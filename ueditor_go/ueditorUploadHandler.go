@@ -2,8 +2,10 @@ package ueditor_go
 
 import (
 	"encoding/base64"
+	"os"
 	"path"
 	"strings"
+	"sync"
 
 	"github.com/valyala/fasthttp"
 )
@@ -51,13 +53,7 @@ func NewUeditorUploadHandler(ctx *fasthttp.RequestCtx) *UeditorUploadHandler {
 func (u *UeditorUploadHandler) Process() {
 	var uploadFileBytes []byte
 	var uploadFileName string
-	var TD struct {
-		State    string
-		Url      string
-		Title    string
-		Original string
-		Error    string
-	}
+	TD := &UeditorUploadImageResponseData{}
 	if u.UeditorUploadConfig.Base64 {
 		uploadFileName = u.Base64Filename
 		fileBytes := u.Ctx.FormValue(u.UploadFieldName)
@@ -74,7 +70,6 @@ func (u *UeditorUploadHandler) Process() {
 		base64.StdEncoding.Decode(uploadFileBytes, fileBytes)
 	} else {
 		fh, _ := u.Ctx.FormFile(u.UploadFieldName)
-
 		if fh == nil {
 			u.State = InvalidParam
 
@@ -99,15 +94,32 @@ func (u *UeditorUploadHandler) Process() {
 		}
 
 		TD.Original = uploadFileName
+		TD.Title = uploadFileName
 		savePath := UeditorPathFormatter(uploadFileName, u.PathFormat)
-		err := fasthttp.SaveMultipartFile(fh, savePath)
-		if err == nil {
-			TD.Url = savePath
-			TD.State = u.getStateMessage(Success)
-		} else {
+		baseDir := path.Dir(savePath)
+		_, err := os.Stat(baseDir)
+
+		mutex := &sync.RWMutex{}
+		mutex.Lock()
+		if err != nil && os.IsNotExist(err) {
+			err = os.MkdirAll(baseDir, 0666)
+		}
+		mutex.Unlock()
+
+		if err != nil {
 			TD.Error = err.Error()
 			TD.State = u.getStateMessage(FileAccessError)
+		} else {
+			err = fasthttp.SaveMultipartFile(fh, savePath)
+			if err == nil {
+				TD.Url = savePath
+				TD.State = u.getStateMessage(Success)
+			} else {
+				TD.Error = err.Error()
+				TD.State = u.getStateMessage(FileAccessError)
+			}
 		}
+
 		u.WriteJson(TD)
 	}
 }
