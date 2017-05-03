@@ -34,27 +34,31 @@ var (
 
 type RouteFilter struct {
 	BeforeRequestHandlers []fasthttp.RequestHandler
-	AfterRequestHandlers  []fasthttp.RequestHandler
-	FilterExp             string
-	HttpVerbType          int
-	MatchType             int
-	MatchOnOff            bool //匹配方式:true:匹配成功执行过滤器，false:匹配失败执行过滤器
+
+	Filters []BaseFilter
+
+	FilterExp    string
+	HttpVerbType int
+	MatchType    int
+	MatchOnOff   bool //匹配方式:true:匹配成功执行过滤器，false:匹配失败执行过滤器
 }
 
 func init() {
 	comFilter := NewRouteFilter("^/home/index/verify", Get, MatchReg, false)
-	comFilter.BeforeRequestHandlers = append(comFilter.BeforeRequestHandlers, comFilter.PhonehFilter(nil))
-	comFilter.BeforeRequestHandlers = append(comFilter.BeforeRequestHandlers, comFilter.Log(nil))
+	phoneFilter := &PhoneVerifyFilter{}
+	logFilter := &LogFilter{}
+	comFilter.Filters = append(comFilter.Filters, phoneFilter, logFilter)
 
 	comFilter1 := NewRouteFilter("[^/home/index/verify|/home/index/login]", Get, MatchReg, true)
-	comFilter1.BeforeRequestHandlers = append(comFilter1.BeforeRequestHandlers, comFilter1.LoginAuthFilter(nil))
+	loginFilter := &LoginAuthFilter{}
+	comFilter1.Filters = append(comFilter1.Filters, loginFilter)
 
 	MapFilter[comFilter.generateFilterKey()] = comFilter
 	MapFilter[comFilter1.generateFilterKey()] = comFilter1
 }
 
 func NewRouteFilter(filterExp string, httpVerbType, matchType int, matchOnOff bool) *RouteFilter {
-	return &RouteFilter{FilterExp: filterExp, HttpVerbType: httpVerbType, MatchType: matchType, MatchOnOff: matchOnOff, BeforeRequestHandlers: []fasthttp.RequestHandler{}, AfterRequestHandlers: []fasthttp.RequestHandler{}}
+	return &RouteFilter{Filters: make([]BaseFilter, 0), FilterExp: filterExp, HttpVerbType: httpVerbType, MatchType: matchType, MatchOnOff: matchOnOff}
 }
 
 func ErrLog(err interface{}, ctx *fasthttp.RequestCtx) {

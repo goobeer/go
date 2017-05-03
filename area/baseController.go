@@ -32,7 +32,8 @@ func injectFilter(httpVerb, uri string, m reflect.Method, ci interface{}) (handl
 		handle = func(ctx *fasthttp.RequestCtx) {
 			defer func() {
 				if err := recover(); err != nil {
-					filter.ErrLog(fmt.Errorf("%s", err), ctx)
+					errFilter := &filter.ErrorFilter{FilterStateResult: &filter.FilterStateResult{FilterState: true, Data: err}}
+					errFilter.OnException(ctx)
 				}
 			}()
 			rVal := reflect.ValueOf(ci)
@@ -42,31 +43,44 @@ func injectFilter(httpVerb, uri string, m reflect.Method, ci interface{}) (handl
 		return
 	}
 
-	var befReqHandlers, aftReqHandlers []fasthttp.RequestHandler
+	filters := make([]filter.BaseFilter, 0)
 
 	for _, rtFilter := range filter.MapFilter {
 		if !rtFilter.FilterMatch(uri, httpVerb) {
 			continue
 		}
 
-		if rtFilter.BeforeRequestHandlers != nil && len(rtFilter.BeforeRequestHandlers) > 0 {
-			befReqHandlers = append(befReqHandlers, rtFilter.BeforeRequestHandlers...)
-		}
-
-		if rtFilter.AfterRequestHandlers != nil && len(rtFilter.AfterRequestHandlers) > 0 {
-			aftReqHandlers = append(aftReqHandlers, rtFilter.AfterRequestHandlers...)
+		if rtFilter.Filters != nil && len(rtFilter.Filters) > 0 {
+			filters = append(filters, rtFilter.Filters...)
 		}
 	}
 
 	handle = func(ctx *fasthttp.RequestCtx) {
 		defer func() {
 			if err := recover(); err != nil {
-				filter.ErrLog(fmt.Errorf("%s", err), ctx)
+				errFilter := &filter.ErrorFilter{FilterStateResult: &filter.FilterStateResult{FilterState: true, Data: err}}
+				errFilter.OnException(ctx)
 			}
 		}()
 
-		for _, v := range befReqHandlers {
-			v(ctx)
+		var aftReqHandlers []fasthttp.RequestHandler
+
+		for _, v := range filters {
+			switch v.(type) {
+			case filter.ActionFilter:
+				actionFilter := v.(filter.ActionFilter)
+				actionFilter.BeforeExecute(ctx)
+				actionFilter.GetFilterState().FilterState = true
+				aftReqHandlers = append(aftReqHandlers, actionFilter.AfterExecute)
+			case filter.AuthorizeFilter:
+				authorFilter := v.(filter.AuthorizeFilter)
+				authorFilter.Authorization(ctx)
+				authorFilter.GetFilterState().FilterState = true
+			case filter.ExceptionFilter:
+				expFilter := v.(filter.ExceptionFilter)
+				expFilter.OnException(ctx)
+				expFilter.GetFilterState().FilterState = true
+			}
 		}
 
 		rVal := reflect.ValueOf(ci)

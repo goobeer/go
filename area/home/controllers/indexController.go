@@ -3,6 +3,7 @@ package controllers
 import (
 	"fasthttpweb/area"
 	hv "fasthttpweb/area/home/views/index"
+	"fmt"
 
 	"fasthttpweb/common"
 	"fasthttpweb/model"
@@ -57,7 +58,6 @@ func (c *IndexController) Verify() {
 	bpd := area.NewBasePageData(areaName, "", "", c)
 	bp := area.NewBasePage(c.Ctx, bpd)
 	ip := &hv.VerfyPage{BasePage: bp}
-
 	c.View(ip, "text/html")
 }
 
@@ -83,12 +83,15 @@ func (c *IndexController) Login() {
 	sess := c.StartSession()
 	verfyVal := sess.Get("verfy")
 	if verfyVal == nil {
+		fmt.Println("woda")
 		ctx.Redirect("/home/index/verify", fasthttp.StatusFound)
+		fmt.Println("woda")
 		return
 	}
 	vfv := verfyVal.(int)
 	if vfv == common.LoginVerfied {
 		ctx.Redirect("/home/index", fasthttp.StatusFound)
+		fmt.Println("woda")
 		return
 	}
 
