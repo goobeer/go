@@ -13,24 +13,30 @@ type FilterStateResult struct {
 	Data        interface{}
 }
 
-type BaseFilter interface {
-	GetFilterState() *FilterStateResult
+type BaseFilter interface{}
+
+type BeforeActionFilter interface {
+	BeforeExecute(ctx *fasthttp.RequestCtx) *FilterStateResult
+}
+
+type AfterActionFilter interface {
+	AfterExecute(ctx *fasthttp.RequestCtx) *FilterStateResult
 }
 
 type ActionFilter interface {
 	BaseFilter
-	BeforeExecute(ctx *fasthttp.RequestCtx)
-	AfterExecute(ctx *fasthttp.RequestCtx)
+	BeforeActionFilter
+	AfterActionFilter
 }
 
 type AuthorizeFilter interface {
 	BaseFilter
-	Authorization(ctx *fasthttp.RequestCtx)
+	Authorization(ctx *fasthttp.RequestCtx) *FilterStateResult
 }
 
 type ExceptionFilter interface {
 	BaseFilter
-	OnException(ctx *fasthttp.RequestCtx)
+	OnException(ctx *fasthttp.RequestCtx) *FilterStateResult
 }
 
 type PhoneVerifyFilter struct {
@@ -49,57 +55,51 @@ type ErrorFilter struct {
 	*FilterStateResult
 }
 
-func (filter *PhoneVerifyFilter) Authorization(ctx *fasthttp.RequestCtx) {
+func (filter *PhoneVerifyFilter) Authorization(ctx *fasthttp.RequestCtx) *FilterStateResult {
 	sess := sessions.StartFasthttp(ctx)
 	verfy := sess.Get("verfy")
 	if verfy == nil {
 		ctx.Redirect("/home/index/Verify", fasthttp.StatusNonAuthoritativeInfo)
+	} else {
+		filter.FilterState = true
 	}
-}
-
-func (filter *PhoneVerifyFilter) GetFilterState() *FilterStateResult {
 	return filter.FilterStateResult
 }
 
-func (filter *LoginAuthFilter) Authorization(ctx *fasthttp.RequestCtx) {
+func (filter *LoginAuthFilter) Authorization(ctx *fasthttp.RequestCtx) *FilterStateResult {
 	sess := sessions.StartFasthttp(ctx)
 	verfy := sess.Get("verfy")
 	if verfy != nil && verfy.(int) < common.LoginVerfied {
 		ctx.Redirect("/home/index/login", fasthttp.StatusNonAuthoritativeInfo)
+	} else {
+		filter.FilterState = true
 	}
-}
-
-func (filter *LoginAuthFilter) GetFilterState() *FilterStateResult {
 	return filter.FilterStateResult
 }
 
-func (filter *LogFilter) Authorization(ctx *fasthttp.RequestCtx) {
+func (filter *LogFilter) BeforeExecute(ctx *fasthttp.RequestCtx) *FilterStateResult {
 	log := &model.LogInfo{Url: string(ctx.RequestURI()), IP: ctx.RemoteIP().String(), UserAgent: string(ctx.UserAgent())}
 	data := filter.Data
 	if data != nil {
 		switch data.(type) {
 		case string:
 			log.Msg = data.(string)
+			filter.FilterState = true
 		}
 	}
 	log.Add()
-}
-
-func (filter *LogFilter) GetFilterState() *FilterStateResult {
 	return filter.FilterStateResult
 }
 
-func (filter *ErrorFilter) OnException(ctx *fasthttp.RequestCtx) {
+func (filter *ErrorFilter) OnException(ctx *fasthttp.RequestCtx) *FilterStateResult {
 	if err := filter.Data; filter.FilterState && err != nil {
 		switch err.(type) {
 		case error:
 			log := &model.LogInfo{Url: string(ctx.RequestURI()), IP: ctx.RemoteIP().String(), UserAgent: string(ctx.UserAgent()), LogCatelog: "sys_error", Msg: string(ctx.Method())}
 			log.ExpMsg = err.(error).Error()
 			log.Add()
+			filter.FilterState = true
 		}
 	}
-}
-
-func (filter *ErrorFilter) GetFilterState() *FilterStateResult {
 	return filter.FilterStateResult
 }

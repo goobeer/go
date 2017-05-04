@@ -1,13 +1,9 @@
 package filter
 
 import (
-	"fasthttpweb/model"
 	"fmt"
 	"regexp"
 
-	"fasthttpweb/common"
-
-	"github.com/kataras/go-sessions"
 	"github.com/valyala/fasthttp"
 )
 
@@ -45,12 +41,13 @@ type RouteFilter struct {
 
 func init() {
 	comFilter := NewRouteFilter("^/home/index/verify", Get, MatchReg, false)
-	phoneFilter := &PhoneVerifyFilter{}
-	logFilter := &LogFilter{}
-	comFilter.Filters = append(comFilter.Filters, phoneFilter, logFilter)
+	phoneFilter := &PhoneVerifyFilter{FilterStateResult: &FilterStateResult{}}
+	logFilter := &LogFilter{FilterStateResult: &FilterStateResult{}}
+	performFilter := &PerformanceMonitorFilter{FilterStateResult: &FilterStateResult{}}
+	comFilter.Filters = append(comFilter.Filters, phoneFilter, logFilter, performFilter)
 
 	comFilter1 := NewRouteFilter("[^/home/index/verify|/home/index/login]", Get, MatchReg, true)
-	loginFilter := &LoginAuthFilter{}
+	loginFilter := &LoginAuthFilter{FilterStateResult: &FilterStateResult{}}
 	comFilter1.Filters = append(comFilter1.Filters, loginFilter)
 
 	MapFilter[comFilter.generateFilterKey()] = comFilter
@@ -59,17 +56,6 @@ func init() {
 
 func NewRouteFilter(filterExp string, httpVerbType, matchType int, matchOnOff bool) *RouteFilter {
 	return &RouteFilter{Filters: make([]BaseFilter, 0), FilterExp: filterExp, HttpVerbType: httpVerbType, MatchType: matchType, MatchOnOff: matchOnOff}
-}
-
-func ErrLog(err interface{}, ctx *fasthttp.RequestCtx) {
-	log := &model.LogInfo{Url: string(ctx.RequestURI()), IP: ctx.RemoteIP().String(), UserAgent: string(ctx.UserAgent()), LogCatelog: "sys_error", Msg: string(ctx.Method())}
-	if err != nil {
-		switch err.(type) {
-		case error:
-			log.ExpMsg = err.(error).Error()
-		}
-	}
-	log.Add()
 }
 
 func (rf *RouteFilter) generateFilterKey() (filterKey string) {
@@ -125,43 +111,4 @@ func (rf *RouteFilter) FilterMatch(uri, httpVerb string) bool {
 		}
 	}
 	return isMatched
-}
-
-func (r *RouteFilter) Log(data interface{}) func(ctx *fasthttp.RequestCtx) {
-	return func(ctx *fasthttp.RequestCtx) {
-		log := &model.LogInfo{Url: string(ctx.RequestURI()), IP: ctx.RemoteIP().String(), UserAgent: string(ctx.UserAgent())}
-		if data != nil {
-			switch data.(type) {
-			case error:
-				log.ExpMsg = data.(error).Error()
-			case string:
-				log.Msg = data.(string)
-			}
-		}
-		log.Add()
-
-		fmt.Println(data, string(ctx.Method()), string(ctx.RequestURI()), ctx.RemoteIP().String(), string(ctx.UserAgent()))
-	}
-}
-
-func (r *RouteFilter) PhonehFilter(data interface{}) func(ctx *fasthttp.RequestCtx) {
-	return func(ctx *fasthttp.RequestCtx) {
-		sess := sessions.StartFasthttp(ctx)
-		verfy := sess.Get("verfy")
-		if verfy == nil {
-			ctx.Redirect("/home/index/Verify", fasthttp.StatusNonAuthoritativeInfo)
-		}
-	}
-}
-
-func (r *RouteFilter) LoginAuthFilter(data interface{}) func(ctx *fasthttp.RequestCtx) {
-	return func(ctx *fasthttp.RequestCtx) {
-		sess := sessions.StartFasthttp(ctx)
-		verfy := sess.Get("verfy")
-		if verfy != nil {
-			if verfy.(int) < common.LoginVerfied {
-				ctx.Redirect("/home/index/login", fasthttp.StatusNonAuthoritativeInfo)
-			}
-		}
-	}
 }

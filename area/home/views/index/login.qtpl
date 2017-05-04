@@ -1,4 +1,8 @@
-{% import "fasthttpweb/area" %}
+{% import (
+		"fasthttpweb/area/commonhtmlhelper"
+		"fasthttpweb/area"
+	)
+%}
 
 {% code
 type LoginPage struct {
@@ -13,6 +17,14 @@ type LoginPage struct {
 {% endfunc %}
 
 {% func (p *LoginPage) RenderScript() %}
+<script type="text/javascript">
+	$(function(){
+		$('#vcode').click(function(){
+			var url=$(this).prop('src');
+			$(this).prop('src',url.split('&')[0]+'&r='+Math.random());
+		});
+	})
+</script>
 {% endfunc %}
 
 {% func (p *LoginPage) RenderBody() %}
@@ -41,7 +53,7 @@ type LoginPage struct {
 					<input class="form-control" id="vc" name="vcode" />
 				</div>
 				<div class="col-md-2">
-					<img id="vcode" src="/api/verifyimg" title="点击切换验证码" />
+					<img id="vcode" src="{%s= commonhtmlhelper.GenerateVerifyImgLink("/api/verifyimg","vcode") %}" title="点击切换验证码" />
 				</div>
 			</div>
 			<div class="form-group">

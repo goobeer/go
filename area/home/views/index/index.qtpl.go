@@ -165,11 +165,7 @@ func (p *IndexPage) StreamRenderBody(qw422016 *qt422016.Writer) {
 	//line home\views\index\index.qtpl:19
 	qw422016.N().S(`
 	<div class="text-center">
-		`)
-	//line home\views\index\index.qtpl:21
-	qw422016.N().S(area.GeneratePageLink())
-	//line home\views\index\index.qtpl:21
-	qw422016.N().S(`
+		
 		<a href="`)
 	//line home\views\index\index.qtpl:22
 	qw422016.E().S(area.Url2("admin", "user", "logout", nil))

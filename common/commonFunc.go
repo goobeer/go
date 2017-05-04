@@ -1,8 +1,16 @@
 package common
 
 import (
+	"bytes"
+	"crypto/cipher"
+	"crypto/des"
 	crand "crypto/rand"
 	"fmt"
+)
+
+const (
+	VerifyKey     = "goobeer1goobeer2goobeer3"
+	VerifyFormKey = "gvk"
 )
 
 var (
@@ -83,4 +91,49 @@ func CreateGuid() (guid string, err error) {
 	}
 	guid = fmt.Sprintf("%x-%x-%x-%x-%x", b[0:4], b[4:6], b[6:8], b[8:10], b[10:])
 	return
+}
+
+func TripleDesEncrypt(data, key []byte) ([]byte, error) {
+	if key == nil {
+		key = []byte(VerifyKey)
+	}
+	block, err := des.NewTripleDESCipher(key)
+	if err != nil {
+		return nil, err
+	}
+
+	data = PKCS5Padding(data, block.BlockSize())
+	blockMode := cipher.NewCBCEncrypter(block, key[:8])
+	crypted := make([]byte, len(data))
+	blockMode.CryptBlocks(crypted, data)
+	return crypted, nil
+}
+
+func TripleDesDecrypt(crypted, key []byte) ([]byte, error) {
+	if key == nil {
+		key = []byte(VerifyKey)
+	}
+	block, err := des.NewTripleDESCipher(key)
+	if err != nil {
+		return nil, err
+	}
+	blockMode := cipher.NewCBCDecrypter(block, key[:8])
+	origData := make([]byte, len(crypted))
+	// origData := crypted
+	blockMode.CryptBlocks(origData, crypted)
+	origData = PKCS5UnPadding(origData)
+	// origData = ZeroUnPadding(origData)
+	return origData, nil
+}
+
+func PKCS5Padding(ciphertext []byte, blockSize int) []byte {
+	padding := blockSize - len(ciphertext)%blockSize
+	padtext := bytes.Repeat([]byte{byte(padding)}, padding)
+	return append(ciphertext, padtext...)
+}
+
+func PKCS5UnPadding(origData []byte) []byte {
+	length := len(origData)
+	unpadding := int(origData[length-1])
+	return origData[:(length - unpadding)]
 }

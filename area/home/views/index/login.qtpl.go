@@ -12,178 +12,189 @@ import (
 )
 
 //line home\views\index\login.qtpl:1
-import "fasthttpweb/area"
+import (
+	"fasthttpweb/area"
+	"fasthttpweb/area/commonhtmlhelper"
+)
 
-//line home\views\index\login.qtpl:3
+//line home\views\index\login.qtpl:7
 var (
 	_ = qtio422016.Copy
 	_ = qt422016.AcquireByteBuffer
 )
 
-//line home\views\index\login.qtpl:4
+//line home\views\index\login.qtpl:8
 type LoginPage struct {
 	*area.BasePage
 }
 
-//line home\views\index\login.qtpl:9
+//line home\views\index\login.qtpl:13
 func (p *LoginPage) StreamRenderTitle(qw422016 *qt422016.Writer) {
-	//line home\views\index\login.qtpl:9
+	//line home\views\index\login.qtpl:13
 	p.BasePage.StreamRenderTitle(qw422016)
-//line home\views\index\login.qtpl:9
+//line home\views\index\login.qtpl:13
 }
 
-//line home\views\index\login.qtpl:9
+//line home\views\index\login.qtpl:13
 func (p *LoginPage) WriteRenderTitle(qq422016 qtio422016.Writer) {
-	//line home\views\index\login.qtpl:9
+	//line home\views\index\login.qtpl:13
 	qw422016 := qt422016.AcquireWriter(qq422016)
-	//line home\views\index\login.qtpl:9
+	//line home\views\index\login.qtpl:13
 	p.StreamRenderTitle(qw422016)
-	//line home\views\index\login.qtpl:9
+	//line home\views\index\login.qtpl:13
 	qt422016.ReleaseWriter(qw422016)
-//line home\views\index\login.qtpl:9
+//line home\views\index\login.qtpl:13
 }
 
-//line home\views\index\login.qtpl:9
+//line home\views\index\login.qtpl:13
 func (p *LoginPage) RenderTitle() string {
-	//line home\views\index\login.qtpl:9
+	//line home\views\index\login.qtpl:13
 	qb422016 := qt422016.AcquireByteBuffer()
-	//line home\views\index\login.qtpl:9
+	//line home\views\index\login.qtpl:13
 	p.WriteRenderTitle(qb422016)
-	//line home\views\index\login.qtpl:9
+	//line home\views\index\login.qtpl:13
 	qs422016 := string(qb422016.B)
-	//line home\views\index\login.qtpl:9
+	//line home\views\index\login.qtpl:13
 	qt422016.ReleaseByteBuffer(qb422016)
-	//line home\views\index\login.qtpl:9
+	//line home\views\index\login.qtpl:13
 	return qs422016
-//line home\views\index\login.qtpl:9
+//line home\views\index\login.qtpl:13
 }
 
-//line home\views\index\login.qtpl:10
+//line home\views\index\login.qtpl:14
 func (p *LoginPage) StreamRenderKwd(qw422016 *qt422016.Writer) {
-//line home\views\index\login.qtpl:10
+//line home\views\index\login.qtpl:14
 p.BasePage.StreamRenderKwd(qw422016) }
 
-//line home\views\index\login.qtpl:10
-//line home\views\index\login.qtpl:10
+//line home\views\index\login.qtpl:14
+//line home\views\index\login.qtpl:14
 func (p *LoginPage) WriteRenderKwd(qq422016 qtio422016.Writer) {
-	//line home\views\index\login.qtpl:10
+	//line home\views\index\login.qtpl:14
 	qw422016 := qt422016.AcquireWriter(qq422016)
-	//line home\views\index\login.qtpl:10
+	//line home\views\index\login.qtpl:14
 	p.StreamRenderKwd(qw422016)
-	//line home\views\index\login.qtpl:10
+	//line home\views\index\login.qtpl:14
 	qt422016.ReleaseWriter(qw422016)
-//line home\views\index\login.qtpl:10
+//line home\views\index\login.qtpl:14
 }
 
-//line home\views\index\login.qtpl:10
+//line home\views\index\login.qtpl:14
 func (p *LoginPage) RenderKwd() string {
-	//line home\views\index\login.qtpl:10
+	//line home\views\index\login.qtpl:14
 	qb422016 := qt422016.AcquireByteBuffer()
-	//line home\views\index\login.qtpl:10
+	//line home\views\index\login.qtpl:14
 	p.WriteRenderKwd(qb422016)
-	//line home\views\index\login.qtpl:10
+	//line home\views\index\login.qtpl:14
 	qs422016 := string(qb422016.B)
-	//line home\views\index\login.qtpl:10
+	//line home\views\index\login.qtpl:14
 	qt422016.ReleaseByteBuffer(qb422016)
-	//line home\views\index\login.qtpl:10
+	//line home\views\index\login.qtpl:14
 	return qs422016
-//line home\views\index\login.qtpl:10
+//line home\views\index\login.qtpl:14
 }
 
-//line home\views\index\login.qtpl:12
+//line home\views\index\login.qtpl:16
 func (p *LoginPage) StreamRenderCss(qw422016 *qt422016.Writer) {
-	//line home\views\index\login.qtpl:12
+	//line home\views\index\login.qtpl:16
 	qw422016.N().S(`
 `)
-//line home\views\index\login.qtpl:13
+//line home\views\index\login.qtpl:17
 }
 
-//line home\views\index\login.qtpl:13
+//line home\views\index\login.qtpl:17
 func (p *LoginPage) WriteRenderCss(qq422016 qtio422016.Writer) {
-	//line home\views\index\login.qtpl:13
+	//line home\views\index\login.qtpl:17
 	qw422016 := qt422016.AcquireWriter(qq422016)
-	//line home\views\index\login.qtpl:13
+	//line home\views\index\login.qtpl:17
 	p.StreamRenderCss(qw422016)
-	//line home\views\index\login.qtpl:13
+	//line home\views\index\login.qtpl:17
 	qt422016.ReleaseWriter(qw422016)
-//line home\views\index\login.qtpl:13
+//line home\views\index\login.qtpl:17
 }
 
-//line home\views\index\login.qtpl:13
+//line home\views\index\login.qtpl:17
 func (p *LoginPage) RenderCss() string {
-	//line home\views\index\login.qtpl:13
+	//line home\views\index\login.qtpl:17
 	qb422016 := qt422016.AcquireByteBuffer()
-	//line home\views\index\login.qtpl:13
+	//line home\views\index\login.qtpl:17
 	p.WriteRenderCss(qb422016)
-	//line home\views\index\login.qtpl:13
+	//line home\views\index\login.qtpl:17
 	qs422016 := string(qb422016.B)
-	//line home\views\index\login.qtpl:13
+	//line home\views\index\login.qtpl:17
 	qt422016.ReleaseByteBuffer(qb422016)
-	//line home\views\index\login.qtpl:13
+	//line home\views\index\login.qtpl:17
 	return qs422016
-//line home\views\index\login.qtpl:13
+//line home\views\index\login.qtpl:17
 }
 
-//line home\views\index\login.qtpl:15
+//line home\views\index\login.qtpl:19
 func (p *LoginPage) StreamRenderScript(qw422016 *qt422016.Writer) {
-	//line home\views\index\login.qtpl:15
+	//line home\views\index\login.qtpl:19
 	qw422016.N().S(`
+<script type="text/javascript">
+	$(function(){
+		$('#vcode').click(function(){
+			var url=$(this).prop('src');
+			$(this).prop('src',url.split('&')[0]+'&r='+Math.random());
+		});
+	})
+</script>
 `)
-//line home\views\index\login.qtpl:16
+//line home\views\index\login.qtpl:28
 }
 
-//line home\views\index\login.qtpl:16
+//line home\views\index\login.qtpl:28
 func (p *LoginPage) WriteRenderScript(qq422016 qtio422016.Writer) {
-	//line home\views\index\login.qtpl:16
+	//line home\views\index\login.qtpl:28
 	qw422016 := qt422016.AcquireWriter(qq422016)
-	//line home\views\index\login.qtpl:16
+	//line home\views\index\login.qtpl:28
 	p.StreamRenderScript(qw422016)
-	//line home\views\index\login.qtpl:16
+	//line home\views\index\login.qtpl:28
 	qt422016.ReleaseWriter(qw422016)
-//line home\views\index\login.qtpl:16
+//line home\views\index\login.qtpl:28
 }
 
-//line home\views\index\login.qtpl:16
+//line home\views\index\login.qtpl:28
 func (p *LoginPage) RenderScript() string {
-	//line home\views\index\login.qtpl:16
+	//line home\views\index\login.qtpl:28
 	qb422016 := qt422016.AcquireByteBuffer()
-	//line home\views\index\login.qtpl:16
+	//line home\views\index\login.qtpl:28
 	p.WriteRenderScript(qb422016)
-	//line home\views\index\login.qtpl:16
+	//line home\views\index\login.qtpl:28
 	qs422016 := string(qb422016.B)
-	//line home\views\index\login.qtpl:16
+	//line home\views\index\login.qtpl:28
 	qt422016.ReleaseByteBuffer(qb422016)
-	//line home\views\index\login.qtpl:16
+	//line home\views\index\login.qtpl:28
 	return qs422016
-//line home\views\index\login.qtpl:16
+//line home\views\index\login.qtpl:28
 }
 
-//line home\views\index\login.qtpl:18
+//line home\views\index\login.qtpl:30
 func (p *LoginPage) StreamRenderBody(qw422016 *qt422016.Writer) {
-	//line home\views\index\login.qtpl:18
+	//line home\views\index\login.qtpl:30
 	qw422016.N().S(`
 	<div class="text-danger">
 	`)
-	//line home\views\index\login.qtpl:20
+	//line home\views\index\login.qtpl:32
 	if p.BPD.Data["ErrMsg"] != nil {
-		//line home\views\index\login.qtpl:20
+		//line home\views\index\login.qtpl:32
 		qw422016.N().S(`
 		`)
-		//line home\views\index\login.qtpl:21
+		//line home\views\index\login.qtpl:33
 		qw422016.E().S((p.BPD.Data["ErrMsg"]).(string))
-		//line home\views\index\login.qtpl:21
+		//line home\views\index\login.qtpl:33
 		qw422016.N().S(`
 	`)
-		//line home\views\index\login.qtpl:22
+		//line home\views\index\login.qtpl:34
 	}
-	//line home\views\index\login.qtpl:22
+	//line home\views\index\login.qtpl:34
 	qw422016.N().S(`
 	</div>
 	<div class="text-center">
 		<form class="form-horizontal" action="`)
-	//line home\views\index\login.qtpl:25
+	//line home\views\index\login.qtpl:37
 	qw422016.E().S(area.Url(p.BasePage, "login", nil))
-	//line home\views\index\login.qtpl:25
+	//line home\views\index\login.qtpl:37
 	qw422016.N().S(`" method="POST">
 			<div class="form-group">
 				<label class="control-label col-md-2">用户名:</label>
@@ -203,7 +214,11 @@ func (p *LoginPage) StreamRenderBody(qw422016 *qt422016.Writer) {
 					<input class="form-control" id="vc" name="vcode" />
 				</div>
 				<div class="col-md-2">
-					<img id="vcode" src="/api/verifyimg" title="点击切换验证码" />
+					<img id="vcode" src="`)
+	//line home\views\index\login.qtpl:56
+	qw422016.N().S(commonhtmlhelper.GenerateVerifyImgLink("/api/verifyimg", "vcode"))
+	//line home\views\index\login.qtpl:56
+	qw422016.N().S(`" title="点击切换验证码" />
 				</div>
 			</div>
 			<div class="form-group">
@@ -214,31 +229,31 @@ func (p *LoginPage) StreamRenderBody(qw422016 *qt422016.Writer) {
 		</form>
 	</div>
 `)
-//line home\views\index\login.qtpl:54
+//line home\views\index\login.qtpl:66
 }
 
-//line home\views\index\login.qtpl:54
+//line home\views\index\login.qtpl:66
 func (p *LoginPage) WriteRenderBody(qq422016 qtio422016.Writer) {
-	//line home\views\index\login.qtpl:54
+	//line home\views\index\login.qtpl:66
 	qw422016 := qt422016.AcquireWriter(qq422016)
-	//line home\views\index\login.qtpl:54
+	//line home\views\index\login.qtpl:66
 	p.StreamRenderBody(qw422016)
-	//line home\views\index\login.qtpl:54
+	//line home\views\index\login.qtpl:66
 	qt422016.ReleaseWriter(qw422016)
-//line home\views\index\login.qtpl:54
+//line home\views\index\login.qtpl:66
 }
 
-//line home\views\index\login.qtpl:54
+//line home\views\index\login.qtpl:66
 func (p *LoginPage) RenderBody() string {
-	//line home\views\index\login.qtpl:54
+	//line home\views\index\login.qtpl:66
 	qb422016 := qt422016.AcquireByteBuffer()
-	//line home\views\index\login.qtpl:54
+	//line home\views\index\login.qtpl:66
 	p.WriteRenderBody(qb422016)
-	//line home\views\index\login.qtpl:54
+	//line home\views\index\login.qtpl:66
 	qs422016 := string(qb422016.B)
-	//line home\views\index\login.qtpl:54
+	//line home\views\index\login.qtpl:66
 	qt422016.ReleaseByteBuffer(qb422016)
-	//line home\views\index\login.qtpl:54
+	//line home\views\index\login.qtpl:66
 	return qs422016
-//line home\views\index\login.qtpl:54
+//line home\views\index\login.qtpl:66
 }

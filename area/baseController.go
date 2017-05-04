@@ -63,23 +63,32 @@ func injectFilter(httpVerb, uri string, m reflect.Method, ci interface{}) (handl
 			}
 		}()
 
-		var aftReqHandlers []fasthttp.RequestHandler
-
+		var aftReqHandlers []func(ctx *fasthttp.RequestCtx) *filter.FilterStateResult
+		var stateResult *filter.FilterStateResult
 		for _, v := range filters {
 			switch v.(type) {
+			case filter.AuthorizeFilter:
+				authorFilter := v.(filter.AuthorizeFilter)
+				stateResult = authorFilter.Authorization(ctx)
+				if !(stateResult != nil && stateResult.FilterState) {
+					return
+				}
 			case filter.ActionFilter:
 				actionFilter := v.(filter.ActionFilter)
 				actionFilter.BeforeExecute(ctx)
-				actionFilter.GetFilterState().FilterState = true
 				aftReqHandlers = append(aftReqHandlers, actionFilter.AfterExecute)
-			case filter.AuthorizeFilter:
-				authorFilter := v.(filter.AuthorizeFilter)
-				authorFilter.Authorization(ctx)
-				authorFilter.GetFilterState().FilterState = true
+			case filter.BeforeActionFilter:
+				beforeActionFilter := v.(filter.BeforeActionFilter)
+				beforeActionFilter.BeforeExecute(ctx)
+			case filter.AfterActionFilter:
+				afterActionFilter := v.(filter.AfterActionFilter)
+				aftReqHandlers = append(aftReqHandlers, afterActionFilter.AfterExecute)
 			case filter.ExceptionFilter:
 				expFilter := v.(filter.ExceptionFilter)
-				expFilter.OnException(ctx)
-				expFilter.GetFilterState().FilterState = true
+				stateResult = expFilter.OnException(ctx)
+				if !(stateResult != nil && stateResult.FilterState) {
+					return
+				}
 			}
 		}
 
