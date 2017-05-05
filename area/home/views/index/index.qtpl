@@ -1,7 +1,6 @@
-// Main page template. Implements BasePage methods.
-
 {% import (
 	"fasthttpweb/area"
+	"fasthttpweb/area/commonhtmlhelper"
 ) %}
 
 {% code
@@ -18,7 +17,12 @@ type IndexPage struct {
 
 {% func (p *IndexPage) RenderBody() %}
 	<div class="text-center">
-		
+	{% code
+		data:=make(map[string]interface{})
+		data["abc"]="abc"
+		data["sh"]=123
+	%}
+		{%s= commonhtmlhelper.GeneratePageLink("",2,5,100,"page",data) %}
 		<a href="{%s area.Url2("admin","user","logout",nil) %}">退出</a>
 		<a href="{%s area.Url2("admin","index","index",nil) %}">后台</a>
 	</div>

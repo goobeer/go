@@ -3,7 +3,6 @@ package router
 import (
 	"encoding/hex"
 	"fasthttpweb/common"
-	"fmt"
 	"image"
 	"image/color"
 	"image/png"
@@ -25,7 +24,6 @@ func getVerifyImg(ctx *fasthttp.RequestCtx) {
 	if !(key != nil && len(key) > 0) {
 		return
 	}
-	fmt.Println(string(key))
 	keyVal := string(key)
 	if strings.Index(keyVal, "&") > 0 {
 		key = []byte(strings.Split(keyVal, "&")[0])
@@ -35,7 +33,6 @@ func getVerifyImg(ctx *fasthttp.RequestCtx) {
 	if err != nil {
 		return
 	}
-	fmt.Println("[sb]", dst)
 	dst, err = common.TripleDesDecrypt(dst, nil)
 	if err != nil {
 		return
