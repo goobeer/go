@@ -4,6 +4,7 @@ import (
 	"fasthttpweb/area"
 	view "fasthttpweb/area/home/views/index"
 	"fmt"
+	"strconv"
 
 	"fasthttpweb/common"
 	"fasthttpweb/model"
@@ -57,18 +58,27 @@ func (c *IndexController) Verify() {
 }
 
 func (c *IndexController) PostVerify() {
-	if c.Ctx.IsPost() {
-		phoneBytes := c.Ctx.FormValue("phone")
-		vcodeBytes := c.Ctx.FormValue("vcode")
-		sess := c.StartSession()
-		vcode := sess.Get("vcode")
-		if len(phoneBytes) > 0 && string(phoneBytes) == phoneNumber && len(vcodeBytes) > 0 && string(vcodeBytes) == vcode.(string) {
-			sess.Set("verfy", common.Verfied)
-			c.Ctx.Redirect(c.ParseFunc(areaName, "login", c), fasthttp.StatusFound)
-			return
-		}
+	phoneBytes := c.Ctx.FormValue("phone")
+	vcodeBytes := c.Ctx.FormValue("vcode")
+	sess := c.StartSession()
+	vcode := sess.Get("vcode")
+	var phone string
+	if phoneBytes != nil && len(phoneBytes) > 0 {
+		phone = string(phoneBytes)
 	}
-	c.getErrorHomeVerfyPage("错误的手机号或错误的验证码!")
+	if len(phoneBytes) > 0 && phone == phoneNumber && len(vcodeBytes) > 0 && string(vcodeBytes) == vcode.(string) {
+		sess.Set("verfy", common.Verfied)
+		c.Ctx.Redirect(c.ParseFunc(areaName, "login", c), fasthttp.StatusFound)
+		return
+	}
+
+	bpd := area.NewBasePageData(areaName, "", "", c)
+	bp := area.NewBasePage(c.Ctx, bpd)
+	bpd.Data["error"] = "错误的手机号或错误的验证码!"
+	bpd.Data["phone"] = phone
+	ip := &view.VerfyPage{bp}
+
+	c.View(ip, "text/html")
 }
 
 func (c *IndexController) Login() {
@@ -97,6 +107,7 @@ func (c *IndexController) PostLogin() {
 	vcodeBytes := c.Ctx.FormValue("vcode")
 	sess := c.StartSession()
 	vcode := sess.Get("vcode")
+	var errMsg string
 	if len(unameBytes) > 0 && len(pwdBytes) > 0 && len(vcodeBytes) > 0 && string(vcodeBytes) == vcode.(string) {
 		uname := string(unameBytes)
 		pwd := string(pwdBytes)
@@ -106,43 +117,43 @@ func (c *IndexController) PostLogin() {
 		if err != nil {
 			panic(err)
 		}
-		if !has {
-			c.getErrorHomeLoginPage("用户名或密码错误!")
+		if has {
+			sess.Set("verfy", common.LoginVerfied)
+			sess.Set("user", user)
+			c.Ctx.Redirect("/home/index/index", fasthttp.StatusFound)
 			return
+		} else {
+			errMsg = "用户名或密码错误!"
 		}
-
-		sess.Set("verfy", common.LoginVerfied)
-		sess.Set("user", user)
-		c.Ctx.Redirect("/home/index/index", fasthttp.StatusContinue)
-		return
+	} else {
+		errMsg = "用户名或密码不能为空!"
 	}
 
-}
-
-func (c *IndexController) Logout() {
-	sess := c.StartSession()
-	sess.Delete("vcode")
-	sess.Delete("verfy")
-
-	c.Ctx.Redirect("/home/index/Verify", fasthttp.StatusContinue)
-}
-
-func (c *IndexController) getErrorHomeVerfyPage(errMsg string) {
-	bpd := area.NewBasePageData(areaName, "", "", c)
-	bp := area.NewBasePage(c.Ctx, bpd)
-	bpd.Data["error"] = errMsg
-	phoneBytes := c.Ctx.FormValue("phone")
-	bpd.Data["phone"] = string(phoneBytes)
-	ip := &view.VerfyPage{bp}
-
-	c.View(ip, "text/html")
-}
-
-func (c *IndexController) getErrorHomeLoginPage(errMsg string) {
 	bpd := area.NewBasePageData(areaName, "", "", c)
 	bp := area.NewBasePage(c.Ctx, bpd)
 	bpd.Data["ErrMsg"] = errMsg
 	page := &view.LoginPage{bp}
+	c.View(page, "text/html")
+}
 
+func (c *IndexController) Logout() {
+	sess := c.StartSession()
+	sess.Clear()
+	c.Ctx.Redirect("/home/index/Verify", fasthttp.StatusContinue)
+}
+
+func (c *IndexController) PageTest() {
+	bpd := area.NewBasePageData(areaName, "", "", c)
+	bp := area.NewBasePage(c.Ctx, bpd)
+	currentPage := c.Ctx.FormValue("page")
+	currentPageVal := 1
+	if currentPage != nil && len(currentPage) > 0 {
+		currentPageVal, _ = strconv.Atoi(string(currentPage))
+		if currentPageVal < 1 {
+			currentPageVal = 1
+		}
+	}
+	bpd.Data["page"] = currentPageVal
+	page := &view.PageTest{bp}
 	c.View(page, "text/html")
 }

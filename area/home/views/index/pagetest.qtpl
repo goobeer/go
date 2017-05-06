@@ -1,0 +1,28 @@
+{% import (
+	"fasthttpweb/area"
+	"fasthttpweb/area/commonhtmlhelper"
+) %}
+
+{% code
+type PageTest struct {
+	*area.BasePage
+}
+%}
+
+{% func (p *PageTest) RenderTitle() %}{%= p.BasePage.RenderTitle() %}{% endfunc %}
+{% func (p *PageTest) RenderKwd() %} {%= p.BasePage.RenderKwd() %}{% endfunc %}
+
+{% func (p *PageTest) RenderCss() %}{% endfunc %}
+{% func (p *PageTest) RenderScript() %}{% endfunc %}
+
+{% func (p *PageTest) RenderBody() %}
+	<div class="text-center">
+	{% code
+		pageIndex:= p.BPD.Data["page"].(int)
+		data:=make(map[string]interface{})
+		data["abc"]="abc"
+		data["sh"]=123
+	%}
+		{%s= commonhtmlhelper.GeneratePageLink("",pageIndex,5,100,"page",data) %}
+	</div>
+{% endfunc %}

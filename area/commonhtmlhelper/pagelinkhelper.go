@@ -48,9 +48,7 @@ func GeneratePageLink(baseUrl string, currentIndex, showCount, totalNum int, pag
 			i := 0
 			var joinFlag string
 			for k, v := range commonData {
-				if i == 0 {
-					i++
-				}
+				i++
 
 				if i != 1 && len(joinFlag) == 0 {
 					joinFlag = "&"
@@ -69,7 +67,7 @@ func GeneratePageLink(baseUrl string, currentIndex, showCount, totalNum int, pag
 				parasStr = fmt.Sprintf("%s=%d", pageKey, v)
 			}
 			if v == currentIndex {
-				pageItems += fmt.Sprintf(`<li><a>%d</a></li>`, v)
+				pageItems += fmt.Sprintf(`<li class="active"><a>%d</a></li>`, v)
 			} else {
 				pageItems += fmt.Sprintf(`<li><a href="%s?%s">%d</a></li>`, baseUrl, parasStr, v)
 			}
@@ -91,34 +89,62 @@ func GeneratePageLink(baseUrl string, currentIndex, showCount, totalNum int, pag
 				prev = currentIndex - 1
 				next = currentIndex + 1
 			}
-			var prevPartial, nextPartial string
+			var prevPartial, nextPartial, firstPartial, lastPartial, parasStr string
+			if len(commonParaPartial) > 0 {
+				parasStr = fmt.Sprintf("%s&%s=", commonParaPartial, pageKey)
+			} else {
+				parasStr = fmt.Sprintf("%s=", pageKey)
+			}
 			if prev > 1 {
-				var parasStr string
-				if len(commonParaPartial) > 0 {
-					parasStr = fmt.Sprintf("%s&%s=%d", commonParaPartial, pageKey, prev)
-				} else {
-					parasStr = fmt.Sprintf("%s=%d", pageKey, prev)
-				}
 				prevPartial = fmt.Sprintf(`<li>
-      <a href="%s?%s" aria-label="Previous">
+      <a href="%s?%s%d" aria-label="Previous">
+        <span aria-hidden="true">&lt;</span>
+      </a>
+    </li>`, baseUrl, parasStr, prev)
+			}
+			if next < totalNum && next > 0 {
+				nextPartial = fmt.Sprintf(`<li>
+      <a href="%s?%s%d" aria-label="Next">
+        <span aria-hidden="true">&gt;</span>
+      </a>
+    </li>`, baseUrl, parasStr, next)
+			}
+			if currentIndex == 1 {
+				firstPartial = `<li class="disabled">
+      <a aria-label="First">
         <span aria-hidden="true">&laquo;</span>
       </a>
-    </li>`, baseUrl, parasStr)
-			}
-			if next < totalNum {
-				var parasStr string
-				if len(commonParaPartial) > 0 {
-					parasStr = fmt.Sprintf("%s&%s=%d", commonParaPartial, pageKey, next)
-				} else {
-					parasStr = fmt.Sprintf("%s=%d", pageKey, next)
-				}
-				nextPartial = fmt.Sprintf(`<li>
-      <a href="%s?%s" aria-label="Next">
+    </li>`
+				lastPartial = fmt.Sprintf(`<li>
+      <a href="%s?%s%d" aria-label="Last">
         <span aria-hidden="true">&raquo;</span>
       </a>
-    </li>`, baseUrl, parasStr)
+    </li>`, baseUrl, parasStr, totalNum)
+			} else if currentIndex == totalNum {
+				firstPartial = fmt.Sprintf(`<li>
+      <a href="%s?%s%d" aria-label="First">
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>`, baseUrl, parasStr, 1)
+				lastPartial = `<li class="disabled">
+      <a aria-label="Last">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>`
+			} else {
+				firstPartial = fmt.Sprintf(`<li>
+      <a href="%s?%s%d" aria-label="First">
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>`, baseUrl, parasStr, 1)
+				lastPartial = fmt.Sprintf(`<li>
+      <a href="%s?%s%d" aria-label="Last">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>`, baseUrl, parasStr, totalNum)
 			}
-			pageLinkHtml = fmt.Sprintf(`<nav aria-label="Page navigation"><ul class="pagination">%s%s%s</ul></nav>`, prevPartial, pageItems, nextPartial)
+
+			pageLinkHtml = fmt.Sprintf(`<nav aria-label="Page navigation"><ul class="pagination">%s%s%s%s%s</ul></nav>`, firstPartial, prevPartial, pageItems, nextPartial, lastPartial)
 		}
 	}
 

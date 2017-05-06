@@ -14,11 +14,11 @@ type PerformanceMonitorFilter struct {
 
 func (filter *PerformanceMonitorFilter) BeforeExecute(ctx *fasthttp.RequestCtx) *FilterStateResult {
 	filter.Time = time.Now()
-	fmt.Printf("[performance-begin]:%s(start-time:%s)\r\n", string(ctx.RequestURI()), filter.Time.Format("2016-01-02 15:04:05"))
+	fmt.Printf("[performance-begin]:%s(start-time:%s)\r\n", string(ctx.RequestURI()), filter.Time.Format("2006-01-02 15:04:05"))
 	return filter.FilterStateResult
 }
 
 func (filter *PerformanceMonitorFilter) AfterExecute(ctx *fasthttp.RequestCtx) *FilterStateResult {
-	fmt.Printf("[performance-end]:%s(end-time:%s,spend:%v)\r\n", string(ctx.RequestURI()), time.Now().Format("2016-01-02 15:04:05"), time.Now().Sub(filter.Time).Nanoseconds())
+	fmt.Printf("[performance-end]:%s(end-time:%s,spend:%v)\r\n", string(ctx.RequestURI()), time.Now().Format("2006-01-02 15:04:05"), time.Now().Sub(filter.Time).Seconds())
 	return filter.FilterStateResult
 }
