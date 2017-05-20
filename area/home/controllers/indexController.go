@@ -68,7 +68,9 @@ func (c *IndexController) PostVerify() {
 	}
 	if len(phoneBytes) > 0 && phone == phoneNumber && len(vcodeBytes) > 0 && string(vcodeBytes) == vcode.(string) {
 		sess.Set("verfy", common.Verfied)
+		fmt.Println("[redirect--before]")
 		c.Ctx.Redirect(c.ParseFunc(areaName, "login", c), fasthttp.StatusFound)
+		fmt.Println("[redirect--end]")
 		return
 	}
 
