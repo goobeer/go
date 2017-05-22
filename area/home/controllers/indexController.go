@@ -3,7 +3,6 @@ package controllers
 import (
 	"fasthttpweb/area"
 	view "fasthttpweb/area/home/views/index"
-	"fmt"
 	"strconv"
 
 	"fasthttpweb/common"
@@ -50,7 +49,6 @@ func (c *IndexController) Index() {
 }
 
 func (c *IndexController) Verify() {
-	fmt.Println(string(c.Ctx.QueryArgs().QueryString()))
 	bpd := area.NewBasePageData(areaName, "", "", c)
 	bp := area.NewBasePage(c.Ctx, bpd)
 	ip := &view.VerfyPage{BasePage: bp}
@@ -68,9 +66,7 @@ func (c *IndexController) PostVerify() {
 	}
 	if len(phoneBytes) > 0 && phone == phoneNumber && len(vcodeBytes) > 0 && string(vcodeBytes) == vcode.(string) {
 		sess.Set("verfy", common.Verfied)
-		fmt.Println("[redirect--before]")
 		c.Ctx.Redirect(c.ParseFunc(areaName, "login", c), fasthttp.StatusFound)
-		fmt.Println("[redirect--end]")
 		return
 	}
 

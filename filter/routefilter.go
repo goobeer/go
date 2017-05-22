@@ -50,8 +50,13 @@ func init() {
 	loginFilter := &LoginAuthFilter{FilterStateResult: &FilterStateResult{}}
 	comFilter1.Filters = append(comFilter1.Filters, loginFilter)
 
+	compressFilter1 := NewRouteFilter(".*", Normal, MatchReg, true)
+	compressFilter := &CompressFilter{FilterStateResult: &FilterStateResult{}}
+	compressFilter1.Filters = append(compressFilter1.Filters, compressFilter)
+
 	MapFilter[comFilter.generateFilterKey()] = comFilter
 	MapFilter[comFilter1.generateFilterKey()] = comFilter1
+	MapFilter[compressFilter1.generateFilterKey()] = compressFilter1
 }
 
 func NewRouteFilter(filterExp string, httpVerbType, matchType int, matchOnOff bool) *RouteFilter {

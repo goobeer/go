@@ -3,9 +3,15 @@ package filter
 import (
 	"fasthttpweb/common"
 	"fasthttpweb/model"
+	"regexp"
 
 	"github.com/kataras/go-sessions"
 	"github.com/valyala/fasthttp"
+)
+
+var (
+	spaceReg, _ = regexp.Compile(">[.\\s\r\n\t]*?<")
+	replaceTag  = []byte{'>', '<'}
 )
 
 type FilterStateResult struct {
@@ -55,6 +61,10 @@ type ErrorFilter struct {
 	*FilterStateResult
 }
 
+type CompressFilter struct {
+	*FilterStateResult
+}
+
 func (filter *PhoneVerifyFilter) Authorization(ctx *fasthttp.RequestCtx) *FilterStateResult {
 	sess := sessions.StartFasthttp(ctx)
 	verfy := sess.Get("verfy")
@@ -101,5 +111,14 @@ func (filter *ErrorFilter) OnException(ctx *fasthttp.RequestCtx) *FilterStateRes
 			filter.FilterState = true
 		}
 	}
+	return filter.FilterStateResult
+}
+
+func (filter *CompressFilter) AfterExecute(ctx *fasthttp.RequestCtx) *FilterStateResult {
+	body := ctx.Response.Body()
+	body = spaceReg.ReplaceAll(body, replaceTag)
+
+	ctx.ResetBody()
+	ctx.Response.SetBody(body)
 	return filter.FilterStateResult
 }

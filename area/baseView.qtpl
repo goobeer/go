@@ -16,8 +16,7 @@ Page {
 %}
 
 Page prints a page implementing Page interface.
-{% func PageTemplate(p Page) %}
-<!DOCTYPE html>
+{% func PageTemplate(p Page) %}<!DOCTYPE html>
 <html>
 	<head>
 		{%= p.RenderTitle() %}
@@ -33,8 +32,7 @@ Page prints a page implementing Page interface.
 		<script src="/public/bootstrap/js/bootstrap.min.js"></script>
 		{%= p.RenderScript() %}
 	</body>
-</html>
-{% endfunc %}
+</html>{% endfunc %}
 
 Base page implementation. Other pages may inherit from it if they need
 overriding only certain Page methods
@@ -54,9 +52,8 @@ overriding only certain Page methods
 	}
 %}
 
-{% func (p *BasePage) RenderTitle() %}<title>{% if p.BPD!=nil && len(p.BPD.Title)>0 %}{%s p.BPD.Title %}{% else %}This is a title {% endif %}</title>{% endfunc %}
-{% func (p *BasePage) RenderKwd() %}{% if p.BPD!=nil && len(p.BPD.Kwd)>0 %}<meta name="keywords" content="{%s p.BPD.Kwd %}" />{% endif %} {% endfunc %}
-
+{% func (p *BasePage) RenderTitle() %}<title>{% if p.BPD!=nil && len(p.BPD.Title)>0 %}{%s p.BPD.Title %}{% else %}This is a title{% endif %}</title>{% endfunc %}
+{% func (p *BasePage) RenderKwd() %}{% if p.BPD!=nil && len(p.BPD.Kwd)>0 %}<meta name="keywords" content="{%s p.BPD.Kwd %}" />{% endif %}{% endfunc %}
 {% func (p *BasePage) RenderBody() %}This is a body{% endfunc %}
 {% func (p *BasePage) RenderCss() %} {% endfunc %}
 {% func (p *BasePage) RenderScript() %} {% endfunc %}

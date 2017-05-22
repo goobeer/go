@@ -7,7 +7,7 @@ import (
 type Article struct {
 	*BaseModel `xorm:"extends"`
 	Title      string `xorm:"char(20)"`
-	Content    string `xorm:"text"`
+	Content    string `xorm:"MEDIUMTEXT"`
 	ArtType    int
 	CreateTime time.Time `xorm:"created"`
 	Used       bool
