@@ -160,7 +160,7 @@ func (p *BasePage) StreamRenderTitle(qw422016 *qt422016.Writer) {
 		//line baseView.qtpl:55
 	} else {
 		//line baseView.qtpl:55
-		qw422016.N().S(`This is a title `)
+		qw422016.N().S(`This is a title`)
 		//line baseView.qtpl:55
 	}
 	//line baseView.qtpl:55
@@ -206,8 +206,6 @@ func (p *BasePage) StreamRenderKwd(qw422016 *qt422016.Writer) {
 		qw422016.N().S(`" />`)
 		//line baseView.qtpl:56
 	}
-	//line baseView.qtpl:56
-	qw422016.N().S(` `)
 //line baseView.qtpl:56
 }
 
@@ -237,29 +235,61 @@ func (p *BasePage) RenderKwd() string {
 //line baseView.qtpl:56
 }
 
-//line baseView.qtpl:58
+//line baseView.qtpl:57
 func (p *BasePage) StreamRenderBody(qw422016 *qt422016.Writer) {
-//line baseView.qtpl:58
+//line baseView.qtpl:57
 qw422016.N().S(`This is a body`) }
 
-//line baseView.qtpl:58
-//line baseView.qtpl:58
+//line baseView.qtpl:57
+//line baseView.qtpl:57
 func (p *BasePage) WriteRenderBody(qq422016 qtio422016.Writer) {
-	//line baseView.qtpl:58
+	//line baseView.qtpl:57
 	qw422016 := qt422016.AcquireWriter(qq422016)
-	//line baseView.qtpl:58
+	//line baseView.qtpl:57
 	p.StreamRenderBody(qw422016)
-	//line baseView.qtpl:58
+	//line baseView.qtpl:57
 	qt422016.ReleaseWriter(qw422016)
-//line baseView.qtpl:58
+//line baseView.qtpl:57
 }
 
-//line baseView.qtpl:58
+//line baseView.qtpl:57
 func (p *BasePage) RenderBody() string {
+	//line baseView.qtpl:57
+	qb422016 := qt422016.AcquireByteBuffer()
+	//line baseView.qtpl:57
+	p.WriteRenderBody(qb422016)
+	//line baseView.qtpl:57
+	qs422016 := string(qb422016.B)
+	//line baseView.qtpl:57
+	qt422016.ReleaseByteBuffer(qb422016)
+	//line baseView.qtpl:57
+	return qs422016
+//line baseView.qtpl:57
+}
+
+//line baseView.qtpl:58
+func (p *BasePage) StreamRenderCss(qw422016 *qt422016.Writer) {
+//line baseView.qtpl:58
+qw422016.N().S(` `) }
+
+//line baseView.qtpl:58
+//line baseView.qtpl:58
+func (p *BasePage) WriteRenderCss(qq422016 qtio422016.Writer) {
+	//line baseView.qtpl:58
+	qw422016 := qt422016.AcquireWriter(qq422016)
+	//line baseView.qtpl:58
+	p.StreamRenderCss(qw422016)
+	//line baseView.qtpl:58
+	qt422016.ReleaseWriter(qw422016)
+//line baseView.qtpl:58
+}
+
+//line baseView.qtpl:58
+func (p *BasePage) RenderCss() string {
 	//line baseView.qtpl:58
 	qb422016 := qt422016.AcquireByteBuffer()
 	//line baseView.qtpl:58
-	p.WriteRenderBody(qb422016)
+	p.WriteRenderCss(qb422016)
 	//line baseView.qtpl:58
 	qs422016 := string(qb422016.B)
 	//line baseView.qtpl:58
@@ -270,65 +300,33 @@ func (p *BasePage) RenderBody() string {
 }
 
 //line baseView.qtpl:59
-func (p *BasePage) StreamRenderCss(qw422016 *qt422016.Writer) {
-//line baseView.qtpl:59
-qw422016.N().S(` `) }
-
-//line baseView.qtpl:59
-//line baseView.qtpl:59
-func (p *BasePage) WriteRenderCss(qq422016 qtio422016.Writer) {
-	//line baseView.qtpl:59
-	qw422016 := qt422016.AcquireWriter(qq422016)
-	//line baseView.qtpl:59
-	p.StreamRenderCss(qw422016)
-	//line baseView.qtpl:59
-	qt422016.ReleaseWriter(qw422016)
-//line baseView.qtpl:59
-}
-
-//line baseView.qtpl:59
-func (p *BasePage) RenderCss() string {
-	//line baseView.qtpl:59
-	qb422016 := qt422016.AcquireByteBuffer()
-	//line baseView.qtpl:59
-	p.WriteRenderCss(qb422016)
-	//line baseView.qtpl:59
-	qs422016 := string(qb422016.B)
-	//line baseView.qtpl:59
-	qt422016.ReleaseByteBuffer(qb422016)
-	//line baseView.qtpl:59
-	return qs422016
-//line baseView.qtpl:59
-}
-
-//line baseView.qtpl:60
 func (p *BasePage) StreamRenderScript(qw422016 *qt422016.Writer) {
-//line baseView.qtpl:60
+//line baseView.qtpl:59
 qw422016.N().S(` `) }
 
-//line baseView.qtpl:60
-//line baseView.qtpl:60
+//line baseView.qtpl:59
+//line baseView.qtpl:59
 func (p *BasePage) WriteRenderScript(qq422016 qtio422016.Writer) {
-	//line baseView.qtpl:60
+	//line baseView.qtpl:59
 	qw422016 := qt422016.AcquireWriter(qq422016)
-	//line baseView.qtpl:60
+	//line baseView.qtpl:59
 	p.StreamRenderScript(qw422016)
-	//line baseView.qtpl:60
+	//line baseView.qtpl:59
 	qt422016.ReleaseWriter(qw422016)
-//line baseView.qtpl:60
+//line baseView.qtpl:59
 }
 
-//line baseView.qtpl:60
+//line baseView.qtpl:59
 func (p *BasePage) RenderScript() string {
-	//line baseView.qtpl:60
+	//line baseView.qtpl:59
 	qb422016 := qt422016.AcquireByteBuffer()
-	//line baseView.qtpl:60
+	//line baseView.qtpl:59
 	p.WriteRenderScript(qb422016)
-	//line baseView.qtpl:60
+	//line baseView.qtpl:59
 	qs422016 := string(qb422016.B)
-	//line baseView.qtpl:60
+	//line baseView.qtpl:59
 	qt422016.ReleaseByteBuffer(qb422016)
-	//line baseView.qtpl:60
+	//line baseView.qtpl:59
 	return qs422016
-//line baseView.qtpl:60
+//line baseView.qtpl:59
 }

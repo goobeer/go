@@ -1,0 +1,61 @@
+{% 
+	import (
+		"fasthttpweb/area"
+		"fasthttpweb/model"
+		"fasthttpweb/area/commonhtmlhelper"
+	)
+%}
+
+{% code
+type IndexPage struct {
+	*area.BasePage
+}
+%}
+
+{% func (p *IndexPage) RenderTitle() %}{%= p.BasePage.RenderTitle() %} {% endfunc %}
+{% func (p *IndexPage) RenderKwd() %}{%= p.BasePage.RenderKwd() %} {% endfunc %}
+
+{% func (p *IndexPage) RenderCss() %}{% endfunc %}
+
+{% func (p *IndexPage) RenderScript() %}{% endfunc %}
+
+{% func (p *IndexPage) RenderBody() %}
+	{% code
+		modelVal:=p.BasePage.BPD.Data["Model"]
+		pageIndex:= p.BPD.Data["page"].(int)
+		total:=p.BasePage.BPD.Data["Total"].(int)
+		var loginfoes []model.LogInfo
+		if modelVal!=nil{
+			loginfoes=modelVal.([]model.LogInfo)
+		}
+	%}
+	
+	<div class="text-center">
+		{% if loginfoes!=nil %}
+			<table class="table table-borderd table-hover">
+			{% for _,v:=range loginfoes %}
+			{% code 
+				id:=int(v.ID)
+				data:=make(map[string]interface{})
+				data["id"]=id
+			%}
+				<tr>
+					<td><a href="{%s area.Url(p.BasePage,"detail",data) %}">{%s v.IP %}</a></td>
+					<td>{%s v.UserAgent %}</td>
+					<td>{%s v.ExpMsg %}</td>
+					<td>{%s v.LoggerLevel %}</td>
+					<td>{%s v.LogCatelog %}</td>
+					<td>{%s v.Msg %}</td>
+					<td>{%s v.Url %}</td>
+					<td>{%s v.CreateTime.Format("2006-01-02 15:04:05") %}</td>
+					<td>
+						<a href="{%s area.Url(p.BasePage,"edit",data) %}">编辑</a>
+						<a href="{%s area.Url(p.BasePage,"mdelete",data) %}">删除</a>
+					</td>
+				</tr>
+			{% endfor %}
+			</table>
+			{%s= commonhtmlhelper.GeneratePageLink("",pageIndex,5,total,"page",nil) %}
+		{% endif %}
+	</div>
+{% endfunc %}
