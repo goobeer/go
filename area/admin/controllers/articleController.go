@@ -5,6 +5,7 @@ import (
 	"fasthttpweb/area"
 	view "fasthttpweb/area/admin/views/article"
 	"fasthttpweb/model"
+	"math"
 	"strconv"
 )
 
@@ -24,23 +25,26 @@ func (c *ArticleController) Index() {
 
 	var err error
 	pageNumber, pageSize := 0, 10
-	page := c.Ctx.FormValue("pageNumber")
+	page := c.Ctx.FormValue("page")
 	if page != nil {
 		pageNumber, _ = strconv.Atoi(string(page))
 		if pageNumber > 0 {
 			pageNumber--
 		}
 	}
-
+	bpd.Data["page"] = pageNumber
 	art := &model.Article{}
 	var arts []model.Article
+	err = art.DbListCommandSession(uint(pageNumber), uint(pageSize), nil).Cols("ID,Title,CreateTime,Used").Desc("CreateTime").Find(&arts)
 
-	err = art.GetListWithCols(&arts, "ID,Title,CreateTime,Used", "", uint(pageNumber), uint(pageSize), nil)
 	if err != nil {
 		c.ErrorView(areaName, "article", "article-index", err)
 		return
 	} else {
 		bp.BPD.Data["Model"] = arts
+		total, _ := art.DbCommandSession(nil).Count(art)
+		totalNum := float64(total)
+		bpd.Data["Total"] = int(math.Ceil(totalNum / float64(pageSize)))
 	}
 
 	ip := &view.IndexPage{bp}

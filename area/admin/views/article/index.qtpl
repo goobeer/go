@@ -4,6 +4,7 @@
 	import (
 		"fasthttpweb/area"
 		"fasthttpweb/model"
+		"fasthttpweb/area/commonhtmlhelper"
 	)
 %}
 
@@ -23,6 +24,8 @@ type IndexPage struct {
 {% func (p *IndexPage) RenderBody() %}
 	{% code 
 		modelVal:=p.BasePage.BPD.Data["Model"]
+		pageIndex:= p.BPD.Data["page"].(int)
+		total:=p.BasePage.BPD.Data["Total"].(int)
 		var arts []model.Article
 		if modelVal!=nil{
 			arts=modelVal.([]model.Article)
@@ -50,6 +53,7 @@ type IndexPage struct {
 			</tr>
 		{% endfor %}
 		</table>
+		{%s= commonhtmlhelper.GeneratePageLink("",pageIndex,10,total,"page",nil) %}
 		{% endif %}
 	</div>
 {% endfunc %}
