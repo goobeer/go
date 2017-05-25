@@ -17,14 +17,6 @@ type DetailPage struct {
 {% func (p *DetailPage) RenderCss() %}{% endfunc %}
 
 {% func (p *DetailPage) RenderScript() %}
-<script type="text/javascript" src="/public/ueditor/ueditor.config.js"></script>
-<script type="text/javascript" src="/public/ueditor/ueditor.all.js"></script>
-<script type="text/javascript">
-	$(function(){
-		var editor = new baidu.editor.ui.Editor({initialFrameWidth: 784,initialFrameHeight: 400});
-    	editor.render('Content');
-	});
-</script>
 {% endfunc %}
 
 

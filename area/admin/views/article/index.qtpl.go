@@ -255,7 +255,7 @@ func (p *IndexPage) StreamRenderBody(qw422016 *qt422016.Writer) {
 		</table>
 		`)
 		//line admin\views\article\index.qtpl:56
-		qw422016.N().S(commonhtmlhelper.GeneratePageLink("", pageIndex, 10, total, "page", nil))
+		qw422016.N().S(commonhtmlhelper.GeneratePageLink("", pageIndex, 3, total, "page", nil))
 		//line admin\views\article\index.qtpl:56
 		qw422016.N().S(`
 		`)
